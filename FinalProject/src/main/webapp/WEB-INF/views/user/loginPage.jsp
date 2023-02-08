@@ -9,12 +9,13 @@
     <meta name="author" content="Devcrud">
     <title>harVest</title>
     <!-- font icons -->
-    <link rel="stylesheet" href="resources/assets/vendors/themify-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/vendors/themify-icons/css/themify-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- Bootstrap + JoeBLog main styles -->
-	<link rel="stylesheet" href="resources/assets/css/joeblog.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/joeblog.css">
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+
 
 	<!-- page-header -->
   	<jsp:include page="../inc/header.jsp"></jsp:include>
@@ -27,7 +28,7 @@
 	       <div class="btn-group show">
 				<div class="col-md-12 text-center">
                     <h2 class="mb-4">로그인</h2>
-		            <form action="#" method="post" name="login">
+		            <form action="${pageContext.request.contextPath }/user/loginPro" method="post" name="login">
 		                <div class="form-group">
 		                    <input type="text" name="id" class="form-control" id="id" aria-describedby="" placeholder="아이디">
 		                </div>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,9 @@
 
 </head>
 <body>
+<c:if test="${empty sessionScope.id}">
+	<c:redirect url="${pageContext.request.contextPath }/mainpage/main"></c:redirect>
+</c:if>
 	<form action="${pageContext.request.contextPath }/creator/createPro" method="post">
 	<div id="projectContent">
 		<div class="proj_top">
@@ -29,10 +33,13 @@
 		<div class="top_content2">
 				<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">프로젝트 계획</button>
+						<button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" 
+						type="button" role="tab" aria-controls="pills-home" aria-selected="false">
+						<a href="${pageContext.request.contextPath }/creator/project">프로젝트 계획</a></button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">펀딩 계획</button>
+						<button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" 
+						type="button" role="tab" aria-controls="pills-profile" aria-selected="true">펀딩 계획</button>
 					</li>
 				</ul>
 			</div>
@@ -56,8 +63,10 @@
 						<div class="arti_tit3">펀딩 시작일</div>
 						<div class="arti_cont3">
 							<input type="date" name="targetAmt">
+							<input type="text" name="intro">
 						</div>
 					</div>
+					
 				</div>
 				<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">...</div>
 			</div>	

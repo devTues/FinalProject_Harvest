@@ -8,7 +8,7 @@
                 <img src="${pageContext.request.contextPath }/resources/harVest_img/harvest_logo.png">
             </a>
             <div class="socials">
-                <a href="javascript:void(0)">프로젝트 올리기</a>
+                <a href="${pageContext.request.contextPath }/creator/project">프로젝트 올리기</a>
                 <a href="../views/loginPage.jsp">로그인</a>
             </div>
         </div>
