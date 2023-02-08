@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+.like_input {
+	display: none;
+}
+
+.like_btn {
+	position:absolute;
+	top:0;
+	right:0;
+	cursor: pointer;
+}
+span[class^="heart"] {
+	position:absolute;
+	right:5px;
+	color: red;
+}
+.heart_fill {
+	visibility:hidden;
+	color: red;
+}
+#likeBtn:checked ~ .heart_fill{
+	visibility: visible;
+	animation: heart 3 linear .4s;
+}
+#likeBtn:checked ~ .heart{
+	visibility: hidden;
+}
+
+@keyframes heart {
+	100% {
+		transform: scale(1.1);
+	}
+}
