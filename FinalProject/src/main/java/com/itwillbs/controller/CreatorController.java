@@ -2,14 +2,21 @@ package com.itwillbs.controller;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itwillbs.domain.ProjectDTO;
+import com.itwillbs.service.ProjectService;
+
 
 @Controller
 public class CreatorController {
+	@Inject
+	private ProjectService projectService;
 	
 	@RequestMapping(value = "/creator/create", method = RequestMethod.GET)
 	public String create(Locale locale, Model model) {
@@ -18,9 +25,9 @@ public class CreatorController {
 	}
 	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
-	public String createPro() {
-		
-		return "redirect:/creator/projectUpload";
+	public String createPro(ProjectDTO projectDto) {
+		projectService.insertProject(projectDto);
+		return "redirect:/creator/create";
 	}
 
 	@RequestMapping(value = "/creator/intro", method = RequestMethod.GET)

@@ -10,7 +10,7 @@
 	overflow-y: hidden !important;
 }
 </style>
-<title>Document</title>
+<title>프로젝트 일정</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <body id="editor">

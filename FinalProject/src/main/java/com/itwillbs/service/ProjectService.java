@@ -1,8 +1,7 @@
 package com.itwillbs.service;
 
-import javax.inject.Inject;
-
+import com.itwillbs.domain.ProjectDTO;
 
 public interface ProjectService {
-
+	public void insertProject(ProjectDTO projectDto);
 }
