@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +19,25 @@ public class CreatorController {
 	@Inject
 	private ProjectService projectService;
 	
-	@RequestMapping(value = "/creator/create", method = RequestMethod.GET)
-	public String create(Locale locale, Model model) {
+	@RequestMapping(value = "/creator/project", method = RequestMethod.GET)
+	public String project() {
 		
 		return "creator/projectUpload";
 	}
 	
+	@RequestMapping(value = "/creator/funding", method = RequestMethod.GET)
+	public String funding() {
+		
+		return "creator/fundingUpload";
+	}
+	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
 	public String createPro(ProjectDTO projectDto) {
+		System.out.println(projectDto.getImg1());
+		System.out.println(projectDto.getCrePro());
+		System.out.println("intro:" + projectDto.getIntro());
 		projectService.insertProject(projectDto);
-		return "redirect:/creator/create";
+		return "redirect:/creator/project";
 	}
 
 	@RequestMapping(value = "/creator/intro", method = RequestMethod.GET)
