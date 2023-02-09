@@ -13,7 +13,7 @@
 </head>
 <body>
 <c:if test="${empty sessionScope.id}">
-	<c:redirect url="${pageContext.request.contextPath }/mainpage/main"></c:redirect>
+	<c:redirect url="${pageContext.request.contextPath }/user/login"></c:redirect>
 </c:if>
 	<form action="${pageContext.request.contextPath }/creator/createPro" method="post">
 	<div id="projectContent">
@@ -33,12 +33,12 @@
 		<div class="top_content2">
 				<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" 
+						<button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" 
 						type="button" role="tab" aria-controls="pills-home" aria-selected="false">
 						<a href="${pageContext.request.contextPath }/creator/project">프로젝트 계획</a></button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" 
+						<button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" 
 						type="button" role="tab" aria-controls="pills-profile" aria-selected="true">펀딩 계획</button>
 					</li>
 				</ul>
@@ -62,12 +62,24 @@
 					<div class="article_proj">
 						<div class="arti_tit3">펀딩 시작일</div>
 						<div class="arti_cont3">
-							<input type="date" name="targetAmt">
-							<input type="text" name="intro">
+							<input type="date" name="start">
+						</div>
+						<div class="arti_tit4">펀딩 종료일</div>
+						<div class="arti_cont4">
+							<input type="date" name="end">
+						</div>
+						<div class="sub_article">
+							<div class="arti_cont4">
+								펀딩 기간
+							</div>
+							<div class="arti_cont5">
+								후원자 결제 종료일
+							</div>
+							<div class="arti_cont6">
+								정산일
+							</div>
 						</div>
 					</div>
-					
-				</div>
 				<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">...</div>
 			</div>	
 		</div>

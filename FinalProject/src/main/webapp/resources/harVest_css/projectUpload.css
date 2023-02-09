@@ -1,5 +1,6 @@
 @charset "UTF-8";
 html, body {padding:0; margin:0;}
+
 /* 프로젝트 업로드 메인 컨테이너 */
 #projectContent {
 	display: grid;
@@ -57,6 +58,11 @@ html, body {padding:0; margin:0;}
 }
 .nav-link {
 	color: #b8b8b8!important;
+	
+}
+.nav-link > a {
+	color: #b8b8b8!important;
+	text-decoration-line: none;
 }
 .nav-link.active {
 	color: white !important;
@@ -93,6 +99,10 @@ html, body {padding:0; margin:0;}
     margin-bottom: 32px;
 }
 
+.article_proj .sub_article {
+	
+}
+
 /* .article_proj > div {padding:10px;border: 1px solid;} */
 
 .arti_tit {
@@ -118,7 +128,6 @@ html, body {padding:0; margin:0;}
     height: 100%;
     object-fit: cover;
 }
-
 
 /* 다중 파일 */
 .inputFile,
@@ -164,4 +173,8 @@ html, body {padding:0; margin:0;}
     display: inline-block;
     text-align: center;
     cursor: pointer;
+}
+
+.divHide{
+	display: none;
 }

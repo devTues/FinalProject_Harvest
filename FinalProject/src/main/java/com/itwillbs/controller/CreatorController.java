@@ -35,8 +35,9 @@ public class CreatorController {
 	public String createPro(ProjectDTO projectDto) {
 		System.out.println(projectDto.getImg());
 		System.out.println(projectDto.getCrePro());
+		System.out.println("intro:" + projectDto.getIntro());
 		projectService.insertProject(projectDto);
-		return "redirect:/creator/create";
+		return "redirect:/creator/project";
 	}
 
 	@RequestMapping(value = "/creator/intro", method = RequestMethod.GET)

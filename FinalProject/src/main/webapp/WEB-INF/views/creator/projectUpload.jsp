@@ -8,14 +8,18 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <link href="${pageContext.request.contextPath }/resources/harVest_css/projectUpload.css" rel="stylesheet">
 
+<!-- TODO: js 파일로 떼기 -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+<script type="text/javascript" serc="${pageContext.request.contextPath }/resources/js/Upload.js"></script>
 <title>projectUpload.jsp</title>
 
 </head>
 <body>
 <c:if test="${empty sessionScope.id}">
-	<c:redirect url="${pageContext.request.contextPath }/mainpage/main"></c:redirect>
+	<c:redirect url="${pageContext.request.contextPath }/user/login"></c:redirect>
 </c:if>
-	<form action="${pageContext.request.contextPath }/creator/createPro" method="post">
+	<form action="${pageContext.request.contextPath }/creator/createPro" name="project" method="post" onclick="submitSendForm()">
 	<div id="projectContent">
 		<div class="proj_top">
 			<div class="top_content1">
@@ -38,8 +42,8 @@
 					</li>
 					<li class="nav-item" role="presentation">
 						<button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" 
-						type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="MovePage()">
-						펀딩 계획</button>
+						type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+						<a href="${pageContext.request.contextPath }/creator/funding">펀딩 계획</a></button>
 					</li>
 				</ul>
 			</div>
@@ -74,6 +78,7 @@
 					<div class="article_proj">
 						<div class="arti_tit">프로젝트 카테고리</div>
 						<div class="arti_cont">
+							<!-- category 불러오기 -->
 							<select name="category">
 							</select>
 						</div>
@@ -95,6 +100,7 @@
 						<div class="arti_cont">
 							<div class="filebox clearfix">
    								<div class="inputFile">
+   									<!-- TODO: 기본 이미지 만들기 -->
         							<label for="AddImgs" class="addImgBtn">+</label>
        								<input type="file" id="AddImgs" name="Img1" class="upload-hidden" accept=".jpeg, .jpg, .png, .gif" multiple>
     							</div>
@@ -105,21 +111,19 @@
 					<div class="article_proj">
 						<div class="arti_tit">프로젝트 소개</div>
 						<div class="arti_cont">
-							<h3>프로젝트 소개</h3>
-							<iframe name="intro" id="intro" src="${pageContext.request.contextPath }/creator/intro" width="550px" height="550px"> </iframe>
+							<iframe id="iframe_intro" src="${pageContext.request.contextPath }/creator/intro" width="550px" height="550px"> </iframe>
+<!-- 							<div id="txt" class="divHide"></div> -->
 						</div>
 					</div>
 					<div class="article_proj">
 						<div class="arti_tit">프로젝트 예산</div>
 						<div class="arti_cont">
-							<h3>프로젝트 예산</h3>
 							<iframe name="budget" src="${pageContext.request.contextPath }/creator/budget" width="550px" height="550px"> </iframe>
 						</div>
 					</div>
 					<div class="article_proj">
 						<div class="arti_tit">프로젝트 일정</div>
 						<div class="arti_cont">
-							<h3>프로젝트 일정</h3>
 							<iframe name="schedule" src="${pageContext.request.contextPath }/creator/schedule" width="550px" height="550px"> </iframe>
 						</div>
 					</div>
@@ -129,171 +133,14 @@
 		</div>
 	</div>
 </form>
-
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 <script type="text/javascript">
-window.onload = function(){
-	
-	// 프로필 사진 미리보기
-	const fileDOM = document.querySelector('#file');
-	const preview = document.querySelector('.image-box');
-    
-	fileDOM.addEventListener('change', (e) => {
-	  const reader = new FileReader();
-	  reader.onload = ({ target }) => {
-	    preview.src = target.result;
-	  };
-	  reader.readAsDataURL(fileDOM.files[0]);
-	});
-	
-	$(function(){
-		//드래그 앤 드롭
-		$(".sortable").sortable();
-	  
-		//이미지 등록
-		$("#AddImgs").change(function(e){
-	    	//div 내용 비워주기
-	    	$('#Preview').empty();
 
-		    var files = e.target.files;
-		    var arr = Array.prototype.slice.call(files);
-
-			//업로드 가능 파일인지 체크
-		    for(var i=0; i<files.length; i++){
-	    	    if(!checkExtension(files[i].name,files[i].size)){
-	        	    return false;
-	        	}
-	    	}
-        	preview(arr);
-
-	        function checkExtension(fileName,fileSize){
-				var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
-	    	    var maxSize = 20971520;  //20MB
-
-		        if(fileSize >= maxSize){
-		            alert('이미지 크기가 초과되었습니다.');
-	    	        $("#AddImgs").val("");  //파일 초기화
-	        	    return false;
-	        	}
-
-		        if(regex.test(fileName)){
-		            alert('확장자명을 확인해주세요.');
-	    	        $("#AddImgs").val("");  //파일 초기화
-	        	    return false;
-	       		}
-	        	return true;
-	  		}
-
-      		function preview(arr){
-	        	arr.forEach(function(f){
-	            	//파일명이 길면 파일명...으로 처리
-	              	/*
-	              	var fileName = f.name;
-	              	if(fileName.length > 10){
-	                	  fileName = fileName.substring(0,7)+"...";
-	              	}
-	              	*/
-
-					//div에 이미지 추가
-	            	var str = '<li class="ui-state-default">';
-	              	//str += '<span>'+fileName+'</span><br>';
-
-	                //이미지 파일 미리보기
-	                if(f.type.match('image.*')){
-	                	//파일을 읽기 위한 FileReader객체 생성
-	                  	var reader = new FileReader(); 
-	                  	reader.onload = function (e) { 
-	                    	//파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
-	                     	str += '<img src="'+e.target.result+'" title="'+f.name+'" width=80 height=80>';
-	                      	str += '<span class="delBtn" onclick="delImg(this)">x</span>';
-	                      	str += '</li>';
-	                      	$(str).appendTo('#Preview');
-	                  	} 
-	                  	reader.readAsDataURL(f);
-	              	}else{
-	                  	//이미지 파일 아닐 경우 대체 이미지
-	                  	/*
-	                 	str += '<img src="/resources/img/fileImg.png" title="'+f.name+'" width=60 height=60 />';
-	                 	$(str).appendTo('#Preview');
-	                 	*/
-	              	}
-	        	})
-	    	}
-		})
-
-		//이미지 삭제
-// 		function delImg(_this){
-// 			$(_this).parent('li').remove()
-// 		}
-	})
-	
-	
-// 	// 다중 파일(프로젝트 이미지) 미리보기
-// 	var selFiles = [];				// 이미지 정보 담는 배열
-// 	var index = 0;
-// 	$(document).ready(function(){
-// 		$("#files").on("change", handleImgFileSelect);
-
-		
-// 		// 다중 파일 미리보기
-// 		function handleImgFileSelect(e) {
-// 			var files = e.target.files;
-// 			var filesArr = Array.prototype.slice.call(files);
-				 
-// 			filesArr.forEach(function(f) {
-// 				index++;
-// 				if(!f.type.match("image.*")) {
-// 					alert("이미지 확장자만 가능합니다.")
-// 				 	return;
-// 			 	}
-					 
-// 				selFiles.push(f);
-// 				var reader = new FileReader();
-// 				reader.onlaod = function(e) {
-// 					document.querySelector('.noImage' + index).src = reader.result	
-					
-// 				}
-// 		 		reader.readAsDataURL(f);
-// 			});
-// 		}
-		
-// 		// 이미지 삭제
-// 		function deleteImageAction(index) {
-// 			console.log("idex : " + index);
-// 			selectedfiles.splice(index, 1);
-			
-// 			var img_id = "#img_id_" + index;
-// 			$(img_id).remove();
-			
-// 			console.log(selectedfiles);
-		
-// 		}
-// 	});
+var submitSendForm = function() {
+	 var frmObj = document.getElementById("iframe_intro").contentWindow.document.sendform;
+	 frmObj.submit();
 }
-
-// function MovePage(){
-// 	$.ajax({
-//         url:'${pageContext.request.contextPath }/creator/funding',
-//         type:'GET',
-//         data: {
-// 				intro : $("#intro").value ,
-//         dataType : 'json',
-//         async: true,
-//         success:function(data){
-//             optionlist = data;
-//             console.log(" 옵션 가져오기 성공!!");
-
-//         },
-//         error:function(jqXHR, textStatus, errorThrown){
-//             alert("에러 발생~~ \n" + textStatus + " : " + errorThrown);
-//         }
-// 		}
-// 	});
-// }
-
 </script>
+
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

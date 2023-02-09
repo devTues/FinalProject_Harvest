@@ -10,15 +10,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <body id="editor">
-	<p>막연하다면 아래의 질문에 대한 답이 내용에 포함되도록 작성해보세요.</p>
+	<form name="sendform">
+		<p>막연하다면 아래의 질문에 대한 답이 내용에 포함되도록 작성해보세요.</p>
 	
-	<p>Q. 이 프로젝트를 시작하게 된 배경이 무엇인가요?</p>
+		<p>Q. 이 프로젝트를 시작하게 된 배경이 무엇인가요?</p>
 	
-	<p>Q. 무엇을 만들기 위한 프로젝트인가요?</p>
+		<p>Q. 무엇을 만들기 위한 프로젝트인가요?</p>
 	
-	<p>Q. 프로젝트를 간단히 소개한다면?</p>
+		<p>Q. 프로젝트를 간단히 소개한다면?</p>
 	
-	<p>Q. 이 프로젝트가 왜 의미있나요?</p>
+		<p>Q. 이 프로젝트가 왜 의미있나요?</p>
+	</form>
+
 </body>
 <script>
 $(function(){
