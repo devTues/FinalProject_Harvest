@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace="com.itwillbs.mappers.userMapper">
+
+	<insert id="insertUser">
+		insert into USER_TB (num,id,pass1,name) 
+		values(#{num},#{id},#{pass1},#{name})
+	</insert>
+	
+	<select id="getMaxNum" resultType="java.lang.Integer">
+		select max(num) from USER_TB
+	</select>
+	
+	<select id="userCheck" resultType="com.itwillbs.domain.UserDTO">
+		select * from USER_TB
+		where id=#{id} and pass=#{pass}
+	</select>
+	
+	<select id="getUser" resultType="com.itwillbs.domain.UserDTO">
+		select * from USER_TB
+		where id=#{id}
+	</select>
+  
+  	<update id="updateUser">
+  		update USER_TB set name=#{name} where id=#{id}
+  	</update>
+
+	
+</mapper>
