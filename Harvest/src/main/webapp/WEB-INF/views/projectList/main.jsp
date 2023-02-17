@@ -100,7 +100,7 @@
                             <div class="mb-2">
                             	<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
                                 <h6 class="m-0">${projectDTO.title }</h6>
-                                <span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span>
+                                <span class="text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}%</span>
                                 <small class="small text-danger"> 달성</small>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
 	                    <div class="media-body">
 	                    	<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
 	                        <h6 class="m-0">${projectDTO.title }</h6>
-	                        <p class="small text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}% 달성</p>
+	                        <p class="small text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}% 달성</p>
 	                    </div>
 	                </div>
 				</c:forEach>
@@ -161,7 +161,7 @@
 				</div>
               	<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
                 <h6 class="m-0">${projectDTO.title }</h6>
-                <span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span>
+                <span class="text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}%</span>
                 <small class="small text-danger"> 달성</small>
 			</div>
 		</c:forEach>
@@ -180,7 +180,7 @@
 				</div>
               	<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
                 <h6 class="m-0">${projectDTO.title }</h6>
-                <span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span>
+                <span class="text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}%</span>
                 <small class="small text-danger"> 달성</small>
 			</div>
 		</c:forEach>

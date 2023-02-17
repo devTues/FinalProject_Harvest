@@ -12,7 +12,6 @@
 			 , CRE_NM
 			 , TITLE
 			 , TARGET_AMT
-			 , TOTAL_AMT
 			 , START
 			 , END
 			 , IMG1
@@ -28,7 +27,7 @@
 		 <if test='! GB.equals("") and GB != null'>
 		 	  <if test='GB.equals("POP")'>
 		 	  AND END > CURDATE()
-		 	  ORDER BY total_amt / target_amt * 100 DESC
+		 	  ORDER BY CAST(#{TOTAL_AMT} AS UNSIGNED)/ target_amt * 100 DESC
 			  </if>
 			  <if test='GB.equals("NEW")'>  
 		   	  AND START > DATE_SUB(CURDATE(),INTERVAL 7 day) and END > CURDATE()

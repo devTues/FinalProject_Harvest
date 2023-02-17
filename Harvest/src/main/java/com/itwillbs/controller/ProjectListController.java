@@ -30,6 +30,7 @@ public class ProjectListController {
 		else {param.put("SESSIONID", session.getAttribute("id").toString());}
 		param.put("SEARCH", "");
 		param.put("CATEGORY", "");
+		param.put("TOTAL_AMT", "1000000");
 		
 		param.put("GB", "POP");
 		List<ProjectDTO> popList=projectListService.getProjectList(param);
@@ -50,6 +51,7 @@ public class ProjectListController {
 		param.put("GB", "ALL");
 		List<ProjectDTO> allList=projectListService.getProjectList(param);
 		model.addAttribute("getAllList", allList);
+		model.addAttribute("totalAmt", 1000000);
 		
 		return "projectList/main";
 	}
@@ -68,7 +70,7 @@ public class ProjectListController {
 		model.addAttribute("getAllList", searchList);
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/allProject";
 	}
 	
@@ -87,7 +89,7 @@ public class ProjectListController {
 		
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/allProject";
 	}
 	
@@ -105,7 +107,7 @@ public class ProjectListController {
 		
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/popular";
 	}
 	
@@ -123,7 +125,7 @@ public class ProjectListController {
 		
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/newly";
 	}
 	
@@ -141,7 +143,7 @@ public class ProjectListController {
 		
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/deadline";
 	}
 	
@@ -159,7 +161,7 @@ public class ProjectListController {
 		param.put("CATEGORY", "");
 		int count = projectListService.getCount(param);
 		model.addAttribute("getCount", count);
-		
+		model.addAttribute("totalAmt", 1000000);
 		return "projectList/expect";
 	}
 	

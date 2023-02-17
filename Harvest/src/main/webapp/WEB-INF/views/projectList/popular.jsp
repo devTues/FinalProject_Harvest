@@ -60,9 +60,9 @@
 								<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
 								<input type="hidden" id="pjIdx_${projectDTO.idx }" value="${projectDTO.idx }">
 								<h5 class="card-title mb-2">${projectDTO.title }</h5>
-								<span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span> <small><fmt:formatNumber value="${projectDTO.totalAmt}" pattern="#,###"/>원</small>
+								<span class="text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}%</span> <small><fmt:formatNumber value="${totalAmt}" pattern="#,###"/>원</small>
 								<div class="progress mt-2 mb-3">
-									<div class="progress-bar bg-danger" role="progressbar" style="width: ${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+									<div class="progress-bar bg-danger" role="progressbar" style="width: ${Math.round(totalAmt / projectDTO.targetAmt * 100)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 										<jsp:useBean id="javaDate" class="java.util.Date" />
 										<fmt:formatDate var="nowDate" value="${javaDate}" pattern="yyyy-MM-dd"/>
 										<fmt:parseNumber value="${javaDate.time / (1000*60*60*24)}" integerOnly="true" var="start"></fmt:parseNumber>
