@@ -27,7 +27,7 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 	
-	<!-- 이메일 보내기 -->
+	<!-- 정화: 이메일 보내기 -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
 	 <property name="host" value="smtp.naver.com"/> <!-- 메이서버 호스트 -->
 	 <property name="port" value="465"/> <!-- 메이서버 포트번호 -->
@@ -46,4 +46,23 @@
 	  </props>
 	 </property>
 	</bean>	
+	<!-- 나경: 이메일 인증 관련 빈 등록 -->
+	<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	   <property name="host" value="smtp.gmail.com" />
+	   <property name="port" value="587" />
+	   <property name="username" value="omama69@gmail.com" />
+	   <property name="password" value="xzybbnnbconwxdjf" />
+	   <property name="javaMailProperties">
+	      <props>
+	             <prop key="mail.transport.protocol">smtp</prop>
+	             <prop key="mail.smtp.auth">true</prop>
+	             <!-- gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
+	             <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+	             <prop key="mail.smtp.starttls.enable">true</prop>
+	             <prop key="mail.debug">true</prop>
+	             <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+		<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+	         </props>
+	   </property>
+	</bean>
 </beans>

@@ -1,33 +1,79 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+  
 <mapper namespace="com.itwillbs.mappers.userMapper">
 
 	<insert id="insertUser">
-		insert into USER_TB (num,id,pass1,name) 
-		values(#{num},#{id},#{pass1},#{name})
+		insert into user_tb ( IDX
+							, name
+						    , id
+						    , pass
+						    , phone <!-- DB 컬럼명 -->
+						    , event_alr)
+					    
+			 	 values( 
+					 	 (SELECT IDX
+		                    FROM (
+		                        SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+		                         FROM PROJECT_TB
+		                     ) A)
+			 	 	   , #{name}
+			 	       , #{id}
+				       , #{pass}
+				       , #{phone} <!-- DTO 멤버변수, user_status랑 date는 디폴트라 넣을 필요X -->
+				       , #{eventAlr})
 	</insert>
-	
-	<select id="getMaxNum" resultType="java.lang.Integer">
-		select max(num) from USER_TB
-	</select>
-	
+
+
 	<select id="userCheck" resultType="com.itwillbs.domain.UserDTO">
-		select * from USER_TB
-		where id=#{id} and pass=#{pass}
+		select * 
+		  from user_tb
+		 
+		 where ID=#{id}
+		   and PASS=#{pass}
 	</select>
+	
 	
 	<select id="getUser" resultType="com.itwillbs.domain.UserDTO">
-		select * from USER_TB
-		where id=#{id}
+		select *
+		  from user_tb
+		 where ID=#{id}
 	</select>
-  
-  	<update id="updateUser">
-  		update USER_TB set name=#{name} where id=#{id}
-  	</update>
+	
+	
+	
+<!-- 	비밀번호 찾기 -->
+	<select id="passCheck" resultType="com.itwillbs.domain.UserDTO">
+		select * 
+		  from user_tb
+		 where ID=#{id}
+	</select>
+	
+	
+	
+	
+	
+	
+	
 
+	
+	
+	
+<!-- 	<select id="mailCheck" resultType="com.itwillbs.domain.UserDTO"> -->
+<!-- 		select * -->
+<!-- 		  from user -->
+<!-- 		 where ID=#{id} -->
+		   
+<!-- 	</select> -->
+	
+	
+<!-- 	<update id="updatePass"> -->
+<!-- 		update user -->
+<!-- 		   set PASS=#{pass} -->
+<!-- 		 where ID=#{id} -->
+<!-- 	</update> -->
+	
 	
 </mapper>

@@ -1,0 +1,481 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with JoeBLog landing page.">
+    <meta name="author" content="Devcrud">
+    <title>harVest/insertForm</title>
+    <!-- font icons -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/vendors/themify-icons/css/themify-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap + JoeBLog main styles -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/joeblog.css">
+	<!-- 	눈모양 -->
+	<link rel="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<!-- 로고이미지 가운데 정렬 -->
+	<style>
+	   div {
+	      text-align: center;
+	   }
+	   
+	   .valid { 
+		  font-size: 11px;
+		  font-weight: bold; 
+		}
+
+		.valid { color: red; }
+		
+	</style>
+	
+	
+	
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
+	<script type="text/javascript">
+	
+	let checkResult = false;
+	let checkNameResult = false;
+	let checkIdResult = false;
+	let checkPassResult = false;		
+	let checkPhoneResult = false;
+	
+	
+	// 이름 정규표현식 제어
+	
+	function nameCheck() {
+		
+		var name = $('#name').val();
+		var span = document.getElementById('checkName');
+		var nameRegex = /^[가-힣]{2,}|[a-zA-Z]{2,}\s[a-zA-Z]{2,}$/;
+		
+		if(nameRegex.exec(name)){		//nameRegex 입력한 값이 맞으면
+			checkNameResult = true;		//결과가 true
+			
+			span.innerHTML = '';		//알림텍스트 사라짐
+		}else {
+			span.innerHTML = '이름이 잘못 되었습니다.';
+			span.style.color = 'RED';
+			checkNameResult = false;
+		}
+	}
+	
+	
+	// 이메일(아이디) 정규표현식 제어
+	function emailCheck(){
+	   
+	   var email = $('#email').val();
+	   var span = document.getElementById('checkEmail');
+	   var emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	   
+	   if(emailRegex.exec(email)){
+	      checkEmailResult = true;
+	      
+	      span.innerHTML = '';
+	      
+	   } else {
+	      span.innerHTML = '이메일 형식이 잘못되었습니다.';
+	      span.style.color = 'RED';
+	      checkEmailResult = false;
+	   }
+	} 
+	
+	
+	// 인증번호 메일 발송
+	function authKeyCheck() {
+
+		const email = $('#email').val(); // 이메일 주소값 얻어오기!
+		console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
+		const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+	
+		
+		$.ajax({
+			type : 'get',
+			url : '${pageContext.request.contextPath }/user/mailCheck?email=' + email,
+			success : function (data) {
+				console.log("data : " +  data);
+				checkInput.attr('disabled',false);
+				code = data;
+				alert('인증번호가 전송되었습니다.')
+			}			
+		}); // end ajax
+	}
+	
+	
+	// 인증번호 비교 (일치/불일치 메세지)
+	function vericodeCheck() {
+		
+		const inputCode = $('#codeCheck').val();
+		const $resultMsg = $('#mail-check-warn');
+		debugger;
+		if(inputCode === code){
+			$resultMsg.html('인증번호가 일치합니다.');
+			$resultMsg.css('color','green');
+			$('#codeCheck').attr('disabled',true);
+// 			$('#join').submit();
+			vericode = true;
+			
+		}else{
+			$resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!');
+			$resultMsg.css('color','red');
+			$('#codeCheck').focus();
+			vericode = false;
+		}
+		
+	}
+	
+	
+	
+	
+	// 비밀번호 정규표현식 제어
+	function passCheck(pass1) {
+		var pass1 = $('#pass1').val();
+		// 패스워드 검사를 위한 정규표현식 패턴 작성 및 검사 결과에 따른 변수값 변경
+		var span = document.getElementById('checkPassResult');
+		
+		// 정규표현식 패턴 정의
+		var lengthRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+	    var engUpperRegex = /[A-Z]/; // 대문자 규칙
+	    var engLowerRegex = /[a-z]/; // 소문자 규칙
+	    var numRegex = /[0-9]/;       // 숫자 규칙
+	    var specRegex = /[!@#$%^&*]/;    // 특수문자 규칙
+	    
+// 	    var count = 0;		// 각 규칙별 검사 결과를 카운팅 할 변수
+
+		if(lengthRegex.exec(pass1)){
+			checkResult = true;
+			
+			span.innerHTML = '사용 가능한 패스워드 입니다.';
+			span.style.color = 'GREEN';
+		
+		}else {
+			checkResult = false;
+			span.innerHTML = '8 ~ 16 자리 영문자, 숫자, 특수문자(@$!%*#?&)는 필수 입력 값입니다.';
+			span.style.color = 'RED';
+		}
+		checkRetypePass();
+	}
+	
+	
+	// 비밀번호 재확인 입력 제어
+	function checkRetypePass() {
+		var span = document.getElementById('checkRetypePassResult');
+		
+		var pass1 = document.getElementById('pass1').value;
+		var pass2 = document.getElementById('pass2').value;
+		
+		if(pass1 == pass2){
+			checkPassResult = true;
+			
+			span.innerHTML = '비밀번호가 일치합니다.';
+			span.style.color = 'GREEN';
+		
+		}else {
+			span.innerHTML = '비밀번호를 다시 확인해 주세요.';
+			span.style.color = 'RED';
+			
+			checkPassResult = false;
+		}
+	}
+	
+	
+	// 휴대폰 번호 입력 제어
+	function phoneCheck() {
+	   var phone = $('#phone').val();	
+		
+	   var phone = document.getElementById('phone').value;
+	   
+	   var phoneElem = document.getElementById('phone');
+	   var phoneRegex = /^(010|011|016|017|018|019)[0-9]{3,4}[0-9]{4}$/;
+	   var span = document.getElementById('checkPhone');
+	   
+	   phoneElem.value = phone.replaceAll('-', '');   
+		
+	   if(phoneRegex.exec(phone)){
+		      checkPhoneResult = true;
+		      
+		      span.innerHTML = '';
+		      
+		      
+		   } else {
+		      span.innerHTML = '휴대전화 형식이 잘못되었습니다.';
+		      span.style.color = 'RED';
+		      checkPhoneResult = false;
+		   } 
+	}
+	
+	
+	
+// =========================================================================
+	
+	// 입력 제어
+	function checkSubmit() {
+		// name 제어
+		if($('#name').val() == ""){
+			alert("이름을 입력하세요.");
+			$('#name').focus();
+			
+			return false;
+		}
+		
+		// email 제어
+		if($('#email').val() == ""){
+			alert("이메일을 입력하세요.");
+			$('#email').focus();
+			
+			return false;
+		}
+		
+		// codeCheck 제어
+		if($('#codeCheck').val() == ""){
+			alert("인증번호를 입력하세요.");
+			$('#codeCheck').focus();
+			
+			return false;
+		}
+
+		// pass 제어
+		if($('#pass1').val() == "") {
+			alert("비밀번호를 입력하세요.");
+			$('#pass1').focus();
+			
+			return false;
+		}
+		
+		// pass2 제어
+		if($('#pass2').val() == "") {
+			alert("비밀번호를 입력하세요.");
+			$('#pass2').focus();
+			
+			return false;
+		}
+		
+		// phone 제어
+		if($('#phone').val() == "") {
+			alert("휴대폰 번호를 입력하세요.");
+			$('#phone').focus();
+			
+			return false;
+		}
+// 	}
+	
+// =========================================================================
+		
+		// null 체크
+		if(!checkNameResult){			// 이름 유효성 체크
+			alert("이름을 다시 입력하세요.");
+			$('#name').focus();
+			return false;
+		}
+		
+		if(!checkEmailResult){				// 이메일 유효성 체크
+			alert('이메일을 다시 입력하세요.');
+			$('#email').focus();
+			return false;
+		}
+		if(!vericode){				// 인증코드 유효성 체크(일치/불일치)
+			alert('인증번호를 다시 확인해주세요.');
+			$('#codeCheck').focus();
+			return false;
+		}
+		
+		
+		if(!checkResult){				// 비밀번호 유효성 체크
+			alert('영문, 숫자, 특수문자를 혼합하여 입력하세요.');
+			$('#pass1').focus();
+			return false;
+		}
+		
+		if(!checkResult){				// 비밀번호 유효성 체크
+			alert('확인용 비밀번호를 입력하세요.');
+			$('#pass2').focus();
+			return false;
+		}
+		
+		if(!checkResult){				// 비밀번호 유효성 체크
+			alert('휴대전화를 다시 입력하세요.');
+			$('#phone').focus();
+			return false;
+		}
+		
+		
+		alert("회원가입이 완료되었습니다.");
+		
+		form.submit();
+		
+	}	
+	
+	
+// 	[체크박스 전체선택, 해제]	
+	$(document).ready(function() {
+		$("#chk_all").click(function() {
+			debugger;
+			
+			if($("#chk_all").is(":checked"))	$("input[name=agreement]").prop("checked", true),$("input[name=eventAlr]").prop("checked", true)	//name이 agreement인 애들 checked 되어있으면 전체선택 true
+			else 								$("input[name=agreement]").prop("checked", false),$("input[name=eventAlr]").prop("checked", false)	//name이 agreement인 애들 checked 안되어있으면 전체선택 false
+		});
+		
+		$("input[name=agreement]").click(function() {		//input name이 agreement인 애들이 클릭되었을 때 이벤트
+			var total = $("input[name=agreement]").length;	//total : name이 agreement인 애들 길이만큼
+			var checked = $("input[name=agreement]:checked").length;	//checked : agreement인 애들 checked 되어있는 길이만큼
+			
+			if(total != checked)	$("#chk_all").prop("checked", false)	//total이랑 checked 같지않으면 전체선택 false
+			else 					$("#chk_all").prop("checked", true)		//total이랑 checked 같지않으면 전체선택 true
+		});
+	});
+	
+	
+	
+//	[이용약관 더보기]
+// 	$(document).ready(function() {
+// 		$("#more").slic(0, 1).show();			// 초기갯수
+// 		$("#load").click(function(e) {			// 클릭 시 more
+// 			e.preventDefault();					// 클릭 시 more 갯수 지정
+// 			$("more:hidden").slice(0, 1).show();// 컨텐츠 남아있는지 확인
+// 			if($("more:hidden").length == 0){	// 컨텐츠 없을 시 alert 창 띄우기
+// 				alert("이용약관 끝입니다.");
+// 			}
+// 		});
+// 	});
+
+	</script>	
+	
+
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+<div id="joinWrap">
+
+	<!--  로고이미지 들어와야됨 -->
+	<div class="harvestLogo"></div>
+	<div id="harvest_logo">
+	<a href="${pageContext.request.contextPath }/user/mainPage">
+	<img src="${pageContext.request.contextPath}/resources/harVest_img/harvest_logo.png" width="200" height="100"></div>
+ 	</a>
+ 	<hr>
+	
+	
+	  
+	<!-- 회원가입 폼 -->
+	<div class="btn-group show">
+	  <section>
+		<div class="col-md-12 text-center">
+             <div class="col-md-12 text-left">
+               <h4 class="mb-4">회원가입</h4>
+              	  <form action="${pageContext.request.contextPath }/user/insertPro" method="post" name="join">
+					 <div class="form-group">
+                         <label for="exampleInputName">이름</label>
+                         <input type="text"  name="name" class="form-control form-control-sm" id="name" placeholder="이름을 입력해주세요" onkeyup="nameCheck()">
+						  <span id="checkName" class="live-validation"></span>
+					</div>
+					 <div class="form-group">
+		                  <label for="exampleInputEmail">이메일 계정</label>
+	                      <div class="input-group">
+							   <input type="email" name="id" class="form-control form-control-sm" id="email" placeholder="이메일 계정을 입력해주세요" onkeyup="emailCheck()">
+							   <button type="button" class="email_auth_btn" id="email_auth_btn" onclick="authKeyCheck()">인증하기</button>
+					  	  </div>
+					  	  		<span id="checkEmail" class="live-validation"></span>
+					  	  		
+						  <div class="mail-check-box">
+					          <input type="number" class="form-control mail-check-input" id="codeCheck" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6" onkeyup="vericodeCheck()">
+					      </div>
+							   <span id="mail-check-warn"></span>
+				     </div>
+				     
+				     
+				     
+				     <div class="input form-group"> <!-- 비밀번호 입력 -->
+                         <label for="exampleInputPass">비밀번호</label>
+                         <input type="password" name="pass" class="form-control form-control-sm" id="pass1" placeholder="비밀번호를 입력해주세요"  onkeyup="passCheck()">
+                         <div class="eyes">
+                         	<!-- 눈 떴을 때 모양 html -->
+				  				<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+				  				<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+			  				</svg>
+			  				<!-- 눈 감았을 때 모양 html -->
+			  				<svg class="fa fa-eye fa-lg" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+	  							<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+	  							<path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+	  							<path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+							</svg>
+					  	</div>
+					  	
+	                </div>
+	                <div class="check_pass">
+	                    <span id="checkPassResult" class="live-validation"></span>
+	<!--                          <div class='valid'>비밀번호를 입력하세요. (영문 소문자, 숫자만 입력 가능)</div> -->
+	                    <input type="password" name="pass2" class="form-control form-control-sm" id="pass2" placeholder="비밀번호를 확인해주세요"  onkeyup="checkRetypePass()">
+	                    <span id="checkRetypePassResult" class="live-validation"></span>
+					</div>
+					
+	                <div class="form-group">
+                         <label for="exampleInputPhone">휴대폰 번호</label>
+                         <input type="text"  name="phone" class="form-control form-control-sm" id="phone" placeholder="휴대폰 번호를 입력해주세요" onkeyup="phoneCheck()">
+                         <span id="checkPhone" class="live-validation"></span>
+	                </div>
+	                <br><br><br>
+
+                    <div class="chkbox_group">
+                    <hr>
+                    <br>
+                   	  <p class="text-center text-muted">이용약관 및 개인정보수집 및 이용 안내<p>	
+<!--                    	  		<a href='/register/step1' class="text-danger" id="load">자세히 보기</a></p> -->
+                   	  		   <textarea rows="20" cols="150" id="more" id="load">
+							   		가. 수집하는 개인정보의 항목첫째, 회사는 회원가입, 원활한 고객상담, 각종 서비스의 제공을 위해 최초 회원가입 당시 아래와 같은 최소한의 개인정보를 필수항목으로 수집하고 있습니다.
+										[일반 회원가입]
+											- 이름, 생년월일, 성별, 아이디, 비밀번호, 별명, 연락처(메일주소, 휴대폰 번호 중 선택), 가입인증정보
+										[만14세 미만 아동 회원가입]
+											- 이름, 생년월일, 성별, 법정대리인 정보, 아이디, 비밀번호, 연락처 (메일주소, 휴대폰 번호 중 선택), 가입인증정보
+										[단체아이디 회원가입]
+											- 단체아이디, 회사명, 대표자명, 대표 전화번호, 대표 이메일 주소, 단체주소, 관리자 아이디, 관리자 연락처, 관리자 부서/직위
+											- 선택항목 : 대표 홈페이지, 대표 팩스번호
+										둘째, 서비스 이용과정이나 사업처리 과정에서 아래와 같은 정보들이 자동으로 생성되어 수집될 수 있습니다.
+											- IP Address, 쿠키, 방문 일시, 서비스 이용 기록, 불량 이용 기록
+										셋째, 네이버 아이디를 이용한 부가 서비스 및 맞춤식 서비스 이용 또는 이벤트 응모 과정에서 해당 서비스의 이용자에 한해서만 개인정보 추가 수집이 발생할 수 있으며,
+											 이러한 경우 별도의 동의를 받습니다.
+										넷째, 성인컨텐츠, 유료/게임 등 일부 서비스 이용시 관련 법률 준수를 위해 본인인증이 필요한 경우, 아래와 같은 정보들이 수집될 수 있습니다.
+											- 이름, 생년월일, 성별, 중복가입확인정보(DI), 암호화된 동일인 식별정보(CI), 휴대폰 번호(선택), 아이핀 번호(아이핀 이용시), 내/외국인 정보
+										다섯째, 유료 서비스 이용 과정에서 아래와 같은 결제 정보들이 수집될 수 있습니다.
+											- 신용카드 결제시 : 카드사명, 카드번호 등
+											- 휴대전화 결제시 : 이동전화번호, 통신사, 결제승인번호 등
+											- 계좌이체시 : 은행명, 계좌번호 등
+											- 상품권 이용시 : 상품권 번호
+										
+										
+									나. 개인정보 수집방법회사는 다음과 같은 방법으로 개인정보를 수집합니다.
+										- 홈페이지, 서면양식, 팩스, 전화, 상담 게시판, 이메일, 이벤트 응모, 배송요청
+										- 협력회사로부터의 제공
+										- 생성정보 수집 툴을 통한 수집
+							   </textarea>
+                  	  <br>
+                   	  <hr>
+                   	  <br>
+                  	  <div><label><input type="checkbox" id="chk_all" value="selectAll">전체동의</label></div>
+                   	  <p>
+	                       <input type="checkbox" class="chk" id="chk1" name="agreement" value="이용약관"> 이용약관 동의(필수)<br>
+                           <input type="checkbox" class="chk" id="chk2" name="agreement" value="개인정보수집"> 개인정보수집 및 이용 동의(필수)<br>
+                           <input type="checkbox" class="chk" id="chk3" name="agreement" value="정보제공동의"> 개인정보 제 3자 제공 동의(선택)<br>
+                           <input type="checkbox" class="chk" id="chk4" name="eventAlr" value="Y"> 이벤트 알람 수신 동의(선택)<br>
+	                  </p>
+	                 </div>
+	                 
+	                 
+	                 <div class="col-md-12 text-center mb-3">
+                         <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" id="join" onclick="checkSubmit(); return false;">가입하기</button>
+	                 </div>
+	                 <hr>
+	               </form>
+	             <!-- 로그인 페이지 이동 버튼 -->
+	             <p class="text-muted">이미 계정이 있으신가요? <a class="text-danger" href="${pageContext.request.contextPath }/user/login">로그인</a></p>
+			</div>
+		  </div>
+	   </section>
+    </div>
+</div>  
+    
+
+
+</body>
+</html>

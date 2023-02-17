@@ -33,7 +33,7 @@ public class HomeController {
 //		
 //		model.addAttribute("serverTime", formattedDate );
 		
-		return "redirect:projectList/main";
+		return "redirect:/user/login";
 //		return "mypage/myPage";
 	}
 	
