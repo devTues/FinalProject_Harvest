@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.UserDTO;
 import com.itwillbs.service.ProjectInfoService;
-import com.itwillbs.service.ProjectService;
 import com.itwillbs.service.UserService;
 import com.itwillbs.service.UserServiceImpl.MailSendService;
 
@@ -34,7 +33,7 @@ public class AjaxController {
 	private MailSendService mailService;
 	
 	@Inject
-	private ProjectService projectService;
+	private ProjectInfoService projectInfoService;
 	@Inject
 	private UserService userService;
 	
@@ -48,7 +47,7 @@ public class AjaxController {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
-		String result = projectService.setLike(param);
+		String result = projectInfoService.setLike(param);
 		System.out.println("아이디" + userId);
 		return result;
 	}
@@ -64,7 +63,7 @@ public class AjaxController {
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
 		param.put("TITLE", title);
-		String result = projectService.setAlram(param);
+		String result = projectInfoService.setAlram(param);
 		String content = "프로젝트펀딩이 시작되었습니다. https://tumblbug.com/";
         String from = "ki6532@naver.com";
 		

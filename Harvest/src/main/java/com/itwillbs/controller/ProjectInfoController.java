@@ -34,7 +34,7 @@ public class ProjectInfoController {
 		return "main/list";
 	}
 	
-	@RequestMapping(value = "/projectInfo/projectInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/projectInfo", method = RequestMethod.GET)
 	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session) {
 		
 		Map<String, String> param = new HashMap<String, String>();

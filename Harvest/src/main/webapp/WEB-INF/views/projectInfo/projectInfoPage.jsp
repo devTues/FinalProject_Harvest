@@ -37,7 +37,7 @@ function like() {
 			confirmButtonText: '로그인',
 		}).then((result) => {
 			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/main/mainList';
+				window.location = '${pageContext.request.contextPath}/user/login';
 			}
 		})
 	}
@@ -113,7 +113,7 @@ function showFunding() {
 			confirmButtonText: '로그인',
 		}).then((result) => {
 			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/main/mainList';
+				window.location = '${pageContext.request.contextPath}/user/login';
 			}
 		})
 	}

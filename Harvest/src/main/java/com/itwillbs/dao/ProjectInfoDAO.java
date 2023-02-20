@@ -11,6 +11,9 @@ public interface ProjectInfoDAO {
 	public String getLike(Map<String, String> param);
 	public int setLike(Map<String, String> param);
 	public int delLike(Map<String, String> param);
-	public int getSumMoney(Map<String, String> param);
-	public int getSumUser(Map<String, String> param);
+	public String getAlram(Map<String, String> param);
+	public int setAlram(Map<String, String> param);
+	public int delAlram(Map<String, String> param);
+//	public int getSumMoney(Map<String, String> param);
+//	public int getSumUser(Map<String, String> param);
 }

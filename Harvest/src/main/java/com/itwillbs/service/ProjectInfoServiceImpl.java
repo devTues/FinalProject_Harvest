@@ -39,21 +39,35 @@ public class ProjectInfoServiceImpl implements ProjectInfoService{
 		}
 		return result;
 	}
+	
+	@Override
+	public String setAlram(Map<String, String> param) {
+		String cnt = projectDAO.getAlram(param);
+		String result = "";
+		if(cnt.equals("0")) {
+			projectDAO.setAlram(param);
+			result = "alram_fill.svg";
+		} else {
+			projectDAO.delAlram(param);
+			result = "alram.svg";
+		}
+		return result;
+	}
 
 //	@Override
 //	public int getSumUser(int idx) {
 //		return projectDAO.getSumUser(idx);
 //	}
 
-	@Override
-	public int getSumMoney(Map<String, String> param) {
-		return projectDAO.getSumMoney(param);
-	}
-
-	@Override
-	public int getSumUser(Map<String, String> param) {
-		return projectDAO.getSumUser(param);
-	}
+//	@Override
+//	public int getSumMoney(Map<String, String> param) {
+//		return projectDAO.getSumMoney(param);
+//	}
+//
+//	@Override
+//	public int getSumUser(Map<String, String> param) {
+//		return projectDAO.getSumUser(param);
+//	}
 	
 	
 }

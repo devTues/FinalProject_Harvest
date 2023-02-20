@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class CreateController {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
-	@RequestMapping(value = "/creator/project", method = RequestMethod.GET)
+	@RequestMapping(value = "/creator/newProject", method = RequestMethod.GET)
 	public String project(Model model) {
 		List<String> categoryNm = createService.getCategoryList();
 		
@@ -37,7 +38,8 @@ public class CreateController {
 	}
 	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
-	public String createPro(HttpSession session, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
+	public String createPro(HttpSession session, ProjectDTO projectDto,
+			HttpServletRequest request ,MultipartHttpServletRequest mtfRequest) throws Exception {
 		System.out.println("createPro");
 		String id = (String)session.getAttribute("id");
 //		String id = "admin";
@@ -47,18 +49,20 @@ public class CreateController {
 		MultipartFile mf = mtfRequest.getFile("profile");
 		List<MultipartFile> fileList = mtfRequest.getFiles("images");
 		
+		String rootPath = request.getSession().getServletContext().getRealPath("/") ;
+		String savePath = rootPath + uploadPath ;
 		// 랜덤문자 생성(랜덤문자_파일이름)
 		UUID uuid = UUID.randomUUID();
 		
 		// 단일 파일 (프로필 이미지 저장)
 		String crePro = uuid.toString() + "_" + mf.getOriginalFilename();
-		mf.transferTo(new File(uploadPath, crePro));
+		mf.transferTo(new File(savePath, crePro));
 		
 		// 다중 파일 (프로젝트 이미지 저장)
 		String img = "";
 		for(MultipartFile file : fileList) {
 			String image = uuid.toString() + "_" + file.getOriginalFilename();
-			file.transferTo(new File(uploadPath, image));
+			file.transferTo(new File(savePath, image));
 			img += uuid.toString() + "_" + file.getOriginalFilename() + "/";
 		}
 		
