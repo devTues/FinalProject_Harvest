@@ -4,12 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mappers.projectMapper">
-
 	<select id="getProjectList" resultType="com.itwillbs.domain.ProjectDTO">
 	SELECT *
 	  FROM PROJECT
 	</select>
-	
 	<select id="getProjectInfo" resultType="com.itwillbs.domain.ProjectDTO">
 	 SELECT IDX, CATEGORY, CRE_NM, TITLE, INTRO, TARGET_AMT, START, END
 	 , case when (SELECT COUNT(*)
@@ -63,7 +61,8 @@
 			 ( IDX
 			 , PJ_IDX
 			 , USER_ID
-			 , TITLE)
+			 , TITLE
+			 , START)
 		     VALUES (
 		     (SELECT NUM
 			    FROM (SELECT IFNULL(MAX(IDX), 0) + 1 AS NUM
@@ -71,6 +70,7 @@
 			 , #{PJ_IDX}
 		     , #{USER_ID}
 		     , #{TITLE}
+		     , #{START}
 		     )
 	</insert>
 	

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace="com.itwillbs.mappers.createMapper">
+	<insert id="insertProject">
+            INSERT INTO PROJECT_TB (
+                       IDX   
+                     , ID          
+                     , CRE_NM      
+                     , CRE_PRO     
+                     , CRE_INTRO   
+                     , CATEGORY    
+                     , TITLE       
+                     , PRODUCT_NM  
+                     , IMG                
+                     , INTRO       
+                     , BUDGET      
+                     , SCHEDULE    
+                     , MIN_DONA    
+                     , TARGET_AMT  
+                     , STAR        
+                     , END         
+                     , STATUS
+                   ) 
+               VALUES ( 
+                     (SELECT IDX
+                        FROM (
+                            SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+                             FROM PROJECT_TB
+                     ) A)
+                  	 , #{id}
+                     , #{creNm}   
+                     , #{crePro}
+                     , #{creIntro}
+                     , #{category}
+                     , #{title}
+                     , #{productNm}
+                     , #{img}
+                     , #{intro}  
+                     , #{budget}  
+                     , #{schedule}
+                     , #{minDona}   
+                     , #{targetAmt}  
+                     , #{start}
+                     , #{end}
+                     , "PJT03"
+                     )
+              ON DUPLICATE KEY
+			  UPDATE CRE_NM 	 = #{creNm}
+				   , CRE_PRO     = #{crePro}
+				   , CRE_INTRO   = #{creIntro}
+				   , CATEGORY    = #{category}
+			       , TITLE       = #{title}
+				   , PRODUCT_NM  = #{productNm}
+				   , IMG         = #{img}       
+				   , INTRO       = #{intro}
+				   , BUDGET      = #{budget} 
+				   , SCHEDULE    = #{schedule}
+				   , MIN_DONA    = #{minDona}   
+				   , TARGET_AMT  = #{targetAmt}  
+				   , STAR        = #{start}
+				   , END         = #{end}
+				   , STATUS		 = "PJT03";	<!-- 나중에 수정 -->
+   </insert>
+	
+	<select id="getCategoryList" resultType="java.lang.String">
+		SELECT CATEGORY_NM
+  		  FROM CATEGORY_TB;
+	</select>
+</mapper>

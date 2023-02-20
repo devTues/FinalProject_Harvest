@@ -18,10 +18,11 @@ public class ProjectListDAOImpl implements ProjectListDAO {
 	private static final String namespace="com.itwillbs.mappers.projectListMapper";
 
 	@Override
-	public List<ProjectDTO> getProjectList(Map<String, String> param) {
+	public List<Map<String, Object>> getProjectList(Map<String, Object> param) {
 		return sqlSession.selectList(namespace + ".getProjectList", param);
 	}
-	
+
+
 	@Override
 	public int getCount(Map<String, String> param) {
 		return sqlSession.selectOne(namespace+".getCount", param);

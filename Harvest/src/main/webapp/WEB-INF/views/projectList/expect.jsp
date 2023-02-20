@@ -47,14 +47,16 @@
 								<input type="hidden" value="${sessionScope.id }">
 								
 								<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
-								<h5 class="card-title mb-2">${projectDTO.title }</h5>
+								<a href="${pageContext.request.contextPath }/projectInfo/projectInfo?idx=${projectDTO.idx }">
+									<h5 class="card-title mb-2">${projectDTO.title }</h5>
+								</a>	
 								<span class="text-muted">${projectDTO.start } 공개예정입니다.</span><br>
 								<span class="text-danger">${projectDTO.count }명 알림신청 중</span>
 								<p>
-								<button class="btn btn-outline-secondary btn-sm mt-2" style="width:100%;">
+								<button id="btn_${projectDTO.idx }" class="alram" style="background-color:transparent; border:1px solid transparent; border-color: #adb5bd; width:100%;">
 									알림신청
 									<c:if test="${empty sesssionScope.id}">
-										<img width="16" height="16" id="alramBtn_${projectDTO.idx }" class="alram" src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.alram}">
+										<img width="16" height="16" id="alramBtn_${projectDTO.idx }" src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.alram}">
 										</c:if>
 								</button>
 								</p>
@@ -86,6 +88,7 @@
 	function alram() {
 		let pjIdx = this.id.split('_')[1];
 		var title = $('#title').val();
+		var start = $('#start').val();
 		if(${empty sessionScope.id}){
 			alert('로그인 후 이용해주세요');
 			return;
@@ -96,7 +99,8 @@
 			  type	: "POST", // http 요청 방식 (default: ‘GET’)
 			   data  : {'PJ_IDX' : pjIdx,
 				       'USER_ID' : '${sessionScope.id}',
-				       'TITLE' : title},
+				       'TITLE' : title,
+				       'START' : start},
 			  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
 			  success : function(data) {
 				  alert('성공');

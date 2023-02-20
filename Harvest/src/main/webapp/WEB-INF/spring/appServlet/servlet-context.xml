@@ -29,4 +29,17 @@
 	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
 	<beans:bean id="naverLoginBO" class="com.itwillbs.naver.NaverLoginBO" />
 	
+	<!-- file Upload -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <beans:property name="maxUploadSize" value="100000000" /> 
+        <!-- max size of file in memory (in bytes) -->
+        <beans:property name="maxInMemorySize" value="100000000" /> 
+    </beans:bean>
+	
+	<!-- 업로드 폴더 경로 지정 src/main/webapp/resources/upload 물리적경로 -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="C:\\Users\\Dev\\Desktop\\Dev\\gitHub\\Final-Project\\FinalProject\\src\\main\\webapp\\resources\\upload"></beans:constructor-arg>
+	</beans:bean>
+	
 </beans:beans>

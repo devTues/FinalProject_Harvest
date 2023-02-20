@@ -22,11 +22,6 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ProjectDTO getProjectInfo(Map<String, String> param) {
-		return projectDAO.getProjectInfo(param);
-	}
-
-	@Override
 	public String setLike(Map<String, String> param) {
 		String cnt = projectDAO.getLike(param);
 		String result = "";

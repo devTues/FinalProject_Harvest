@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+#projWrapper {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	height: 100vh;
+	padding: 50px 50px 50px 95px;
+}
+
+.project_info {
+	overflow-y: scroll;
+}
+
+.project_submit {
+	position: relative;
+}
+.project_submit > div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%);
+}
+div[class^="project_"] {
+	border:1px solid;
+	max-height:600px;
+}

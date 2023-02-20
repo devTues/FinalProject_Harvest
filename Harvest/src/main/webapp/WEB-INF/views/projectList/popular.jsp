@@ -50,19 +50,23 @@
 							<div class="card-header p-0">
 								<!-- 찜버튼 -->
 								<div class="blog-media">
-									<img src="${pageContext.request.contextPath }/resources/assets/imgs/${projectDTO.img1 }" alt="" class="w-100">
+									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${projectDTO.idx }">
+										<img src="${pageContext.request.contextPath }/resources/assets/imgs/${projectDTO.img1 }" alt="" class="w-100">
+									</a>
                                    		<c:if test="${empty sesssionScope.id}">
-										<img style="position:absolute; top:5px;right:5px;z-index:9999;cursor:pointer;" width="20" height="20" id="likeBtn_${projectDTO.idx }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.heart}">
+										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${projectDTO.idx }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.heart}">
 										</c:if>
 								</div>
 							</div>
 							<div class="card-body px-0">
 								<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
 								<input type="hidden" id="pjIdx_${projectDTO.idx }" value="${projectDTO.idx }">
-								<h5 class="card-title mb-2">${projectDTO.title }</h5>
-								<span class="text-danger">${Math.round(totalAmt / projectDTO.targetAmt * 100)}%</span> <small><fmt:formatNumber value="${totalAmt}" pattern="#,###"/>원</small>
+								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${projectDTO.idx }">
+									<h5 class="card-title mb-2">${projectDTO.title }</h5>
+								</a>	
+								<span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span> <small><fmt:formatNumber value="${projectDTO.totalAmt}" pattern="#,###"/>원</small>
 								<div class="progress mt-2 mb-3">
-									<div class="progress-bar bg-danger" role="progressbar" style="width: ${Math.round(totalAmt / projectDTO.targetAmt * 100)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+									<div class="progress-bar bg-danger" role="progressbar" style="width: ${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 										<jsp:useBean id="javaDate" class="java.util.Date" />
 										<fmt:formatDate var="nowDate" value="${javaDate}" pattern="yyyy-MM-dd"/>
 										<fmt:parseNumber value="${javaDate.time / (1000*60*60*24)}" integerOnly="true" var="start"></fmt:parseNumber>

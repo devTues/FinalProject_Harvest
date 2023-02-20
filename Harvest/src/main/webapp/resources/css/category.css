@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.content{
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.flexbox {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 1em;
+}
+
+.item {
+	min-height: 200px;
+	flex-basis: 150px;
+	flex-grow: 1;
+	border: 1px solid rgba(0, 0, 0, 0.07)
+}
+
+p {
+	width: auto;
+    height: 150px;
+    text-align: center;
+}
+.img {
+	width: 100px;
+	height: 100px;
+/* 	margin-left: 40px;  */
+	margin-top: 40px;
+}
+
+.btn {
+	text-align: center;
+}
+
+.regist {
+	margin: auto;
+}

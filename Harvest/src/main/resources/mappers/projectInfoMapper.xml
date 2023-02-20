@@ -4,35 +4,31 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mappers.projectInfoMapper">
-	<select id="getProjectList" resultType="com.itwillbs.domain.ProjectDTO">
-	SELECT *
-	  FROM PROJECT
-	</select>
+<!-- 	<select id="getProjectList" resultType="com.itwillbs.domain.ProjectDTO"> -->
+<!-- 	SELECT * -->
+<!-- 	  FROM PROJECT_TB -->
+<!-- 	</select> -->
 	<select id="getProjectInfo" resultType="com.itwillbs.domain.ProjectDTO">
-	 SELECT IDX
-	 	  , CATEGORY
-	 	  , TITLE
-	 	  , INTRO
-	 	  , START
-	 	  , END
-	 	  , IMG1
-	 	  , IMG2
-	 	  , IMG3
-	 	  , case when (SELECT COUNT(*)
-	 	  				 FROM LIKE_TB
-	 	  				WHERE PJ_IDX = P.IDX
-	 	  				  AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
-		   											 	  ELSE 'heart.svg'
-		   											   	   END AS HEART  
-	  FROM PROJECT P
-	 WHERE IDX = #{IDX}
+	SELECT p.*
+          , case when (SELECT COUNT(*) AS HEARTFILL
+                        FROM LIKE_TB
+                       WHERE PJ_IDX = P.IDX
+                      AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
+                                                 ELSE 'heart.svg' END AS HEART
+          , COUNT(PAY.ID) AS sumUser
+          , SUM(PAY.AMOUNT) AS sumMoney
+          FROM PROJECT_TB P
+          JOIN PAYMENT_TB PAY
+          ON P.IDX = PAY.pj_IDX
+        WHERE P.IDX = #{IDX};
 	</select>
 	
+	<!-- 프로젝트에 대한 총 좋아요 수 -->
 	<select id="getLike" resultType="HashMap" parameterType="HashMap">
 		SELECT COUNT(*)  AS CNT
 	      FROM LIKE_TB
 	     WHERE PJ_IDX = #{PJ_IDX}
-	       AND USER_ID = #{USER_ID}
+<!-- 	       AND USER_ID = #{USER_ID} -->
 	</select>
 	
 	<insert id="insertLike" parameterType="HashMap">
@@ -55,15 +51,15 @@
 	       AND USER_ID = #{USER_ID}
 	</delete>
 	
-	<select id="getSumMoney" resultType="java.lang.Integer">
-		SELECT SUM(AMOUNT) AS sumMoney
-	  	  FROM PAYMENT_TB
-	  	 WHERE PJ_IDX = #{IDX}
-	</select>
+<!-- 	<select id="getSumMoney" resultType="java.lang.Integer"> -->
+<!-- 		SELECT SUM(AMOUNT) AS sumMoney -->
+<!-- 	  	  FROM PAYMENT_TB -->
+<!-- 	  	 WHERE PJ_IDX = #{IDX} -->
+<!-- 	</select> -->
 	
-	<select id="getSumUser" resultType="java.lang.Integer">
-		SELECT COUNT(ID) AS sumUser
-		  FROM PAYMENT_TB
-		 where PJ_IDX = #{IDX};
-	</select>
+<!-- 	<select id="getSumUser" resultType="java.lang.Integer"> -->
+<!-- 		SELECT COUNT(ID) AS sumUser -->
+<!-- 		  FROM PAYMENT_TB -->
+<!-- 		 where PJ_IDX = #{IDX}; -->
+<!-- 	</select> -->
 </mapper>

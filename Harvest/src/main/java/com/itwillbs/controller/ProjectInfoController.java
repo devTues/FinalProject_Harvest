@@ -34,7 +34,7 @@ public class ProjectInfoController {
 		return "main/list";
 	}
 	
-	@RequestMapping(value = "/project/projectInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/projectInfo/projectInfo", method = RequestMethod.GET)
 	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session) {
 		
 		Map<String, String> param = new HashMap<String, String>();
@@ -43,11 +43,11 @@ public class ProjectInfoController {
 			param.put("SESSIONID", sessionId);
 		}
 		param.put("IDX", idx + "");
-		Integer sumMoney = projectService.getSumMoney(param);
-		Integer sumUser = projectService.getSumUser(param);
+//		Integer sumMoney = projectService.getSumMoney(param);
+//		Integer sumUser = projectService.getSumUser(param);
 		ProjectDTO projectDTO = projectService.getProjectInfo(param);
-		projectDTO.setSumMoney(sumMoney);
-		projectDTO.setSumUser(sumUser);
+//		projectDTO.setSumMoney(sumMoney);
+//		projectDTO.setSumUser(sumUser);
 		model.addAttribute("projectDTO", projectDTO);
 		return "projectInfo/projectInfoPage";
 	}

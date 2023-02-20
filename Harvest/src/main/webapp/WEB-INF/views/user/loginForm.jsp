@@ -88,7 +88,7 @@ div.position {
 	<!--  로고이미지 들어와야됨 -->
 	<div class="harvestLogo"></div>
 	<div id="harvest_logo">
-	<a href="${pageContext.request.contextPath }/user/mainPage">
+	<a href="${pageContext.request.contextPath }/projectList/main">
 	<img src="${pageContext.request.contextPath}/resources/harVest_img/harvest_logo.png" width="200" height="100">
 	</div>
 	</a>

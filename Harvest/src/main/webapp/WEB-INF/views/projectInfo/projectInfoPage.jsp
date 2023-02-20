@@ -196,13 +196,13 @@ function userPayment() {
 				  </div>
 				  <div class="carousel-inner">
 				    <div class="carousel-item active">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img1}" class="d-block w-100" alt="...">
+				      <img src="${pageContext.request.contextPath}/resources/upload/${projectDTO.img1}" class="d-block w-100" alt="...">
 				    </div>
 				    <div class="carousel-item">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img2}" class="d-block w-100" alt="...">
+				      <img src="${pageContext.request.contextPath}/resources/upload/${projectDTO.img2}" class="d-block w-100" alt="...">
 				    </div>
 				    <div class="carousel-item">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img3}" class="d-block w-100" alt="...">
+				      <img src="${pageContext.request.contextPath}/resources/upload/${projectDTO.img3}" class="d-block w-100" alt="...">
 				    </div>
 				  </div>
 				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

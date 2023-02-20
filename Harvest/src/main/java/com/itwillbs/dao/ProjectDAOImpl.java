@@ -23,10 +23,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return projectList;
 	}
 
-	@Override
-	public ProjectDTO getProjectInfo(Map<String, String> param) {
-		return sqlSession.selectOne(namespace + ".getProjectInfo", param);
-	}
 
 	@Override
 	public String getLike(Map<String, String> param) {

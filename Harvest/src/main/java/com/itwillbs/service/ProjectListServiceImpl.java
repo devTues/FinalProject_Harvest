@@ -17,9 +17,10 @@ public class ProjectListServiceImpl implements ProjectListService{
 	private ProjectListDAO projectListDAO;
 	
 	@Override
-	public List<ProjectDTO> getProjectList(Map<String, String> param) {
+	public List<Map<String, Object>> getProjectList(Map<String, Object> param) {
 		return projectListDAO.getProjectList(param);
 	}
+	
 	@Override
 	public int getCount(Map<String, String> param) {
 		return projectListDAO.getCount(param);

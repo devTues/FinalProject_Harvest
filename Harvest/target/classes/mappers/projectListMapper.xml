@@ -6,12 +6,15 @@
 <!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
 <mapper namespace="com.itwillbs.mappers.projectListMapper">
 
-	<select id="getProjectList" parameterType="map" resultType="com.itwillbs.domain.ProjectDTO">
+	<select id="getProjectList" parameterType="map" resultType="java.util.Map">
 		SELECT IDX
 			 , CATEGORY
 			 , CRE_NM
 			 , TITLE
 			 , TARGET_AMT
+             , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+				  		 FROM PAYMENT_TB 
+                        WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS PERCENT
 			 , START
 			 , END
 			 , IMG1
@@ -27,7 +30,7 @@
 		 <if test='! GB.equals("") and GB != null'>
 		 	  <if test='GB.equals("POP")'>
 		 	  AND END > CURDATE()
-		 	  ORDER BY CAST(#{TOTAL_AMT} AS UNSIGNED)/ target_amt * 100 DESC
+		 	  ORDER BY PERCENT DESC
 			  </if>
 			  <if test='GB.equals("NEW")'>  
 		   	  AND START > DATE_SUB(CURDATE(),INTERVAL 7 day) and END > CURDATE()
@@ -102,5 +105,12 @@
 		 </if>
 	</select>
 	
+		<!-- 프로젝트에 대한 총 좋아요 수 -->
+	<select id="getLikeList" resultType="HashMap" parameterType="HashMap">
+		SELECT COUNT(*)  AS CNT
+	      FROM LIKE_TB
+	     WHERE PJ_IDX = #{PJ_IDX}
+<!-- 	       AND USER_ID = #{USER_ID} -->
+	</select>
 	
 </mapper>  
