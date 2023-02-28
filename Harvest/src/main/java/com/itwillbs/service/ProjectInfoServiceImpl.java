@@ -53,21 +53,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService{
 		}
 		return result;
 	}
+	
+	@Override
+	public List<ProjectDTO> getAlram2List(ProjectDTO projectDTO) {
+		return projectDAO.getAlram2List(projectDTO);
+	}
 
-//	@Override
-//	public int getSumUser(int idx) {
-//		return projectDAO.getSumUser(idx);
-//	}
-
-//	@Override
-//	public int getSumMoney(Map<String, String> param) {
-//		return projectDAO.getSumMoney(param);
-//	}
-//
-//	@Override
-//	public int getSumUser(Map<String, String> param) {
-//		return projectDAO.getSumUser(param);
-//	}
 	
 	
 }

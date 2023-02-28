@@ -7,8 +7,8 @@
 	<!-- DB연결 객체 생성 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://localhost:3306/harvest?serverTimezone=Asia/Seoul"></property>
-		<property name="username" value="root"></property>
+		<property name="url" value="jdbc:mysql://db.itwillbs.dev:3306/class2_220922_team3_2?serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="class2_220922_team3"></property>
 		<property name="password" value="1234"></property>
 	</bean>
 	
@@ -31,8 +31,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
 	 <property name="host" value="smtp.naver.com"/> <!-- 메이서버 호스트 -->
 	 <property name="port" value="465"/> <!-- 메이서버 포트번호 -->
-	 <property name="username" value="ki6532"/> <!-- 자신의 이메일 아이디 -->
-	 <property name="password" value="kjh2067"/> <!-- 자신의 비밀번호 -->
+	 	<!-- 자신의 이메일 아이디 -->
+	 	<!-- 자신의 비밀번호 -->
 	   <!-- 보안연결 SSL과 관련된 설정 -->
 	 <property name="javaMailProperties">
 	  <props>
@@ -47,22 +47,20 @@
 	 </property>
 	</bean>	
 	<!-- 나경: 이메일 인증 관련 빈 등록 -->
-	<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-	   <property name="host" value="smtp.gmail.com" />
-	   <property name="port" value="587" />
-	   <property name="username" value="omama69@gmail.com" />
-	   <property name="password" value="xzybbnnbconwxdjf" />
-	   <property name="javaMailProperties">
-	      <props>
-	             <prop key="mail.transport.protocol">smtp</prop>
-	             <prop key="mail.smtp.auth">true</prop>
-	             <!-- gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
-	             <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
-	             <prop key="mail.smtp.starttls.enable">true</prop>
-	             <prop key="mail.debug">true</prop>
-	             <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
-		<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
-	         </props>
-	   </property>
-	</bean>
+<!-- 	<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
+<!-- 	   <property name="host" value="smtp.gmail.com" /> -->
+<!-- 	   <property name="port" value="587" /> -->
+<!-- 	   <property name="javaMailProperties"> -->
+<!-- 	      <props> -->
+<!--             <prop key="mail.transport.protocol">smtp</prop> -->
+<!--             <prop key="mail.smtp.auth">true</prop> -->
+<!--             gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
+<!--             <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> -->
+<!--             <prop key="mail.smtp.starttls.enable">true</prop> -->
+<!--             <prop key="mail.debug">true</prop> -->
+<!--             <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> -->
+<!-- 			<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop> -->
+<!--          </props> -->
+<!-- 	   </property> -->
+<!-- 	</bean> -->
 </beans>

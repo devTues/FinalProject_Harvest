@@ -18,7 +18,7 @@ public class ProjectListDAOImpl implements ProjectListDAO {
 	private static final String namespace="com.itwillbs.mappers.projectListMapper";
 
 	@Override
-	public List<Map<String, Object>> getProjectList(Map<String, Object> param) {
+	public List<Map<String, String>> getProjectList(Map<String, String> param) {
 		return sqlSession.selectList(namespace + ".getProjectList", param);
 	}
 
@@ -30,7 +30,7 @@ public class ProjectListDAOImpl implements ProjectListDAO {
 	
 
 	@Override
-	public List<ProjectDTO> getExpectList(Map<String, String> param) {
+	public List<Map<String, String>> getExpectList(Map<String, String> param) {
 		return sqlSession.selectList(namespace+".getExpectList", param);
 	}
 

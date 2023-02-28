@@ -16,17 +16,35 @@ public class CreateServiceImpl implements CreateService {
 	@Inject
 	private CreateDAO createDAO;
 
-//	@Override
-//	public void insertProject(Map<String, String> projectMap) {
-//		projectDAO.insertProject(projectMap);
-//	}
-	
+	@Override
+	public List<Map<String, String>> getProjectList(String id) {
+		return createDAO.getProjectList(id);
+	}
+
+	@Override
+	public Map<String, String> getProject(int idx) {
+		return createDAO.getProject(idx);
+	}
 
 	@Override
 	public void insertProject(ProjectDTO projectDto) {
 		createDAO.insertProject(projectDto);
 	}
 	
+//	@Override
+	public void insertPlan(ProjectDTO projectDto) {
+//		if(projectDto.getIdx() == 0) {
+//			projectDto.setIdx(createDAO.getMax() + 1);
+//		}
+//		createDAO.insertProject(projectDto);
+	}
+
+	@Override
+	public void insertFunding(ProjectDTO projectDto) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public List<String> getCategoryList() {
 		return createDAO.getCategoryList();

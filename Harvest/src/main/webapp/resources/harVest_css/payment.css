@@ -1,33 +1,354 @@
 @charset "UTF-8";
 html, body {padding:0; margin:0;}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-style: normal;
+}
+* {font-family: 'Pretendard-Regular';}
+
+*[onclick^="location"] {
+	cursor:pointer;
+}
+
 /* 결제 전체 영역 */
+#paymentWrapper {
+	margin-bottom: 500px;
+}
+.payment_top {
+	position: relative;
+	display: flex;
+    min-height: 58px;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 26px;
+	box-shadow: 0 3px 3px rgba(0,0,0,.1);
+}
+.payment_top span {
+	padding-left:30px;
+	font-size:14px;
+	font-weight: 900;
+}
+
+/* 결제 탑 제외 전체 영역 */
 .payment_container {
-	display: grid;
-	grid-template-columns: 70% 30%;
+	display: flex;
 	height: 100vh;
+	flex-direction: column;
+	margin: 0 50px;
+    padding: 24px;
+}
+/* 정보 전체 */
+.payment_cont {
+	position: relative;
+	width: 100%;
+	margin: 0 auto;
+}
+.payment_info div[class^="info"] > .payinfo_cont {
+	border-radius: 4px;
+	border: 1px solid #e2ddd6;
+	padding: 16px;
+	position:relative;
+}
+/* 카테고리 */
+.category {
+	color: #a4bb73;
+}
+/* 후원금 변경 버튼 */
+.pay_change {
+	color: #dcc8a9;
+}
+.pay_change:hover {
+	color: white;
+	background:#daddca;
+	border:1px solid #daddca;
+}
+/* 후원금 값 변경*/
+.pay_change {
+	position: absolute;
+	top: 50%;
+	right:30px;
+	transform: translateY(-50%);
+	border: 1px solid #e2ddd6;
+	cursor: pointer;
+	padding: 5px 10px;
+	border-radius: 15px;
+}
+/* 후원금 모달창 배경 */
+.modal_bg {
+	position: fixed;
+	top:0;
+	left:0;
+	z-index:9;
+	width:100%;
+	height:100%;
+	background: rgba(0,0,0,.4);
+	display: none;
+}
+/* 후원금 모달창 내용 */
+.modal_pay {
+	position: absolute;
+	top: 50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	width: 300px;
+	height:200px;
+}
+/* 후원금 모달창 탑 */
+.modal_x {
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background: #daddca;
+	color: white;
+	font-weight: 900;
+}
+.modal_x svg {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+}
+.modal_pay form {
+	position: relative;
+	margin-top: 50px;
+	height:calc(100% - 50px);
+	text-align: center;
+	display: grid;
+	align-items: center;
+}
+/* 모달창 변경하기 버튼 */
+#payBtn {
+	padding: 10px 15px;
+	border-radius: 20px;
+	background: #daddca;
+	color: white;
+	border: none;
+	margin-top:20px;
+	font-weight: 900;
+	cursor: pointer;
+}
+#payBtn:hover {
+	background: #daddca;
+}
+/* 인풋 텍스트박스 */
+form input[type="text"] {
+	border:none;
+	border-bottom: 2px solid #c8cbb6;
+	text-align: right;
+	padding-right:10px;
+	color:#c8cbb6;
+}
+form input[type="text"]:focus {outline: none;}
+#payBtn:hover {
+	background: #c8cbb6;
+}
+form input::placeholder {
+	color: #daddca !important;
+	text-align: center;
+}
+/* 정보 간략 */
+.proj_info {
+	display: flex;
+	padding: 32px 0 36px;
+/* 	border: 1px solid; */
+}
+.proj_info > div:first-of-type {
+	display: flex;
+	margin-right: 15px;
 }
 
-/* 이후에 지울거 */
-.payment_container > div, .payment_container > div > div{
-	border: 1px solid;
+/* 결제정보 전체 박스*/
+.payment_info {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.payment_info > div:first-of-type {
+	width: 100%;
 }
 
+/* 결제정보 타이틀 */
+.payinfo_title {
+	font-weight: 900;
+}
+/* 결제정보 내용 */
+.payinfo_cont * {
+	font-size: 14px;
+}
+.payinfo_cont td {
+	padding: 10px 14px;
+}
+.payinfo_cont input[type="radio"] {
+	 appearance: none;
+	 width:12px;
+	 height: 12px;
+	 border-radius: 15px;
+	 border: 2px solid #e4527f;
+}
+.payinfo_cont input:checked {
+	width:12px;
+	height:12px;
+	background: url("../../resources/harVest_img/radio.svg") no-repeat center / 6px, #fdf4f3;
+}
+/* 배송지 정보 */
+.info_deliver table p {
+	margin-bottom: 5px;
+}
+.info_deliver input[type="text"] {
+	border: none;
+	background:#e2ddd6;
+	padding: 5px;
+	outline: none;
+}
+.info_deliver input[type="text"]::placeholder {
+	color: #fffbf5;
+}
+.address_tb, .address_tr {
+	width: 100%;
+}
+.postBtn {
+	background: #daddca;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #9ba587;
+    cursor: pointer;
+	
+}
+input[name^="address_"] {
+	width: 50%;
+}
+.address_tr button, input[name="address_b"]{
+	margin-left: 10px; 
+}
 /* 최종결제 영역 */
 .payment_res {
 	position: relative;
+/* 	width:100%; */
 }
-.payment_res > div {
-	position: sticky;
-	top: 50%;
-	left:0;
-	transform: translateY(-50%);
-	width: 100%;
+.payinfo_cont {
+	width: calc(100% - 60px);
 	height: auto;
 }
-
+.pay_notice {
+	width: calc(100% - 30px);
+	font-size:12px;
+}
+/* 최종결제 금액 */
+.total_money {
+	font-weight: 900;
+}
+/* 결제 유의사항 */
+.pay_agree, .pay_offi, .allcheck_box {
+	display: flex;
+    min-height: 29px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+	
+}
+.pay_agree > label, .pay_offi > label, .allcheck_box > label {
+	cursor: pointer;
+    position: relative;
+/*     overflow: hidden; */
+    padding: 0px 0px 0px 30px;
+    color: rgb(61, 61, 61);
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.agree_check, .offi_check, .all_check {
+	position: absolute;
+    z-index: 3;
+    left: 0px;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+    border: 1.5px solid #e2ddd6;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.pay_checkbox input[type="checkbox"]:checked + label > span:first-child {
+	background: url("../../resources/harVest_img/check.svg") no-repeat center / 120%;
+	border:1.5px solid #e4527f;
+}
+.pay_notice div[class$="_cont"] {
+	border: 1px solid #e2ddd6;
+	padding: 5px 7px;
+	border-radius: 15px;
+	font-size:10px;
+	color: #e2ddd6;
+	font-weight:600;
+	cursor: pointer;
+}
+/* 후원하기 버튼 */
+.total_btn {
+	background: #e4527f;
+	padding: 15px 0;
+	text-align: center;
+	color: white;
+	font-weight:900;
+	font-size:20px;
+	margin-top:20px;
+}
+.total_btn:hover {
+	background: #d9376b;
+}
+/* 내용보기 안 보이게 */
+div[class$="_article"] {
+	display: none;
+}
+/* 포인트컬러 */
+.point {
+	color: #e4527f;
+}
+.payinfo_title {
+	color: #c3a371;
+}
+@media only screen and (min-width: 1080px) {
+	.payment_container {
+	    padding: 24px;
+	    flex-direction: row;
+	}
+	.payment_info {
+		flex-direction: row;
+	}
+	.payment_info > div:first-child {
+		width: 672px;
+	}
+	.payment_info > div:last_child{
+		width: 100%;
+	}
+	.payment_res {
+		width:100%;
+		margin-left: 30px;
+	}
+	.payment_box {
+		width: 40%;
+	}
+}
 @media all and (max-width:480px){
+	#paymentWrapper {
+	margin-bottom: 600px;
+}
 	.payment_container {
 		display: block;
+	}
+	.payment_box {
+		width: 100%;
+		
 	}
 	.payment_res > div {
 		position: relative;

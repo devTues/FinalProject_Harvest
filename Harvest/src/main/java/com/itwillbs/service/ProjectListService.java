@@ -8,10 +8,10 @@ import com.itwillbs.domain.ProjectDTO;
 
 public interface ProjectListService {
 	
-	public List<Map<String, Object>> getProjectList(Map<String, Object> param);	
+	public List<Map<String, String>> getProjectList(Map<String, String> param);	
 	public int getCount(Map<String, String> param);
 	
-	public List<ProjectDTO> getExpectList(Map<String, String> param);
+	public List<Map<String, String>> getExpectList(Map<String, String> param);
 	
 
 	

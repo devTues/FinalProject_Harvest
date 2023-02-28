@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace="com.itwillbs.mappers.productUpdateMapper">
+		
+		<insert id="insertBoard">
+			INSERT INTO UPDATE_BOARD( IDX
+									, PJ_IDX
+									, ID
+									, CONTENT
+									, DATE
+									)
+							  VALUES( #{idx}
+								    , #{pjIdx}
+								    , #{id}
+								    , #{content}
+								    , #{date} )
+		</insert> 
+
+		<select id="getMaxNum" resultType="java.lang.Integer"> 
+			SELECT COUNT(IDX) 
+			  FROM UPDATE_BOARD
+		</select>
+	
+		<select id="getUpdateList" resultType="com.itwillbs.domain.ProductUpdateDTO">
+			SELECT U.IDX
+				,  P.ID
+				,  P.CRE_NM
+				,  P.CRE_PRO
+				,  U.CONTENT
+				,  U.DATE
+			  FROM PROJECT_TB P
+			  JOIN UPDATE_BOARD U
+			    ON P.IDX = U.PJ_IDX
+			 WHERE P.IDX = #{idx}
+			 ORDER BY DATE DESC
+		</select>
+		
+		  <update id="updateBoard">
+		  	UPDATE UPDATE_BOARD 
+		  	   SET CONTENT = #{content}
+		  	 WHERE IDX = #{idx}
+		  </update>
+		  
+		  <delete id="deleteUpdate">
+		  	DELETE FROM UPDATE_BOARD
+		  	 WHERE IDX = #{idx}
+		  </delete>
+</mapper>

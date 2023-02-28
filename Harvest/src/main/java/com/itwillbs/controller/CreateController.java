@@ -2,6 +2,7 @@ package com.itwillbs.controller;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -18,81 +19,104 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.domain.ProjectDTO;
 import com.itwillbs.service.CreateService;
+import com.itwillbs.utill.UploadFile;
 
 @Controller
 public class CreateController {
-	
+	private Map<String, String> projectMap;
 	@Inject
 	private CreateService createService;
-	
-	@Resource(name = "uploadPath")
-	private String uploadPath;
-	
-	@RequestMapping(value = "/creator/newProject", method = RequestMethod.GET)
-	public String project(Model model) {
+
+//	@Resource(name = "uploadPath1")
+//	private String uploadPath1;
+
+	@RequestMapping(value = "/creator/start", method = RequestMethod.GET)
+	public String start(Model model, HttpSession session) {
+		String id = (String) session.getAttribute("id");
+		List<Map<String, String>> projectList = createService.getProjectList(id);
+
+		model.addAttribute("projectList", projectList);
+
+		return "creator/start";
+	}
+
+	@RequestMapping(value = "/creator/project", method = RequestMethod.GET)
+	public String project(Model model, HttpServletRequest request) {
+		String idx = request.getParameter("idx");
+		if(!idx.equals("0")) {
+			System.out.println("0아니니까 실행");
+			projectMap = createService.getProject(Integer.parseInt(idx));
+			model.addAttribute("projectMap", projectMap);
+		}
+//		System.out.println(projectMap.toString());
+		// 카테고리 가져오기
 		List<String> categoryNm = createService.getCategoryList();
-		
+
 		model.addAttribute("categoryNm", categoryNm);
-		
-		return "creator/projectUpload";
+
+		return "creator/allUpload";
 	}
 	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
-	public String createPro(HttpSession session, ProjectDTO projectDto,
-			HttpServletRequest request ,MultipartHttpServletRequest mtfRequest) throws Exception {
-		System.out.println("createPro");
-		String id = (String)session.getAttribute("id");
-//		String id = "admin";
-		projectDto.setId(id);
-		System.out.println(projectDto);
+//	@RequestMapping(value = "/creator/projectPro", method = RequestMethod.POST)
+	public String createPro(HttpServletRequest request, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
+//		String root = request.getSession().getServletContext().getRealPath("/");
+//		String uploadPath = root + File.separator + "resources" + File.separator + "upload" + File.separator;
+		String uploadPath = "C:\\Users\\Dev\\Desktop\\Dev\\gitHub\\Final-Project\\FinalProject\\src\\main\\webapp\\resources\\upload";
+
 		
-		MultipartFile mf = mtfRequest.getFile("profile");
-		List<MultipartFile> fileList = mtfRequest.getFiles("images");
-		
-		String rootPath = request.getSession().getServletContext().getRealPath("/") ;
-		String savePath = rootPath + uploadPath ;
-		// 랜덤문자 생성(랜덤문자_파일이름)
-		UUID uuid = UUID.randomUUID();
-		
-		// 단일 파일 (프로필 이미지 저장)
-		String crePro = uuid.toString() + "_" + mf.getOriginalFilename();
-		mf.transferTo(new File(savePath, crePro));
-		
-		// 다중 파일 (프로젝트 이미지 저장)
-		String img = "";
-		for(MultipartFile file : fileList) {
-			String image = uuid.toString() + "_" + file.getOriginalFilename();
-			file.transferTo(new File(savePath, image));
-			img += uuid.toString() + "_" + file.getOriginalFilename() + "/";
+		if(!mtfRequest.getFile("profile").isEmpty()) {
+			// 프로필 이미지 (사진 1개)
+			projectDto.setCrePro(UploadFile.fileUpload(uploadPath, mtfRequest.getFile("profile")));
 		}
 		
-//		String[] imgs = saveImg.split("/");
-//		 Map<String, String> imgMap = new HashMap<String, String>();
-//		 imgMap.put(crePro, saveImg);
+		if(!mtfRequest.getFile("images").isEmpty()) {
+			String multiImg = "";
+			// 프로젝트 이미지 (사진 최대 3개) => List<MultipartFile>
+			for(MultipartFile file : mtfRequest.getFiles("images")) {
+				multiImg += UploadFile.fileUpload(uploadPath, file) + "&";
+			}
+			projectDto.setImg1(multiImg);
+		}
 		
-		projectDto.setCrePro(crePro);	// 프로필 이미지
-		
-		// 프로젝트 이미지들
-//		projectDto.setImg(img);
-//		projectDto.setImg1(imgs[0]);
-//		projectDto.setImg2(imgs[1]);
-//		projectDto.setImg3(imgs[2]);
-		
-		System.out.println("프로필 사진 " + crePro + "\n프로젝트 사진 " + img);
-
 		createService.insertProject(projectDto);
 		return "redirect:/mainpage/main";
 	}
 
 	@RequestMapping(value = "/creator/plan", method = RequestMethod.GET)
-	public String plan() {
+	public String plan(Model model, HttpServletRequest request) {
+		String idx = request.getParameter("idx");
+		
+		if(!idx.equals("0")) {
+			projectMap = createService.getProject(Integer.parseInt(idx));
+			model.addAttribute("projectMap", projectMap);
+		}
 		
 		return "creator/planUpload";
 	}
 	
+	@RequestMapping(value = "/creator/planPro", method = RequestMethod.POST)
+	public String planPro(ProjectDTO projectDto) throws Exception {
+		createService.insertPlan(projectDto);
+		return "redirect:/mainpage/main";
+	}
+
 	@RequestMapping(value = "/creator/funding", method = RequestMethod.GET)
-	public String funding() {
+	public String funding(Model model, HttpServletRequest request) {
+		String idx = request.getParameter("idx");
+		
+		if(!idx.equals("0")) {
+			projectMap = createService.getProject(Integer.parseInt(idx));
+			model.addAttribute("projectMap", projectMap);
+		}
 		
 		return "creator/fundingUpload";
 	}
+
+	@RequestMapping(value = "/creator/fundingPro", method = RequestMethod.POST)
+	public String fundingPro(ProjectDTO projectDto) throws Exception {
+		createService.insertFunding(projectDto);
+		return "redirect:/mainpage/main";
+	}
+
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace="com.itwillbs.mappers.communityMapper">
+
+	<select id="getComm1List" resultType = "com.itwillbs.domain.CommunityDTO">
+			SELECT C.IDX
+				 , C.ID
+			     , UR.NAME
+			   	 , UR.PROFILE
+			     , C.CONTENT_LABEL
+			     , C.CONTENT
+			     , C.DATE
+			  FROM COMMUNITY_BOARD C
+			  JOIN USER_TB UR
+			    ON UR.ID = C.ID
+			 WHERE CONTENT_LABEL = #{contentLabel}
+			   AND PJ_IDX = #{pjIdx}
+			ORDER BY DATE DESC
+	</select>
+	
+	
+	<insert id="insertBoard">
+				INSERT INTO COMMUNITY_BOARD ( COMM_IDX
+										    , IDX
+											, ID
+											, CONTENT
+											, IMGA
+											, IMGB
+											, IMGC
+											, DATE
+											, CONTENTLABEL)
+									 VALUES ( #{commIdx}
+											, #{idx}
+											, #{id}
+											, #{content}
+											, #{imgA}
+											, #{imgB}
+											, #{imgC}
+											, #{date}
+											, #{contentLabel} )
+	</insert>
+	
+		<select id="getMaxNum1" resultType="java.lang.Integer"> 
+				SELECT COUNT(IDX) 
+				  FROM COMMUNITY_BOARD
+				 WHERE PJ_IDX = #{pjIdx}
+		</select>	
+</mapper>

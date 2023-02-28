@@ -6,7 +6,12 @@ import java.util.Map;
 import com.itwillbs.domain.ProjectDTO;
 
 public interface CreateDAO {
-//	public void insertProject(Map<String, String> projectMap);
+	public List<Map<String, String>> getProjectList(String id);
+	public Map<String, String> getProject(int idx);
+	public int getMax();
 	public void insertProject(ProjectDTO projectDto);
+	public void insertPlan(ProjectDTO projectDto);
+	public void insertFunding(ProjectDTO projectDto);
 	public List<String> getCategoryList();
+
 }

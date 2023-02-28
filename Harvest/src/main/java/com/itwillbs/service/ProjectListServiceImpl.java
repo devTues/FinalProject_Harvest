@@ -17,7 +17,7 @@ public class ProjectListServiceImpl implements ProjectListService{
 	private ProjectListDAO projectListDAO;
 	
 	@Override
-	public List<Map<String, Object>> getProjectList(Map<String, Object> param) {
+	public List<Map<String, String>> getProjectList(Map<String, String> param) {
 		return projectListDAO.getProjectList(param);
 	}
 	
@@ -27,7 +27,7 @@ public class ProjectListServiceImpl implements ProjectListService{
 	}
 
 	@Override
-	public List<ProjectDTO> getExpectList(Map<String, String> param) {
+	public List<Map<String, String>> getExpectList(Map<String, String> param) {
 		return projectListDAO.getExpectList(param);
 	}
 	

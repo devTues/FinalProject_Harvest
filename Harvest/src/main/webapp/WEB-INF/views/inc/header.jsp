@@ -12,7 +12,7 @@
                 <a href="${pageContext.request.contextPath }/user/login">로그인</a>
             </c:if>
             <c:if test="${! empty sessionScope.id}">
-           		<a href="${pageContext.request.contextPath }/creator/newProject">프로젝트 올리기</a>
+           		<a href="${pageContext.request.contextPath }/creator/start">프로젝트 올리기</a>
                 <a href="${pageContext.request.contextPath }/user/logout">로그아웃</a>
                 <img src="${pageContext.request.contextPath }/resources/assets/imgs/avatar-1.jpg" class="thumb-sm img-thumbnail rounded-circle" alt="...">
             </c:if>

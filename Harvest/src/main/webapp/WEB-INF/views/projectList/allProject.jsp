@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,41 +45,41 @@
 			<div class="page-content">
 				<!-- 주목할 만한 프로젝트 4줄 정렬-->
 				<div class="row">
-				<c:forEach var="projectDTO" items="${getAllList }">
+				<c:forEach var="getAllList" items="${getAllList }">
 					<div class="col-md-3 col-sm-6">
 						<div class="card text-left">
 							<div class="card-header p-0">
 								<!-- 찜버튼 -->
 								<div class="blog-media">
-									<a href="${pageContext.request.contextPath }/projectInfo/projectInfo?idx=${projectDTO.idx }">
-										<img src="${pageContext.request.contextPath }/resources/assets/imgs/${projectDTO.img1 }" alt="" class="w-100">
+									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')}" alt="" class="w-100">
 									</a>
 <!-- 									<label class="like_btn badge"> -->
                                    		<c:if test="${empty sesssionScope.id}">
-										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${projectDTO.idx }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.heart}">
+										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getAllList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getAllList.HEART}">
 										</c:if>
 <!--                                    	</label>	 -->
 								</div>
 							</div>
 							<div class="card-body px-0">
-								<p class="my-2">${projectDTO.category } | ${projectDTO.creNm }</p>
-								<input type="hidden" id="pjIdx_${projectDTO.idx }" value="${projectDTO.idx }">
-								<a href="${pageContext.request.contextPath }/projectInfo/projectInfo?idx=${projectDTO.idx }">
-									<h5 class="card-title mb-2">${projectDTO.title }</h5>
+								<p class="my-2">${getAllList.CATEGORY } | ${getAllList.CRE_NM }</p>
+								<input type="hidden" id="pjIdx_${getAllList.IDX }" value="${getAllList.idx }">
+								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+									<h5 class="card-title mb-2">${getAllList.TITLE }</h5>
 								</a>
-								<span class="text-danger">${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%</span> <small><fmt:formatNumber value="${projectDTO.totalAmt}" pattern="#,###"/>원</small>
+								<span class="text-danger">${getAllList.PERCENT }%</span> <small><fmt:formatNumber value="${getAllList.TOTAL_AMT}" pattern="#,###"/>원</small>
 								<div class="progress mt-2 mb-3">
-									<div class="progress-bar bg-danger" role="progressbar" style="width: ${Math.round(projectDTO.totalAmt / projectDTO.targetAmt * 100)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+									<div class="progress-bar bg-danger" role="progressbar" style="width: ${getAllList.PERCENT }%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 										<jsp:useBean id="javaDate" class="java.util.Date" />
 										<fmt:formatDate var="nowDate" value="${javaDate}" pattern="yyyy-MM-dd"/>
-										<fmt:parseNumber value="${javaDate.time / (1000*60*60*24)}" integerOnly="true" var="start"></fmt:parseNumber>
-										<fmt:parseDate value="${projectDTO.end }" var="endDate" pattern="yyyy-MM-dd"/>
-										<fmt:parseNumber value="${projectDTO.end.time / (1000*60*60*24)}" integerOnly="true" var="end"></fmt:parseNumber>
-										<c:if test="${end - start < 1}">
+										<fmt:parseNumber value="${javaDate.time / (1000*60*60*24)}" integerOnly="true" var="START"></fmt:parseNumber>
+										<fmt:parseDate value="${getAllList.END }" var="endDate" pattern="yyyy-MM-dd"/>
+										<fmt:parseNumber value="${getAllList.END.time / (1000*60*60*24)}" integerOnly="true" var="END"></fmt:parseNumber>
+										<c:if test="${END - START < 1}">
 										<span>오늘 마감</span>
 										</c:if>
-										<c:if test="${end - start > 0}">
-										<span>${end - start }일 남음</span>
+										<c:if test="${END - START > 0}">
+										<span>${END - START }일 남음</span>
 										</c:if>
 									</div>
 								</div>

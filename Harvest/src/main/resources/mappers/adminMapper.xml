@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mappers.adminMapper">
+	
+	<select id="getUserList" resultType="com.itwillbs.domain.UserDTO">
+		select *
+		from user_tb
+		order by userNum desc limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="userView" resultType="com.itwillbs.domain.UserDTO">
+		select *
+		from user_tb
+		where userId = #{userId}
+	</select>
+		
+	<update id="userUpdateBlack">
+		update user_tb 
+		set UNREGIST = 'USR02'
+		, UNREGISTDETAIL = '정지계정'
+		where userId = #{userId}
+	</update>
+	
+	<update id="userUpdateNomal">
+		update user_tb 
+		set UNREGIST = 'USR00'
+		, UNREGISTDETAIL = '활동계정'
+		where userId = #{userId}
+	</update>
+	
+	<select id="goBlack" resultType="String">
+		select UNREGIST
+		from user_tb
+		where userId = #{userId}
+	</select>
+	
+	<select id="getProject" resultType="com.itwillbs.domain.ProjectDTO">
+		select *
+		from project_tb
+		where ID = #{ID}
+	</select>
+	
+	<select id="getPayment" resultType="com.itwillbs.domain.PaymentDTO">
+		select p.IDX, p.STATUS, pa.PTITLE, pa.AMOUNT, pa.STATUS
+		from project_tb p join payment_tb pa 
+		on p.ID = pa.PID
+		where ID = #{ID};
+	</select>
+	
+	
+	<select id="projectJudge" resultType="com.itwillbs.domain.ProjectDTO">
+		select *
+		from project_tb
+		where STATUS='PJT02'
+		order by IDX desc limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="judgeFinish" resultType="com.itwillbs.domain.ProjectDTO">
+		select *
+		from project_tb 
+		where STATUS='PJT00' or STATUS='PJT01'
+	</select>
+	
+<!-- 	현재 프로젝트의 상태불러오기 -->
+	<select id="getProStatus" resultType="String">
+		select STATUS
+		from project_tb
+		where IDX = #{IDX}
+	</select>
+	
+<!-- 	프로젝트 상태 변경 -->
+	<update id="approvalPro">
+		update project_tb  
+		set STATUS = 'PJT01'
+<!-- 		, STATUSDETAIL = '승인' -->
+		where IDX = #{IDX}
+	</update>
+	
+	<update id="refusePro">
+		update project_tb
+		set STATUS = 'PJT00'
+<!-- 		, PROSTATUSDETAIL = '반려' -->
+		where IDX = #{IDX}
+	</update>
+	
+<!-- 	프로젝트 현황 목록 불러오기 -->
+	<!-- 	프로젝트 승인(펀딩진행중인) 목록 -->
+	<select id="projectING" resultType="com.itwillbs.domain.ProjectDTO">
+		select *
+		from project_tb
+		where STATUS = 'PJT01'
+		order by IDX desc limit #{startRow}, #{pageSize}
+	</select>
+	
+	<!-- 프로젝트 완료(펀딩실패/펀딩성공) 목록 -->
+	<select id="projectFinish" resultType="com.itwillbs.domain.ProjectDTO">
+		select *
+		from project_tb 
+		where STATUS = 'PJT01' AND ( STATUS = 'FD01' or STATUS = 'FD00')
+		order by IDX desc limit #{startRow}, #{pageSize}
+	</select>
+	
+<!-- 	결제현황목록 -->
+	<select id="payStandby" resultType="com.itwillbs.domain.PaymentDTO">
+		select * 
+		from payment_tb
+		where STATUS = 'PAY00';
+	</select>
+	
+	<select id="paySuccess" resultType="com.itwillbs.domain.PaymentDTO">
+		select *
+		from payment_tb
+		where STATUS = 'PAY01';
+	</select>
+	
+	<select id="payFinish" resultType="com.itwillbs.domain.PaymentDTO">
+		select *
+		from payment_tb
+		where STATUS = 'PAY02';
+	</select>
+	
+<!-- 	공지사항 목록 -->
+	<select id="getNoticeList" resultType="com.itwillbs.domain.NoticeDTO">
+		select * 
+		from notice_tb
+		order by IDX desc limit #{startRow}, #{pageSize}
+	</select>
+	
+<!-- 	공지사항 글쓰기 maxIDX 값 가져오기  -->
+	<select id="maxIDX" resultType="java.lang.Integer">
+		select max(IDX)+1
+		from notice_tb
+	</select>
+  	
+	<insert id="insertBoard">
+		insert into notice_tb(IDX, ID, TITLE, CONTENT) 
+		value( #{IDX}, #{ID}, #{TITLE}, #{CONTENT} )
+	</insert>
+	
+<!-- 	공지사항 글 상세보기 -->
+	<select id="getBoard" resultType="com.itwillbs.domain.NoticeDTO">
+		select *
+		from notice_tb
+		where IDX = #{IDX}
+	</select>
+	
+<!-- 	총 회원수 가져오기 -->
+	<select id="getBoardCount" resultType="java.lang.Integer">
+		select count(*) total
+		from user_tb
+	</select>
+	
+<!-- 	심사중인 프로젝트 총 개수 가져오기 -->
+	<select id="getJudgeCount" resultType="java.lang.Integer">
+		select count(*)
+		from project_tb
+		where STATUS='PJT02'
+	</select>
+<!-- 	심사완료된 프로젝트 총 개수 가져오기 -->
+
+	<select id="getFinishCount" resultType="java.lang.Integer">
+		select count(*)
+		from project_tb
+		where STATUS='PJT00' or STATUS='PJT01'
+	</select>	
+	
+<!-- 	잔행중인 펀딩 목록 총 개수 가져오기 -->
+	<select id="getProIngCount" resultType="java.lang.Integer">
+		select count(*)
+		from project_tb
+		where STATUS='PJT01'
+	</select>
+<!-- 	완료한 펀딩 목록 총 개수 가져오기 -->
+	<select id="getProFinishCount" resultType="java.lang.Integer">
+		select count(*)
+		from project_tb
+		where STATUS='FD00' or STATUS='FD01'
+	</select>
+<!-- 	공지사항 글 개수 가져오기  -->
+	<select id="getNoticeCount" resultType="java.lang.Integer">
+		select count(*)
+		from notice_tb
+	</select>
+	
+	<select id="getEventUserList" resultType="com.itwillbs.domain.UserDTO">
+		SELECT ID, EVENT_ALR
+		  FROM USER_TB
+		 WHERE EVENT_ALR = 'Y';
+	</select>
+	
+	
+</mapper>
+

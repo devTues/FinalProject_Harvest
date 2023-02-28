@@ -1,0 +1,284 @@
+@charset "UTF-8";
+/* 폰트 */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+/*     font-weight: 400; */
+    font-style: normal;
+}
+* {font-family: 'Pretendard-Regular';}
+body::-webkit-scrollbar {
+	width:10px;
+}
+body::-webkit-scrollbar-thumb {
+	background:#c3a371;
+	border-radius:5px;
+}
+body::-webkit-scrollbar-track {
+	background:#dcc8a9;
+}
+
+
+/* [ 상품 이미지 및 간략 정보 ] */
+#productContent {
+	position: relative;
+}
+/* 공개 설명 부분 */
+.open_info {
+	position: relative;
+	margin: 60px auto;
+	width:100%;
+}
+
+/* 제목 및 카테고리 */
+.prod_title {
+	text-align: center;
+	margin-top: 50px;
+}
+.prod_title h1 {
+	font-weight: 900;
+	margin-top:10px;
+}
+/* - 카테고리 버튼 */
+.prod_title > button {
+/* 	margin-top: 60px; */
+	background: #fffbf5;
+	border: 1px solid #dcc8a9;
+	border-radius:3px;
+	color: #c3a371;
+	font-size: 10.5px;
+	padding: 5px;
+}
+/* - 상품제목 */
+.prod_title > h1 {
+	padding: 10px 0;
+}
+/* 상품정보 */
+.prod_cont {
+	position: relative;
+}
+/* - 캐러셀 */
+.prod_cont #carouselExampleIndicators {
+	width: 500px;
+	min-height: 244px;
+	margin: 0 auto 160px;
+}
+
+/* 상품정보 간략 */
+.project_info {
+	margin: 60px 0;
+	position: relative;
+}
+/* - 정보 사이드 박스 */
+.project_summary > div {
+	display: flex;
+	justify-content: space-between;
+}
+.project_summary > div > div {
+	font-size: .8em;
+}
+/* 정보 제목.내용 */
+.info_tit {
+/* 	color:#c3a371; */
+}
+
+/* - 공유 및 후원 버튼*/
+.project_btn {
+    align-items: center;
+    width: 100%;
+    bottom: 0;
+}
+.link_icon {
+	position: relative;
+	display: inline-block;
+	width: 30px;
+	height:30px;
+	margin: 0 5px;
+	padding-top: 50px;
+}
+.link_icon.twitter {
+	background: url("../../resources/harVest_img/twitter.png") no-repeat center / contain;
+}
+.link_icon.facebook {
+	background: url('../../resources/harVest_img/facebook.png') no-repeat center / contain;
+} 
+.link_icon.kakao {
+	background: url('../../resources/harVest_img/kakao.png') no-repeat center / contain;
+}
+
+
+@media all and (max-width:1220px) {
+
+	.project_info {
+		display: flex;
+		justify-content: space-around;
+		padding: 0 50px;
+	}
+	.project_info > div > * {
+	}
+}
+
+@media all and (max-width:480px) {
+	.project_btn {
+		position: fixed;
+		bottom: 0;
+		left:0;
+		width:100%;
+		height: auto;
+		z-index:9999;
+		background: white;
+		box-shadow: 0 -3px 3px rgba(0,0,0,.1);
+	}
+}
+
+/* 상품 상세 페이지 */
+#productInfoMore {
+	position: relative;
+}
+#productInfoMore > div {
+	position: relative;
+}
+
+.project_btn {
+	position: relative;
+	padding-bottom: 30px;
+}
+
+/* 후원하기 버튼 */
+.project_btn_wrap > div {
+    position: absolute;
+    width: 100%;
+    padding-bottom:30px;
+}
+.funding_btn {
+	cursor: pointer;
+    padding: 15px 0;
+    border-radius: 5px;
+    background: #e4527f;
+    color: white;
+    font-weight: 900;
+    text-align: center;
+    margin-top:10px;
+}
+
+.share_wrap {
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+
+/* 공유하기 */
+#shareBtn {
+	width:25px;
+	height:25px;
+}
+/* 프로젝트 소개 */
+.fundingInfo {
+	padding-top:20px;
+}
+/* 프로젝트 페이지 이동 */
+.scroll_btn {
+	position: sticky;
+	top:60px;
+	padding-bottom: 30px;
+}
+.scroll_btn div {
+	text-decoration: none;
+	background:white;
+	padding: 7px 10px;
+	border-radius: 20px;
+	margin-right: 20px;
+	border: 1px solid #daddca;
+	color:#daddca;
+	font-size:12px;
+	display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 부트스트랩 시작 */
+/* 탭 메뉴 */
+ul#myTab {
+	position: sticky;
+	top:0;
+	z-index:999;
+	padding-left: 150px;
+	border: none !important;
+	box-shadow: 0 3px 3px rgba(0,0,0,.1);
+	background:white !important;
+}
+.nav-item {
+	border: none !important;
+}
+.nav-link {
+	color: #daddca!important;
+	border: none !important;
+}
+.nav-link.active {
+	color: #a4bb73  !important;
+	font-weight: 900 !important;
+	border: none !important;
+	border-bottom: 5px solid #a4bb73 !important;
+}
+.tab-content {
+	padding: 0 10% 80px;
+}
+
+
+
+.swal2-container.swal2-center.swal2-backdrop-show {
+	position: fixed;
+	z-index:99999;
+	backdrop-filter: blur(20px);
+}
+
+/* 커뮤니티 탭 메뉴 */
+ul.list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #ccc;
+}
+ul.list::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.tab_button {
+	display: block;
+	padding: 10px 20px 10px 20px;
+	float: left;
+	margin-right: -1px;
+	margin-bottom: -1px;
+	color: grey;
+	text-decoration: none;
+	cursor: pointer;
+}
+.tab_active {
+	border-top: 2px solid orange;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid white;
+	border-left: 1px solid #ccc;
+	color: black;
+	margin-top: -2px;
+}
+.tab_content {
+	display: none;
+	padding: 10px;
+}
+.tab_show {
+	display: block;
+}
+
+
+
+

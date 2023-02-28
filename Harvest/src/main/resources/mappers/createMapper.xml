@@ -4,70 +4,182 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
-<mapper namespace="com.itwillbs.mappers.createMapper">
-	<insert id="insertProject">
+<mapper namespace="com.itwillbs.mappers.CreateMapper">
+	<select id="getProjectList" parameterType="map" resultType="hashMap">
+		SELECT IDX, TITLE, IMG1
+		FROM PROJECT_TB
+		WHERE ID = #{id}
+		  AND STATUS = 'PJT03'
+	</select>
+	<!-- 수정 -->
+	<select id="getProject" parameterType="map" resultType="hashMap">
+		SELECT P.*, C.CATEGORY_NM
+		  FROM PROJECT_TB P JOIN CATEGORY_TB C
+		    ON P.CATEGORY = C.CATEGORY_CD
+		 WHERE P.IDX = #{idx}
+	</select>
+
+   <insert id="insertProject" parameterType="map">
             INSERT INTO PROJECT_TB (
                        IDX   
-                     , ID          
-                     , CRE_NM      
-                     , CRE_PRO     
-                     , CRE_INTRO   
-                     , CATEGORY    
-                     , TITLE       
-                     , PRODUCT_NM  
-                     , IMG                
-                     , INTRO       
-                     , BUDGET      
-                     , SCHEDULE    
+                     , ID 
+                     <if test='!creNm.equals("")'>      
+                     , CRE_NM
+                     </if>
+                     <if test='crePro neq "" and crePro != null'>     
+                     , CRE_PRO
+                     </if>
+                     <if test='!creIntro.equals("")'>     
+                     , CRE_INTRO 
+                     </if>
+                     , CATEGORY 
+                     <if test='!title.equals("")'>   
+                     , TITLE 
+                     </if>
+                     <if test='!productNm.equals("")'>      
+                     , PRODUCT_NM
+                     </if>
+                     <if test='img1 neq "" and img1 != null'>  
+                     , IMG1  
+                     </if>
+                     <if test='!intro.equals("")'>
+                     , INTRO  
+                     </if>
+                     <if test='!budget.equals("")'>    
+                     , BUDGET
+                     </if>
+                     <if test='!schedule.equals("")'>      
+                     , SCHEDULE  
+                     </if>
+                     <if test='!minDona.equals("")'>    
                      , MIN_DONA    
+                     </if>
+                     <if test='!targetAmt.equals("")'>  
                      , TARGET_AMT  
-                     , STAR        
-                     , END         
+                     </if>
+                     <if test='!start.equals("")'>
+                     , START
+                     </if> 
+                     <if test='!end.equals("")'>  
+                     , END  
+                     </if>       
                      , STATUS
                    ) 
                VALUES ( 
-                     (SELECT IDX
-                        FROM (
-                            SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
-                             FROM PROJECT_TB
-                     ) A)
-                  	 , #{id}
-                     , #{creNm}   
-                     , #{crePro}
-                     , #{creIntro}
-                     , #{category}
-                     , #{title}
-                     , #{productNm}
-                     , #{img}
-                     , #{intro}  
-                     , #{budget}  
-                     , #{schedule}
-                     , #{minDona}   
-                     , #{targetAmt}  
-                     , #{start}
-                     , #{end}
-                     , "PJT03"
-                     )
+               		   IFNULL( (SELECT IDX
+							      FROM (
+							      		SELECT IDX 
+							      		  FROM PROJECT_TB
+							             WHERE IDX = #{idx}) A )
+							 , (SELECT IDX
+					              FROM ( 
+					             		SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+	   				 			  		  FROM PROJECT_TB) B )
+             		  )
+                  	  , #{id}
+                  	  <if test='!creNm.equals("")'>
+                      , #{creNm}  
+                      </if>
+                      <if test='crePro neq "" and crePro != null'>    
+                      , #{crePro}
+                      </if>
+                      <if test='!creIntro.equals("")'> 
+                      , #{creIntro}
+                      </if>
+                      , (SELECT CATEGORY_CD
+                      	   FROM (SELECT CATEGORY_CD
+  								   FROM CATEGORY_TB
+                                  WHERE CATEGORY_NM = #{category}) CATEGORY)
+                      <if test='!title.equals("")'> 
+                      , #{title}
+                      </if>
+                      <if test='!productNm.equals("")'>  
+                      , #{productNm}
+                      </if>
+                     <if test='img1 neq "" and img1 != null'>
+				      , #{img1}
+				      </if> 
+				      <if test='!intro.equals("")'>       
+                      , #{intro}  
+                      </if>
+                      <if test='!budget.equals("")'>
+                      , #{budget} 
+                      </if> 
+                      <if test='!schedule.equals("")'>  
+                      , #{schedule}
+                      </if>
+                       <if test='!minDona.equals("")'>  
+                      , IFNULL(REPLACE(#{minDona}, ',', NULL), 0)
+                      </if>
+                      <if test='!targetAmt.equals("")'>  
+                      , IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0)
+                      </if>
+                      <if test='!start.equals("")'>  
+                      , #{start}
+                      </if>
+                      <if test='!end.equals("")'>
+                      , #{end}
+                      </if>
+                      , #{status}
+                      )
               ON DUPLICATE KEY
-			  UPDATE CRE_NM 	 = #{creNm}
+			  UPDATE ID = #{id}
+                   <if test='!creNm.equals("")'>   
+			  	   , CRE_NM 	 = #{creNm}
+			  	   </if>
+			  	   <if test='crePro neq "" and crePro != null'>
 				   , CRE_PRO     = #{crePro}
+				   </if>
+                   <if test='!creIntro.equals("")'>  
 				   , CRE_INTRO   = #{creIntro}
-				   , CATEGORY    = #{category}
+				   </if>
+                   <if test='!category.equals("")'>  
+				   , CATEGORY    = (SELECT CATEGORY_CD
+                      	  			  FROM (SELECT CATEGORY_CD
+  								              FROM CATEGORY_TB
+                                             WHERE CATEGORY_NM = #{category}) CATEGORY)
+				   </if>
+				   <if test='!title.equals("")'> 
 			       , TITLE       = #{title}
+			       </if>
+			        <if test='!productNm.equals("")'> 
 				   , PRODUCT_NM  = #{productNm}
-				   , IMG         = #{img}       
+				   </if>
+				   <if test='img1 neq "" and img1 != null'>
+				   , IMG1        = #{img1} 
+				   </if>
+				   <if test='!intro.equals("")'> 
 				   , INTRO       = #{intro}
+				   </if>
+				   <if test='!budget.equals("")'> 
 				   , BUDGET      = #{budget} 
+				   </if>
+				   <if test='!schedule.equals("")'> 
 				   , SCHEDULE    = #{schedule}
-				   , MIN_DONA    = #{minDona}   
-				   , TARGET_AMT  = #{targetAmt}  
-				   , STAR        = #{start}
+				   </if>
+				    <if test='!minDona.equals("")'>  
+				   , MIN_DONA    = IFNULL(REPLACE(#{minDona}, ',', NULL), 0)  
+				   </if> 
+				    <if test='!targetAmt.equals("")'>  
+				   , TARGET_AMT  = IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0) 
+				   </if>
+				   <if test='!start.equals("")'>
+				   , START        = #{start}
+				   </if>
+				   <if test='!end.equals("")'>
 				   , END         = #{end}
-				   , STATUS		 = "PJT03";	<!-- 나중에 수정 -->
+				   </if>
+				   <if test='!status.equals("")'>
+				   , STATUS		 = #{status}
+				   </if>
    </insert>
-	
 	<select id="getCategoryList" resultType="java.lang.String">
 		SELECT CATEGORY_NM
-  		  FROM CATEGORY_TB;
+  		  FROM CATEGORY_TB
+	</select>
+	
+	<select id="getMax" resultType="java.lang.Integer">
+		SELECT MAX(IDX)
+		FROM PROJECT_TB
 	</select>
 </mapper>

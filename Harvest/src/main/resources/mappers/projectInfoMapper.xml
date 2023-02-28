@@ -50,16 +50,19 @@
 	     WHERE PJ_IDX = #{PJ_IDX}
 	       AND USER_ID = #{USER_ID}
 	</delete>
+		<delete id="deleteAlram2">
+		<![CDATA[ DELETE A FROM ALRAM_TB AS A
+					LEFT JOIN PROJECT_TB AS P
+					ON A.pj_IDX = P.IDX
+					WHERE START < CURDATE()
+					AND A.CODE = 'ALM2']]>
+	</delete>
 	
-<!-- 	<select id="getSumMoney" resultType="java.lang.Integer"> -->
-<!-- 		SELECT SUM(AMOUNT) AS sumMoney -->
-<!-- 	  	  FROM PAYMENT_TB -->
-<!-- 	  	 WHERE PJ_IDX = #{IDX} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="getSumUser" resultType="java.lang.Integer"> -->
-<!-- 		SELECT COUNT(ID) AS sumUser -->
-<!-- 		  FROM PAYMENT_TB -->
-<!-- 		 where PJ_IDX = #{IDX}; -->
-<!-- 	</select> -->
+	<select id="getAlram2List" resultType="com.itwillbs.domain.ProjectDTO">
+		SELECT USER_ID AS ID, TITLE, CODE, START
+		  FROM ALRAM_TB A
+		  JOIN PROJECT_TB P
+		  ON A.PJ_IDX = P.IDX
+		 WHERE START = CURDATE()
+	</select>
 </mapper>

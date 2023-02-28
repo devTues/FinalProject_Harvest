@@ -12,6 +12,9 @@
 			 , CRE_NM
 			 , TITLE
 			 , TARGET_AMT
+			 , (SELECT IFNULL(SUM(AMOUNT), 0)
+                  FROM PAYMENT_TB 
+                 WHERE PJ_IDX = p.IDX) AS TOTAL_AMT
              , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
 				  		 FROM PAYMENT_TB 
                         WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS PERCENT
@@ -50,7 +53,7 @@
 		 </if>
 	</select>
 	
-	<select id="getExpectList" parameterType="map" resultType="com.itwillbs.domain.ProjectDTO">
+	<select id="getExpectList" parameterType="map" resultType="java.util.Map">
 		SELECT IDX
 			 , CATEGORY
 			 , CRE_NM

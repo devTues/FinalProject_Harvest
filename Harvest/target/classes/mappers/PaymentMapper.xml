@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace="com.itwillbs.mappers.PaymentMapper">
+
+  <select id="getUser" resultType="com.itwillbs.domain.UserDTO">
+     select id
+     	  , name
+     	  , address
+     	  , phone
+       from user_tb
+      where id=#{id}
+  </select>	
+  
+   <select id="getProject" resultType="com.itwillbs.domain.ProjectDTO">
+     select cre_nm
+          , title
+          , intro
+          , min_dona
+          , img1
+          , end
+       from project_tb
+      where idx=#{idx}
+  </select>	
+  
+   <insert id="insertPayment">
+  	INSERT INTO PAYMENT_TB
+<!--   	(  -->
+<!--   			   ,IDX -->
+<!--   			   ,PJ_IDX -->
+<!--   			   ,ID -->
+<!--   			   ,AMOUNT -->
+<!--   			   ,ADDRESS -->
+<!--   			   ,PHONE -->
+<!--   			   ,DATE -->
+<!--   			   ,PAY_DATE -->
+<!--   			   ,STATUS -->
+<!--   			   ) -->
+  	 	  VALUE (
+  	 	      (SELECT IDX
+                    FROM (
+                        SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+                         FROM payment_tb
+                     ) A)
+  	 	      ,#{pjIdx}
+  	 	      ,#{id}
+  	 	      ,#{amount}
+  	 	      ,#{address}
+  	 	      ,#{phone}
+  	 	      ,#{date}
+  	 	      ,#{payDate}
+  	 	      ,#{status}
+  	 	      )
+ 	</insert>
+
+  
+  
+</mapper>
