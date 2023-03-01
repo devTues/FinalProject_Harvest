@@ -109,10 +109,10 @@
                       , #{schedule}
                       </if>
                        <if test='!minDona.equals("")'>  
-                      , IFNULL(REPLACE(#{minDona}, ',', NULL), 0)
+                      , REPLACE(#{minDona}, ',', '')
                       </if>
                       <if test='!targetAmt.equals("")'>  
-                      , IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0)
+                      , REPLACE(#{targetAmt}, ',', '')
                       </if>
                       <if test='!start.equals("")'>  
                       , #{start}
@@ -158,10 +158,10 @@
 				   , SCHEDULE    = #{schedule}
 				   </if>
 				    <if test='!minDona.equals("")'>  
-				   , MIN_DONA    = IFNULL(REPLACE(#{minDona}, ',', NULL), 0)  
+				   , MIN_DONA    = REPLACE(#{minDona}, ',', '') 
 				   </if> 
 				    <if test='!targetAmt.equals("")'>  
-				   , TARGET_AMT  = IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0) 
+				   , TARGET_AMT  = REPLACE(#{targetAmt}, ',', '')
 				   </if>
 				   <if test='!start.equals("")'>
 				   , START        = #{start}

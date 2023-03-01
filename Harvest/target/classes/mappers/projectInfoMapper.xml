@@ -4,10 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mappers.projectInfoMapper">
-<!-- 	<select id="getProjectList" resultType="com.itwillbs.domain.ProjectDTO"> -->
-<!-- 	SELECT * -->
-<!-- 	  FROM PROJECT_TB -->
-<!-- 	</select> -->
+	<select id="getProjectList" resultType="com.itwillbs.domain.ProjectDTO">
+	SELECT *
+	  FROM PROJECT_TB
+	</select>
 	<select id="getProjectInfo" resultType="com.itwillbs.domain.ProjectDTO">
 	SELECT p.*
           , case when (SELECT COUNT(*) AS HEARTFILL

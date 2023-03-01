@@ -10,8 +10,7 @@
 <meta charset="UTF-8">
 <title>결제</title>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/payment.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/jquery-3.6.3.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	// 금액 변경창 열기
@@ -63,7 +62,6 @@ function modalOpen() {
 function modalClose() {
 	$(".modal_bg").hide();
 }
-
 // 후원금액 변경시 조건
 function changePay() {
 	if (!$('#userDona').val()){ // 후원금액 미입력 시 
@@ -75,8 +73,8 @@ function changePay() {
 			confirmButtonText: '닫기'
 		}).then((result) => {
 			if(result.value)	return false;
-		});
-	} else if($('#userDona').val() >= ${projectDTO.sumMoney}) { // 최소 후원금 이하일 경우 
+		})
+	} else if($('#userDona').val() <= 1000) { // 최소 후원금 이하일 경우 
 		Swal.fire({
 			title: '최소금액보다 큰 금액을 입력해주세요.',
 			icon: 'warning',
@@ -97,6 +95,62 @@ function keyDown(e) {
     }
 }
 </script>
+	<!-- jQuery -->
+<script src="https://cdn.tutorialjinni.com/jquery/3.4.1/jquery.min.js"></script>
+<!-- iamport API -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<!-- 					<P>아임포트 테스트</P> -->
+<script type="text/javascript">
+		IMP.init("imp22281850");
+		function requestPay() {
+			IMP.request_pay(
+					{
+					pg : "kakaopay", //KG이니시스 코드값
+					pay_method : "card", //결제수단
+					merchant_uid : 'merchant_'
+							+ new Date().getTime(),
+					name : "${pdto.creNm}",
+// 					schedule_at :  ,
+// 					currency : "KRW" ,
+// 					amount : "${paydto.userDona}" ,
+					customer_uid : "${dto.name}" + new Date().getTime(),
+					buyer_email : "${dto.id}", //주문자 이메일
+					buyer_name : "${dto.name}", //주문자 이름
+					buyer_tel : "${dto.address}", //주문자 전화번호
+					buyer_addr : "${dto.phone}", //주문자 주소
+					},
+					function(rsp) { // callback
+						if (rsp.success) {
+							// 결제 성공 시 로직
+							var msg = "후원이 완료되었습니다! 결제는 ${pdto.end}일에 진행 됩니다.";
+							alert(msg);
+// 							location.href = "${pageContext.request.contextPath}/payment/paySuccessPro"; 
+// 							$(".payment").submit();
+					        	$.ajax({
+									url : "${pageContext.request.contextPath}/payment/paySuccessPro", // 결제저장경로
+									data : {
+										 'pjIdx' : $('.idx').val(),
+										    'id' : $('.id').val(),
+										'amount' : ${paydto.userDona},
+									   'address' : $('.address').val(),
+										 'phone' : $('.phone').val(),
+										  'date' : $('.date').val(),
+									  'payDate' : $('.payDate').val(),
+										'status' : $('.status').val(),
+										'userDona' : $('.userDona').val()
+									}, 
+									success : function(data) { 
+										location.href = "${pageContext.request.contextPath}/payment/paySuccess"; 
+									}
+								});
+							} else {
+								alert("결제 실패: " + rsp.error_msg);
+								location.href = "${pageContext.request.contextPath}/payment/content";
+							}
+						});
+					}
+	</script>
 </head>
 <body>
 <!-- header 들어갈 부분 -->
@@ -138,7 +192,7 @@ function keyDown(e) {
 									<table>
 										<tr>
 											<th>후원금액</th>
-											<td><fmt:formatNumber value="${pdto.minDona}" />원</td>
+											<td><fmt:formatNumber value="${paydto.userDona}" />원</td>
 										</tr>
 									</table>
 									<div class="pay_change">변경</div>
@@ -162,48 +216,7 @@ function keyDown(e) {
 								<div class="info_deliver">
 									<div class="payinfo_title"><p>배송지 정보</p></div>
 										<div>
-										<script type="text/javascript"
-											src="${pageContext.request.contextPath}/resources/script/jquery-3.6.3.js"></script>
-										<script
-											src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-											
-										<script>
-											let addrCnt = 0;
-											function address(){
-												document.getElementById("addAddress") .addEventListener("click", function() { //주소추가 버튼을 누르면 실행되는 함수 
-				
-															if (addrCnt > 2) { //최대 주소 3개까지 추가 가능
-																alert('주소는 3개 까지만 가능');
-																return;
-															}
-												
-															new daum.Postcode({ //주소 추가하고 선택하면 담기는 상자 나오고 값 채워짐
-																oncomplete : function(data) {
-				
-																	addrCnt++;
-																	// input 생성
-				
-																	var input = '<div class="">';
-																	input += '<input type="radio" name="address" checked> ';
-																	input += '이름 : <input type="text" name="name"><br>';
-																	input += '주소' + addrCnt + ' : <input type="text" id="address' + addrCnt + '" name="addressNm' + addrCnt + '" readonly="" value="' + data.address + '"><br> ';
-																	input += '상세주소 : <input type="text" id="detail' + addrCnt + '" name="detail"><br> ';
-																	input += '전화번호 : <input type="text" name="phone"><br>';
-																	input += '</div></br> ';
-																	$('#addr').append(input);
-																}
-															}).open();
-														});
-											}
-											/* 주소 디비에 저장하고 화면에 선택한 거 띄우기  
-											 들고가는 값 : name, addressNm+1,2,3 detail, phone
-											 *
-											 */
-										</script>
-							<div id="addr">
-							
-							</div>
-<%-- 								<input type="hidden" name="id" value="${sessionScope.id}"> --%>
+										<!-- 스크림트-->
 							</div>
 								<div class="payinfo_cont">
 									<table>
@@ -232,18 +245,18 @@ function keyDown(e) {
 												<div>
 													<p>주소</p>
 														<c:if test="${empty dto.address}">
-																<input type="button" class="postBtn" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">
+																<input type="button" class="postBtn" name="address" class="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">
 <%-- 																<input type="button" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
 														</c:if>
 														<c:if test="${! empty dto.address}">
-																<input type="text" name="address" value="${dto.address}" id="paddress" readonly>
+																<input type="text" name="address"  value="${dto.address}" id="paddress" readonly>
 <!-- 															<input type="button" value="변경" id="address" -->
 <%-- 																onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
 															<button type="button" class="postBtn" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">변경</button>	
 															<!-- 오른쪽으로 옮기기..-->
 														</c:if>
 													<c:if test="${empty dto.address}">
-<%-- 																<input type="button" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
+																<input type="button" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">
 													</c:if>
 													<c:if test="${! empty dto.address}">
 													<p>전화번호</p>
@@ -277,7 +290,7 @@ function keyDown(e) {
 									<table>
 										<tr>
 											<th class="point">최종 후원 금액</th>
-											<td class="point total_money"><fmt:formatNumber value="${pdto.minDona}" />원</td>
+											<td class="point total_money"><fmt:formatNumber value="${paydto.userDona}" />원</td>
 										</tr>
 									</table>
 								</div>
@@ -348,64 +361,15 @@ function keyDown(e) {
 				</form>
 			</div>
 		</div>
+		<!-- 주소값 바꾸기  -->
+		
+		<!-- 주소값 바꾸기  -->
 	</div>
 	
-	<!-- jQuery -->
-	<script src="https://cdn.tutorialjinni.com/jquery/3.4.1/jquery.min.js"></script>
-	<!-- iamport API -->
-	<script type="text/javascript"
-		src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-	<!-- 					<P>아임포트 테스트</P> -->
-	<script type="text/javascript">
-		IMP.init("imp22281850");
-		function requestPay() {
-			IMP.request_pay(
-					{
-					pg : "kakaopay", //KG이니시스 코드값
-					pay_method : "card", //결제수단
-					merchant_uid : 'merchant_'
-							+ new Date().getTime(),
-					name : "${pdto.creNm}",
-					amount : "${pdto.minDona}",
-					buyer_email : "${dto.id}", //주문자 이메일
-					buyer_name : "${dto.name}", //주문자 이름
-					buyer_tel : "${dto.address}", //주문자 전화번호
-					buyer_addr : "${dto.phone}", //주문자 주소
-					},
-					function(rsp) { // callback
-						if (rsp.success) {
-							// 결제 성공 시 로직
-							var msg = "후원이 완료되었습니다!";
-							alert(msg);
-// 							location.href = "${pageContext.request.contextPath}/payment/paySuccessPro"; 
-// 							$(".payment").submit();
-					        	$.ajax({
-									url : "${pageContext.request.contextPath}/payment/paySuccessPro", // 결제저장경로
-									data : {
-										 'pjIdx' : $('.idx').val(),
-										    'id' : $('.id').val(),
-										'amount' : ${pdto.minDona},
-									   'address' : $('.address').val(),
-										 'phone' : $('.phone').val(),
-										  'date' : $('.date').val(),
-									  'payDate' : $('.payDate').val(),
-										'status' : $('.status').val()
-									}, 
-									success : function(data) { 
-										location.href = "${pageContext.request.contextPath}/payment/paySuccess"; 
-									}
-								});
-							} else {
-								alert("결제 실패: " + rsp.error_msg);
-								location.href = "${pageContext.request.contextPath}/payment/content";
-							}
-						});
-					}
-	</script>
 	<input type="hidden" name="idx" class="idx" value="${pdto.idx}"> 
 	<input type="hidden" name="pjIdx" class="pjIdx" value="${pdto.idx}">
 	<input type="hidden" name="id" class="id" value="${dto.id}">
-	<input type="hidden" name="amount" class="amount" value="${pdto.minDona}">
+	<input type="hidden" name="userDona" class="userDona" value="${paydto.userDona}">
 	<input type="hidden" name="address" class="address" value="${dto.address}">
 	<input type="hidden" name="phone" class="phone" value="${dto.phone}">
 	<input type="hidden" name="payDate" class="payDate" value="${pdto.end}">

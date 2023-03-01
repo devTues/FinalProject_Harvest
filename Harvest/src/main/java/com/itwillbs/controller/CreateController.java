@@ -1,11 +1,8 @@
 package com.itwillbs.controller;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -43,12 +40,12 @@ public class CreateController {
 	@RequestMapping(value = "/creator/project", method = RequestMethod.GET)
 	public String project(Model model, HttpServletRequest request) {
 		String idx = request.getParameter("idx");
+		
 		if(!idx.equals("0")) {
-			System.out.println("0아니니까 실행");
 			projectMap = createService.getProject(Integer.parseInt(idx));
 			model.addAttribute("projectMap", projectMap);
 		}
-//		System.out.println(projectMap.toString());
+		
 		// 카테고리 가져오기
 		List<String> categoryNm = createService.getCategoryList();
 
@@ -60,21 +57,17 @@ public class CreateController {
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
 //	@RequestMapping(value = "/creator/projectPro", method = RequestMethod.POST)
 	public String createPro(HttpServletRequest request, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
-//		String root = request.getSession().getServletContext().getRealPath("/");
-//		String uploadPath = root + File.separator + "resources" + File.separator + "upload" + File.separator;
-		String uploadPath = "C:\\Users\\Dev\\Desktop\\Dev\\gitHub\\Final-Project\\FinalProject\\src\\main\\webapp\\resources\\upload";
 
-		
 		if(!mtfRequest.getFile("profile").isEmpty()) {
 			// 프로필 이미지 (사진 1개)
-			projectDto.setCrePro(UploadFile.fileUpload(uploadPath, mtfRequest.getFile("profile")));
+			projectDto.setCrePro(UploadFile.fileUpload(request, mtfRequest.getFile("profile")));
 		}
 		
 		if(!mtfRequest.getFile("images").isEmpty()) {
 			String multiImg = "";
 			// 프로젝트 이미지 (사진 최대 3개) => List<MultipartFile>
 			for(MultipartFile file : mtfRequest.getFiles("images")) {
-				multiImg += UploadFile.fileUpload(uploadPath, file) + "&";
+				multiImg += UploadFile.fileUpload(request, file) + "&";
 			}
 			projectDto.setImg1(multiImg);
 		}

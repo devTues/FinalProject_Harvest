@@ -88,7 +88,7 @@ public class AjaxController {
         String from = "ki6532@naver.com";
 		
 		try {
-        	// �씠硫붿씪 蹂대궡�뒗 援щЦ
+        	// 
             MimeMessage mail = mailSender.createMimeMessage();
             MimeMessageHelper mailHelper = new MimeMessageHelper(mail,"UTF-8");
             

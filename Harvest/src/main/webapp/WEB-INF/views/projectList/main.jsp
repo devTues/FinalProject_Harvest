@@ -92,7 +92,7 @@
                             <div class="card-header p-0">                                   
                                 <!-- 찜버튼 -->
 								<div class="blog-media">
-									<a href="${pageContext.request.contextPath }/projectInfo/projectInfo?idx=${getAllList.IDX }">
+									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
 										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100" height="110">
 									</a>
                                    		<c:if test="${empty sesssionScope.id}">

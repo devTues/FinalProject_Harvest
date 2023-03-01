@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html id="AllContent">
 <head>
@@ -47,7 +48,6 @@ window.onload = function(){
 	 		return;
 		}
 		$('#p_' + id).html('');
-		return;
 	});
 	
 	$('.text_').trigger('change');
@@ -320,7 +320,7 @@ window.onload = function(){
 								<c:set var="img" value="${projectMap.IMG1}"/>
 								<c:if test="${not empty img}">
 									<input type="hidden" value="${img}">
-									<c:forEach var="newImg" items="${fn:split(img,'&')}" begin="0" end="3" step="1">
+									<c:forEach var="newImg" items="${fn:split(img,'&')}">
 										<li class="ui-state-default">
 											<img src="${pageContext.request.contextPath }/resources/upload/${newImg}" width="150" height="110">
 										</li>
@@ -467,7 +467,8 @@ window.onload = function(){
 							<div>
 								<div class="wrap">
 									<span class="input_wrap2 guide">
-										<input type="text" inputmode="numeric" class="textInput" name="targetAmt" id="targetAmt" value="${projectMap.TARGET_AMT }" placeholder="50만원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')" >
+										<fmt:parseNumber value = "${projectMap.TARGET_AMT }" var = "targetAmt"/>
+										<input type="text" class="textInput" name="targetAmt" id="targetAmt" value="${targetAmt }" placeholder="50만원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')" >
 										원
 									</span>
 								</div>
@@ -478,10 +479,11 @@ window.onload = function(){
 							<div class="amtShow">
 								<div class="totalAmt">
 								<span>목표 금액 달성 시 예상 수령액</span>
-									<input type="text" id="totalAmt" name="totalAmt" readonly value="0원" >
+									<fmt:parseNumber value = "${targetAmt * 0.05 }" pattern = "###,###,###,###" var = "fee"/>
+									<input type="text" id="totalAmt" name="totalAmt" readonly value="${targetAmt - fee }" >
 								</div>
 								<div class="feeWrap">
-									총 수수료 (총 결제액의 5%)<input type="text" id="fee" name="fee" value="0원"  onfocus="this.blur()">
+									총 수수료 (총 결제액의 5%)<input type="text" id="fee" name="fee" value="${fee }"  onfocus="this.blur()">
 								</div>
 							</div>
 						</div>
@@ -498,7 +500,8 @@ window.onload = function(){
 						<div>
 							<div class="wrap">
 								<span class="input_wrap2 guide">
-									<input type="text" inputmode="numeric" class="textInput" name="minDona" id="minDona" value="${projectMap.MIN_DONA }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
+									<fmt:parseNumber value = "${projectMap.MIN_DONA }" var = "minDona"/>
+									<input type="text" class="textInput" name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
 									원
 								</span>
 							</div>
@@ -508,26 +511,48 @@ window.onload = function(){
 				</div>
 				<div class="article_proj">
 					<dl class="sub_article">
-					<dt class="arti_tit">펀딩 일정</dt>
-					<dd class="defi">설정한 일이 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.</dd>
+						<dt class="arti_tit">펀딩 일정</dt>
+						<dd class="defi">설정한 일이 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.</dd>
 					</dl>
 					<div class="arti_cont">
 						<div class="con_width">
-							<div class="writeWrap">
-								<div class="writeAre">
-									<p>시작일 ~ 종료일</p>
-								</div>
+							<ol class="fundPlan">
+								<li class="fungPlanItem1">
+									<div class="pjForm">
+										<div class="pjFormHalf wd">
+											<p class="formTit fTit"><b>시작일</b></p>
+											<div class="datePickerWrap">
+												<div class="datePicker">
+													<div class="dateWrap">
+													<button class="dateInput" type="button" id="date" data-range="true">
+														<div class="topb">
+															<svg viewBox="0 0 48 48"><path fill-rule="evenodd" clip-rule="evenodd" d="M43.5 13.6H4.5V11.8C4.5 10.4 5.6 9.3 7 9.3H41.2C42.6 9.3 43.7 10.4 43.7 11.8L43.5 13.6ZM43.5 41.1C43.5 42.5 42.4 43.6 41 43.6H6.9C5.5 43.6 4.4 42.5 4.4 41.1V16.1H43.5V41.1ZM41.1 6.9H38.6V2H36.1V6.9H11.8V2H9.3V6.9H6.9C4.2 6.9 2 9.1 2 11.8V41.1C2 43.8 4.2 46 6.9 46H41.1C43.8 46 46 43.8 46 41.1V11.8C46 9.1 43.8 6.9 41.1 6.9ZM11.2002 27.7001H14.9002C15.3002 27.7001 15.5002 27.4001 15.5002 27.0991V23.4001C15.5002 23.0001 15.2002 22.8001 14.9002 22.8001H11.2002C10.8002 22.8001 10.6002 23.1001 10.6002 23.4001V27.0001C10.5002 27.4001 10.8002 27.7001 11.2002 27.7001ZM25.9002 27.7001H22.2002C21.8002 27.7001 21.5002 27.4001 21.6002 27.0001V23.4001C21.6002 23.1001 21.8002 22.8001 22.2002 22.8001H25.9002C26.2002 22.8001 26.5002 23.0001 26.5002 23.4001V27.0991C26.5002 27.4001 26.3002 27.7001 25.9002 27.7001ZM33.2002 27.7001H36.9002C37.3002 27.7001 37.5002 27.4001 37.5002 27.0991V23.4001C37.5002 23.0001 37.2002 22.8001 36.9002 22.8001H33.2002C32.8002 22.8001 32.5992 23.1001 32.5992 23.4001V27.0001C32.5002 27.4001 32.8002 27.7001 33.2002 27.7001ZM14.9002 37.4999H11.2002C10.8002 37.4999 10.5002 37.1999 10.6002 36.8999V33.1999C10.6002 32.8999 10.8002 32.5999 11.2002 32.5999H14.9002C15.2002 32.5999 15.5002 32.7999 15.5002 33.1999V36.8999C15.5002 37.1999 15.3002 37.4999 14.9002 37.4999ZM22.2002 37.4999H25.9002C26.3002 37.4999 26.5002 37.1999 26.5002 36.8999V33.1999C26.5002 32.7999 26.2002 32.5999 25.9002 32.5999H22.2002C21.8002 32.5999 21.6002 32.8999 21.6002 33.1999V36.8999C21.5002 37.1999 21.8002 37.4999 22.2002 37.4999ZM36.9002 37.4999H33.2002C32.8002 37.4999 32.5002 37.1999 32.5992 36.8999V33.1999C32.5992 32.8999 32.8002 32.5999 33.2002 32.5999H36.9002C37.2002 32.5999 37.5002 32.7999 37.5002 33.1999V36.8999C37.5002 37.1999 37.3002 37.4999 36.9002 37.4999Z"></path></svg>
+														</div>
+															<input type="text" id="start" name="start"  value="시작일" readonly>
+													</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="pjFormHalf wd">
+											<p class="formTit fTit"><b>종료일</b></p>
+											<div class="datePickerWrap">
+												<div class="datePicker">
+													<div class="dateWrap">
+														<input type="text" id="end"  name="end" value="종료일" readonly>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							
+							</ol>
+							<div class="datePickerWrap">
+
 							</div>
-							<div class="datePicker">
-								<div class="dateWrap">
-									<button class="dateInput" id="date" data-range="true" placeholder="시작일 - 종료일" readonly>
-										<div class="topb"><svg viewBox="0 0 48 48"><path fill-rule="evenodd" clip-rule="evenodd" d="M43.5 13.6H4.5V11.8C4.5 10.4 5.6 9.3 7 9.3H41.2C42.6 9.3 43.7 10.4 43.7 11.8L43.5 13.6ZM43.5 41.1C43.5 42.5 42.4 43.6 41 43.6H6.9C5.5 43.6 4.4 42.5 4.4 41.1V16.1H43.5V41.1ZM41.1 6.9H38.6V2H36.1V6.9H11.8V2H9.3V6.9H6.9C4.2 6.9 2 9.1 2 11.8V41.1C2 43.8 4.2 46 6.9 46H41.1C43.8 46 46 43.8 46 41.1V11.8C46 9.1 43.8 6.9 41.1 6.9ZM11.2002 27.7001H14.9002C15.3002 27.7001 15.5002 27.4001 15.5002 27.0991V23.4001C15.5002 23.0001 15.2002 22.8001 14.9002 22.8001H11.2002C10.8002 22.8001 10.6002 23.1001 10.6002 23.4001V27.0001C10.5002 27.4001 10.8002 27.7001 11.2002 27.7001ZM25.9002 27.7001H22.2002C21.8002 27.7001 21.5002 27.4001 21.6002 27.0001V23.4001C21.6002 23.1001 21.8002 22.8001 22.2002 22.8001H25.9002C26.2002 22.8001 26.5002 23.0001 26.5002 23.4001V27.0991C26.5002 27.4001 26.3002 27.7001 25.9002 27.7001ZM33.2002 27.7001H36.9002C37.3002 27.7001 37.5002 27.4001 37.5002 27.0991V23.4001C37.5002 23.0001 37.2002 22.8001 36.9002 22.8001H33.2002C32.8002 22.8001 32.5992 23.1001 32.5992 23.4001V27.0001C32.5002 27.4001 32.8002 27.7001 33.2002 27.7001ZM14.9002 37.4999H11.2002C10.8002 37.4999 10.5002 37.1999 10.6002 36.8999V33.1999C10.6002 32.8999 10.8002 32.5999 11.2002 32.5999H14.9002C15.2002 32.5999 15.5002 32.7999 15.5002 33.1999V36.8999C15.5002 37.1999 15.3002 37.4999 14.9002 37.4999ZM22.2002 37.4999H25.9002C26.3002 37.4999 26.5002 37.1999 26.5002 36.8999V33.1999C26.5002 32.7999 26.2002 32.5999 25.9002 32.5999H22.2002C21.8002 32.5999 21.6002 32.8999 21.6002 33.1999V36.8999C21.5002 37.1999 21.8002 37.4999 22.2002 37.4999ZM36.9002 37.4999H33.2002C32.8002 37.4999 32.5002 37.1999 32.5992 36.8999V33.1999C32.5992 32.8999 32.8002 32.5999 33.2002 32.5999H36.9002C37.2002 32.5999 37.5002 32.7999 37.5002 33.1999V36.8999C37.5002 37.1999 37.3002 37.4999 36.9002 37.4999Z"></path></svg></div>
-									</button>
-								</div>
-								
-							</div>
-						<input type="text" id="date" value="" class="wrap"  data-range="true" placeholder="시작일 - 종료일" readonly>
-						<input type="hidden" id="start" name="start" value=""><input type="hidden" id="end" name="end" value="">
+<!-- 						<input type="text" id="date" value="" class="wrap"  data-range="true" placeholder="시작일 - 종료일" readonly> -->
+<!-- 						<input type="hidden" id="start" name="start" value=""><input type="hidden" id="end" name="end" value=""> -->
 						</div>
 					</div>
 				</div>
@@ -561,34 +586,31 @@ window.onload = function(){
 	<script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<script type="text/javascript">
 	let date = new Date();
-$('#date').daterangepicker({
-    locale: {
-        "format": "YYYY-MM-DD",
-        "separator": " ~ ",
-        "applyLabel": "확인",
-        "cancelLabel": "취소",
-        "fromLabel": "시작일",
-        "toLabel": "종료일",
-        "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-        "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-    },
-    "minDate" : date.getDate() + 1,
-    "maxDate" : date.getMonth() + 2
-}, function (start, end, label) {
-    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-    $('#start').val(start.format('YYYY-MM-DD'));
-	$('#end').val(end.format('YYYY-MM-DD'));
-});
-// 	$(function() {
-// 		$('.datepicker').daterangepicker({
-// 	    	opens: 'left'
-// 	 	}, function(start, end, label) {
-// 		    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-// 		    $('#start').val(start.format('YYYY-MM-DD'));
-// 		    $('#end').val(end.format('YYYY-MM-DD'));
-	    
-// 	  	});
-// 	});
+	let lastDate = new Date().getMonth() + 3;
+// 	$('#date').daterangepicker('option', 'minDate', date.getDate() + 1);//오늘이후 선택가능
+//     $('#date').daterangepicker('option', 'maxDate', date.getMonth() + 2);//오늘이후 선택가능
+	$('#date').daterangepicker({
+	    locale: {
+	        "format": "YYYY-MM-DD",
+	        "separator": " - ",
+	        "applyLabel": "확인",
+	        "cancelLabel": "취소",
+	        "fromLabel": "시작일",
+	        "toLabel": "종료일",
+	        "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+	        "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+	    },
+	        "minDate": date,
+            "maxDate": lastDate,
+
+	}, function (start, end) {
+// 	 	$('#date').daterangepicker('option', 'minDate', date.getDate() + 1);
+// 	    $('#date').daterangepicker('option', 'maxDate', date.getMonth() + 2);
+// 	    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+// 	    $('#inputDate').val(start.format('YYYY/MM/DD') + ' ~ ' + end.format('YYYY/MM/DD'));
+	    $('#start').val(start.format('YYYY-MM-DD'));
+		$('#end').val(end.format('YYYY-MM-DD'));
+	});
 	</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

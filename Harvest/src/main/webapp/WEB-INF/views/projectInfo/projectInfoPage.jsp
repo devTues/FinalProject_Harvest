@@ -13,7 +13,7 @@
 <title>productPage.jsp</title>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/projectInfoPage.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/projectPage.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/projectPage.js"></script> --%>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/projectInfoPage.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/harVest_css/app.d69b58d686469c0a1bc8.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/harVest_css/productUpdate.css" rel="stylesheet">
@@ -117,7 +117,7 @@ function keyDown(e) {
 
 // 좋아요 버튼
 function like() {
-	if(${empty sessionScope.iD}) {
+	if(${empty sessionScope.id}) {
 		Swal.fire({
 			title: '로그인 후 사용할 수 있습니다.',
 			icon: 'warning',
@@ -134,12 +134,12 @@ function like() {
 		  url	: "${pageContext.request.contextPath}/project/likePro", // 요청이 전송될 URL 주소
 		  type	: "POST", // http 요청 방식 (default: ‘GET’)
 		  data  : {'PJ_IDX' : $('#pjIdx').val(),
-			  	   'USER_ID' : '${sessionScope.iD}'}, // TODO session 아이디로 바까라 좋은말 할때...
+			  	   'USER_ID' : '${sessionScope.id}'}, // TODO session 아이디로 바까라 좋은말 할때...
 		  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
 		  success : function(data) {
 			  var src = $('#likeBtn').attr('src');
 			  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
-			  if(${!empty sessionScope.iD}) {
+			  if(${!empty sessionScope.id}) {
 				  $('#likeBtn').attr('src', src);
 			  }
 		  }
@@ -206,7 +206,7 @@ function handleInputLength(el, max) {
 
 // 후원하기 나타내기
 function showFunding() {
-	if(${empty sessionScope.iD}) {
+	if(${empty sessionScope.id}) {
 		Swal.fire({
 			title: '로그인 후 사용할 수 있습니다.',
 			icon: 'warning',
@@ -220,7 +220,7 @@ function showFunding() {
 		})
 	}
 	
-	if(${!empty sessionScope.iD}) {
+	if(${!empty sessionScope.id}) {
 		if($(".project_info_box").css("display") == "none") {
 			$(".project_info_box, .info_bg").show();
 		}
@@ -352,8 +352,8 @@ function commSubmit(){
 <body>
 <%-- 	<c:if test="${empty sesssionScope.iD}"> --%>
 	<div style="position:fixed;top:0;left:0;z-index:9999;color:red;">
-	${sessionScope.iD}님이 로그인했습니다.
-	<button onclick="location.href='${pageContext.request.contextPath}/member/logout'">로그아웃</button>
+	${sessionScope.id}님이 로그인했습니다.
+	<button onclick="location.href='${pageContext.request.contextPath}/user/logout'">로그아웃</button>
 	</div>
 <%-- 	</c:if> --%>
 <jsp:include page="../inc/header.jsp"></jsp:include>
@@ -373,24 +373,14 @@ function commSubmit(){
 				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 				  </div>
 				  <div class="carousel-inner">
-				    <c:set var="img" value="${projectDTO.img1}"/>
-						<c:if test="${not empty img}">
-							<c:forEach var="newImg" items="${fn:split(img,'&')}">
+<%-- 				    <c:set var="img" value="${projectDTO.img1}"/> --%>
+<%-- 						<c:if test="${not empty img}"> --%>
+							<c:forEach var="newImg" items="${fn:split(projectDTO.img1,'&')}">
 							    <div class="carousel-item active">
-							      <img src="${pageContext.request.contextPath}/resources/harVest_img/${newImg[0]}" class="d-block w-100" alt="...">
+							      <img src="${pageContext.request.contextPath}/resources/upload/${newImg}" class="d-block w-100" alt="...">
 							    </div>
-							    <c:if test="${not empty newImg[1]}">
-							    <div class="carousel-item">
-							      <img src="${pageContext.request.contextPath}/resources/harVest_img/${newImg[1]}" class="d-block w-100" alt="...">
-							    </div>
-							    </c:if>
-							    <c:if test="${not empty newImg[2]}">
-							    <div class="carousel-item">
-							      <img src="${pageContext.request.contextPath}/resources/harVest_img/${newImg[2]}" class="d-block w-100" alt="...">
-							    </div>
-							    </c:if>
-				    	</c:forEach>
-				    </c:if>
+				    		</c:forEach>
+<%-- 				    	</c:if> --%>
 				  </div>
 				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
