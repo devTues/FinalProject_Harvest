@@ -84,7 +84,7 @@
                 
                 <!-- 주목할 만한 프로젝트 4줄 정렬-->
                 <hr>
-                <h5>주목할 만한 프로젝트</h5>
+                <h5 class="pb-2">주목할 만한 프로젝트</h5>
                 <div class="row">
                 <c:forEach var="getAllList" items="${getAllList }" begin="1" end="8">
                     <div class="col-md-3 col-sm-6">
@@ -124,14 +124,14 @@
 	                    <a href="#" class="overlay-link"></a>
 	                    <div>
 	                    <a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getPopList.IDX }">
-	                    	<img class="mr-3" src="${pageContext.request.contextPath }/resources/assets/imgs/${getPopList.IMG1 }" width="100px" alt="">
+	                    	<img class="mr-3" src="${pageContext.request.contextPath }/resources/upload/${fn:split(getPopList.IMG1,'&')[0]}" width="100px" alt="">
 	                    </a>
 	                    <c:if test="${empty sesssionScope.id}">
 										<img style="position:absolute; top:5px;left:75px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getPopList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getPopList.HEART}">
 										</c:if>
 	                    </div>
 	                    <div class="media-body">
-	                    	<p class="my-2">${getPopList.CATEGORY } | ${getPopList.CRE_NM }</p>
+	                    	<p class="my-0">${getPopList.CATEGORY } | ${getPopList.CRE_NM }</p>
 	                    	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getPopList.IDX }">
 	                        	<h6 class="m-0">${getPopList.TITLE }</h6>
 	                        </a>
@@ -164,7 +164,7 @@
 				<!-- 찜버튼 -->
 				<div class="blog-media">
 					<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getNewList.IDX }">
-						<img src="${pageContext.request.contextPath }/resources/assets/imgs/${getNewList.IMG1 }" alt="" class="w-100">
+						<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getNewList.IMG1,'&')[0]}" alt="" class="w-100">
 					</a>
                         <c:if test="${empty sesssionScope.id}">
 						<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getNewList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getNewList.HEART}">
@@ -187,7 +187,7 @@
 				<!-- 찜버튼 -->
 				<div class="blog-media">
 					<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getDeadList.IDX }">
-						<img src="${pageContext.request.contextPath }/resources/assets/imgs/${getDeadList.IMG1 }" alt="" class="w-100">
+						<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getDeadList.IMG1,'&')[0]}" alt="" class="w-100">
 					</a>
                         <c:if test="${empty sesssionScope.id}">
 						<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getDeadList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getDeadList.HEART}">
@@ -210,7 +210,7 @@
 				<!-- 찜버튼 -->
 				<div class="blog-media">
 					<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getExpList.IDX }">
-					<img src="${pageContext.request.contextPath }/resources/assets/imgs/${getExpList.IMG1 }" alt="" class="w-100">
+					<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getExpList.IMG1,'&')[0]}" alt="" class="w-100">
 					</a>
 				</div>
               	<p class="my-2">${getExpList.CATEGORY } | ${getExpList.CRE_NM }</p>

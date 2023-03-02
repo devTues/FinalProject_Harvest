@@ -24,16 +24,6 @@
     <!-- 본문 내용 -->
 	<div class="container">
 		<div class="btn-group show">
-			<ul class="navbar-nav">
-				<li class="nav-item dropdown"><a class="btn btn-sm btn-outline-secondary dropdown-toggle text-dark mt-5 mb-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">달성률</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#"><small class="text-danger">전체보기</small></a>
-						<a class="dropdown-item" href="#"><small>75% 이하</small></a>
-						<a class="dropdown-item" href="#"><small>75% ~ 100%</small></a>
-						<a class="dropdown-item" href="#"><small>100% 이상</small></a>
-					</div>
-				</li>
-			</ul>
 		</div>
 	</div>
 	<div class="container mt-2 mb-4"><b style="color: red; white-space: nowrap;">${getCount }</b>개의 프로젝트가 있습니다.</div>
@@ -52,7 +42,7 @@
 								<!-- 찜버튼 -->
 								<div class="blog-media">
 									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
-										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')}" alt="" class="w-100">
+										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
 									</a>
 <!-- 									<label class="like_btn badge"> -->
                                    		<c:if test="${empty sesssionScope.id}">

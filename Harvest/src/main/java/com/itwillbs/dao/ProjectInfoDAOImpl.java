@@ -31,8 +31,6 @@ public class ProjectInfoDAOImpl implements ProjectInfoDAO {
 	@Override
 	public String getLike(Map<String, String> param) {
 		List<Map<String, String>> map = sqlSession.selectList(namespace + ".getLike", param);
-		
-		
 		return String.valueOf(map.get(0).get("CNT"));
 	}
 	
