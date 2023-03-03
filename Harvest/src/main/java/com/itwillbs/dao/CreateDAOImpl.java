@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -26,23 +27,6 @@ public class CreateDAOImpl implements CreateDAO {
 	@Override
 	public Map<String, String> getProject(int idx) {
 		return sqlSession.selectOne(namespace + ".getProject", idx);
-	}
-
-	@Override
-	public int getMax() {
-		return sqlSession.selectOne(namespace + ".getMax");
-	}
-
-	@Override
-	public void insertPlan(ProjectDTO projectDto) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void insertFunding(ProjectDTO projectDto) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

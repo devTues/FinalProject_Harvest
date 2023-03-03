@@ -10,15 +10,13 @@ public class ProjectDTO {
 	private String creIntro;
 	private String category;
 	private String title;
-	private String present;
+	private String productNm;
 	private String img1;
-	private String img2;
-	private String img3;
 	private String intro;
 	private String budget;
 	private String schedule;
-	private int minDona;
-	private int targetAmt;
+	private String minDona;
+	private String targetAmt;
 	private Date start;
 	private Date end;
 	private String status;
@@ -90,29 +88,17 @@ public class ProjectDTO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getPresent() {
-		return present;
+	String getProductNm() {
+		return productNm;
 	}
-	public void setPresent(String present) {
-		this.present = present;
+	void setProductNm(String productNm) {
+		this.productNm = productNm;
 	}
 	public String getImg1() {
 		return img1;
 	}
 	public void setImg1(String img1) {
 		this.img1 = img1;
-	}
-	public String getImg2() {
-		return img2;
-	}
-	public void setImg2(String img2) {
-		this.img2 = img2;
-	}
-	public String getImg3() {
-		return img3;
-	}
-	public void setImg3(String img3) {
-		this.img3 = img3;
 	}
 	public String getIntro() {
 		return intro;
@@ -132,16 +118,16 @@ public class ProjectDTO {
 	public void setSchedule(String schedule) {
 		this.schedule = schedule;
 	}
-	public int getMinDona() {
+	public String getMinDona() {
 		return minDona;
 	}
-	public void setMinDona(int minDona) {
+	public void setMinDona(String minDona) {
 		this.minDona = minDona;
 	}
-	public int getTargetAmt() {
+	public String getTargetAmt() {
 		return targetAmt;
 	}
-	public void setTargetAmt(int targetAmt) {
+	public void setTargetAmt(String targetAmt) {
 		this.targetAmt = targetAmt;
 	}
 	public Date getStart() {

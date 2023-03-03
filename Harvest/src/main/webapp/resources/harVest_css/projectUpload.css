@@ -283,6 +283,7 @@
 .topb svg {
     width: 1em;
     height: 1em;
+    align-items: center;
 }
 svg:not(:root) {
     overflow: hidden;
@@ -623,7 +624,7 @@ dl {
 	    display: flex;
 	    -webkit-box-pack: justify;
 	    justify-content: space-between;
-	    width: 550px;
+	    width: 630px;
 	}
 }
 
@@ -721,7 +722,7 @@ dl {
     -webkit-box-pack: justify;
     justify-content: space-between;
     font-weight: 400;
-    margin: 8px 0px 0px;
+    margin: 10px 0px 0px;
     font-size: 12px !important;
     line-height: 20px !important;
     font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
@@ -1078,11 +1079,12 @@ input {
 .input_wrap2 {
 	flex: 1 1 0%;
     border: 0px;
-    text-align: right;
     padding: 0px;
     background: transparent;
 }
-
+.input_wrap2 input {
+    text-align: right;
+}
 .amtShow {
 	background: rgb(252, 252, 252);
     border-radius: 4px;
@@ -1221,17 +1223,105 @@ input {
     padding: 10px 10px;
     border: 1px solid rgb(240, 240, 240);
 }
-
-.writeWrap {
-	display: flex;
-    flex-wrap: wrap;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
-    color: rgb(61, 61, 61);
-    margin: 0px 0px 10px;
+.fundPlan {
+	margin: 0px;
+	padding: 0px;
 }
+.fungPlanItem1 {
+    position: relative;
+    list-style: none;
+    padding: 0px 0px 38px 18px;
+    color: rgb(158, 158, 158);
+}
+
+@media (min-width: 1080px) {
+	.pjForm {
+	    display: flex;
+	    -webkit-box-pack: justify;
+	    justify-content: space-between;
+	    width: 100%;
+	}
+}
+
+.pjForm .pjFormHalf:first-child {
+    margin-bottom: 24px;
+}
+.fungPlanItem1:last-child {
+    padding-bottom: 0px;
+}
+@media (min-width: 1080px) {
+	.pjForm .pjFormHalf:first-child {
+   		margin-left: 0px;
+	}
+}
+
+@media (min-width: 1080px) {
+	.pjForm .pjFormHalf {
+	    margin: 0px 8px;
+	    width: 50%;
+	}
+}
+@media (min-width: 1080px){
+	.wd {
+	    width: 50%;
+	}
+}
+.fungPlanItem1::before {
+    position: absolute;
+    top: 4px;
+    left: 0px;
+    z-index: 1;
+    content: "";
+    border: 3px solid rgb(0, 0, 0);
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 4px;
+    background: rgb(255, 255, 255);
+}
+
+.fungPlanItem1::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 100%;
+    border-left: 1px solid rgb(228, 228, 228);
+}
+.fungPlanItem1:last-child::after {
+  content: none;
+}
+.fungPlanItem1 .formTit {
+    margin-bottom: 4px;
+}
+
+p:first-child {
+   margin-top: 0em;
+}
+.fTit {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: rgb(13, 13, 13);
+    display: flex;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.fungPlanItem1:last-child {
+    margin-right: 0px;
+}
+@media (min-width: 1080px) {
+	.pjForm .pjFormHalf:last-child {
+	    margin-right: 0px;
+	}
+}
+
+.pjForm .pjFormHalf {
+    margin-bottom: 24px;
+}
+
+
 .writeAre {
 	display: flex;
     -webkit-box-align: center;
@@ -1247,9 +1337,9 @@ input {
 }
 
 .dateWrap {
+    position: relative;
     display: inline-block;
-    padding: 0;
-    border: 0;
+    width: 100%;
 }
 
 .datePicker .dateWrap {
@@ -1271,4 +1361,80 @@ input {
     border: 1px solid rgb(240, 240, 240);
     background: rgb(255, 255, 255);
     color: rgb(61, 61, 61);
+}
+
+.datePickerWrap input {
+    outline: none;
+    border: none;
+    font-size: 14px;
+    width: 200px;
+}
+
+.fundingTerm {
+    padding-top: 46px;
+    font-weight: 400;
+    font-size: 13px !important;
+    line-height: 24px !important;
+    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+.adjDate .payDate {
+	font-size: 13px;
+}
+.toolTip {
+	margin-bottom: 10px;
+}
+.toolTipArea {
+	display: flex;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    color: rgb(61, 61, 61);
+    margin: 0px 0px 10px;
+}
+.toolTipArea p {
+	font-weight: 500;
+    margin: 0px;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.toolTipArea em {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 0px 0px 0px 2px;
+    padding: 2px;
+    border: 0px;
+    background: transparent;
+    border-radius: 2px;
+    outline: none;
+    font-size: 16px;
+}
+.toolTipArea svg {
+	fill: rgb(255, 87, 87);
+}
+/* .LabelWithAreaTooltip { */
+/* 	font-size: 11px; */
+/*     width: 100%; */
+/*     background: rgb(255, 255, 255); */
+/*     box-shadow: rgb(0 0 0 / 5%) 0px 2px 8px, rgb(0 0 0 / 10%) 0px 1px 0px; */
+/*     border-radius: 4px; */
+/*     padding: 16px 46px 16px 26px; */
+/*     position: relative; */
+/*     margin: 10px 0px 0px; */
+/*     border: 1px solid rgb(240, 240, 240); */
+/*     transition: all 0.5s ease 0s; */
+/*     height: auto; */
+/*     transform: translateY(0px); */
+/*     opacity: 1; */
+/* } */
+
+.red {
+	color: red;
+}
+.redBoarder{
+	border: 1px solid red;
 }

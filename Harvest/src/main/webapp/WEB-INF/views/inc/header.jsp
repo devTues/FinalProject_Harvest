@@ -37,7 +37,8 @@
                       	  <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/search?search="><img src="${pageContext.request.contextPath }/resources/assets/imgs/border-all.svg"/> 전체</a>
                           <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=book"><img src="${pageContext.request.contextPath }/resources/assets/imgs/book.svg"/> 출판</a>
                           <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=game"><img src="${pageContext.request.contextPath }/resources/assets/imgs/nintendo-switch.svg"/> 게임</a>
-                          <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=music"><img src="${pageContext.request.contextPath }/resources/assets/imgs/music-note-list.svg"/> 음악</a>
+                          <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=media"><img src="${pageContext.request.contextPath }/resources/assets/imgs/music-note-list.svg"/> 음악</a>
+                          <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=design"><img src="${pageContext.request.contextPath }/resources/assets/imgs/easel2.svg"/> 디자인</a>
                       </div>
                     </li>
                     <li class="nav-item">

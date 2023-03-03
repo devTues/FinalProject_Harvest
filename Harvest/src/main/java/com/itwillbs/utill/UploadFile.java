@@ -3,6 +3,7 @@ package com.itwillbs.utill;
 import java.io.File;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.FileCopyUtils;
@@ -10,22 +11,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFile {
 	
-		//파일 업로드
+	@Resource(name = "uploadPath")
+	private static String uploadPath;
+	
+	//파일 업로드
 //		public static String fileUpload(String uploadPath, String fileName, byte[] fileData, String ymdPath)
-		public static String fileUpload(HttpServletRequest request, MultipartFile fileName) throws Exception {
-			String myPath = "resources/upload/";
-			// 절대 경로
-			String uploadPath = request.getRealPath(myPath);
-			//상대 경로
+	public static String fileUpload(HttpServletRequest request, MultipartFile fileName) throws Exception {
+		String myPath = "resources/upload/";
+		// 절대 경로
+		String Path = request.getRealPath(myPath);
+		//상대 경로
 //			String uploadPath = request.getSession().getServletContext().getRealPath(myPath);
-			System.out.println(uploadPath);
-			UUID uuid = UUID.randomUUID();
-			String newFileName = uuid.toString() + "_" + fileName.getOriginalFilename();
-			
-			FileCopyUtils.copy(fileName.getBytes(), new File(uploadPath, newFileName));
-			return newFileName;
-		}
+		System.out.println(Path);
+		System.out.println(uploadPath);
 		
+		UUID uuid = UUID.randomUUID();
+		String newFileName = uuid.toString() + "_" + fileName.getOriginalFilename();
+		
+		FileCopyUtils.copy(fileName.getBytes(), new File(uploadPath, newFileName));
+		FileCopyUtils.copy(fileName.getBytes(), new File(Path, newFileName));
+		return newFileName;
+	}
+	
 		//폴더이름 및 폴더 생성
 //		public static String calcPath(String uploadPath) {
 //			Calendar cal = Calendar.getInstance();

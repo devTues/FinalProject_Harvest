@@ -7,54 +7,113 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<link href="${pageContext.request.contextPath }/resources/harVest_css/projectUpload.css" rel="stylesheet">
 
-<title>project.jsp</title>
-<%--  <script src="${pageContext.request.contextPath }/resources/dist/js/datepicker.min.js"></script> --%>
-<!-- 기타./. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-<!-- 나의 js 파일로 떼기 -->
-<%-- <script src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.1.1.min.js"></script> --%>
-<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/Upload.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script> -->
-<!-- 파일 미리보기 정렬 -->
-<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
-<!-- 달력 -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<!--  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
-<!--  <link type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"> -->
-<!--  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
-<script type="text/javascript">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	<link href="${pageContext.request.contextPath }/resources/harVest_css/projectUpload.css" rel="stylesheet">
+	<title>project.jsp</title>
+	<!-- 기타 -->
+<%--     <script src="${pageContext.request.contextPath }/resources/harVest_js/jquery.validate.js"></script> --%>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- 나의 js 파일로 떼기 -->
+	<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/Upload.js"></script>
+	<!-- 사진 미리보기 및 정렬 -->
+	<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
+	<!-- 달력 -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script type="text/javascript">
 	// 	TODO : 클릭시 null이면 빨간색 테두리, 필수입력 제어
 window.onload = function(){
 	
-	$('.text_').on("propertychange change keyup keydown paste input", function(){
-// 		debugger;
-		var value = $(this).val();
-		var id = $(this).attr('id');
-		if(value == "") {
-			$('#p_' + id).html('필수 입력 사항입니다.');
-			$('#p_' + id).css({"color": "red"});
-			$('.' + id + 'Length').css({"color": "red"});
-			$(this).closest('div').css({"border": "1px solid red"});
-	 		return;
-		}
-		$('#p_' + id).html('');
-	});
+// 	$('.text_').on("propertychange change keyup keydown paste input", function(){
+// // 		debugger;
+// 		var value = $(this).val();
+// 		const amount = parseFloat(value.replace(',', ''));
+// 		var id = $(this).attr('id');
+// 		if(value == "") {
+// 			$('#p_' + id).html('필수 항목입니다.');
+// 			$('#p_' + id).css({"color": "red"});
+// 			$('.' + id + 'Length').css({"color": "red"});
+// 			$(this).closest('div').css({"border": "1px solid red"});
+// 	 		return;
+// 		}
+		
+// 		$('#p_' + id).html('');
+// 		return;
+// 	});
 	
-	$('.text_').trigger('change');
-	
-	
+// 	$('.text_').trigger('change');
 
+// 		  $('#targetAmt').val();
+		  
+          // 로그인폼
+//           $(function() {
+//               $("form[name='project']").validate({
+//                   rules: {
+//                 	  creNm: {
+//                 		    required: true,
+//                     		rangelength:[0,20],
+//                     	},
+//                     	file: {
+//                             required: true,
+//                         },
+//                         creIntro: {
+//                         	required: true,
+//                         	rangelength:[0,300],
+//             			},
+//             			title: {
+//             				required: true,
+//             				rangelength:[0,20],
+//             			},
+//                         productNm: {
+//                         	required: true,
+//                         	rangelength:[0,10],
+//                         },
+//                         AddImgs: {
+//                             required: true,
+//                         },
+//                         intro: {
+//                             required: true,
+//                         },
+//                         budget: {
+//                             required: true,
+//                         },
+//                         schedule: {
+//                             required: true,
+//                         },
+//                         targetAmt: {
+//                             required: true,
+//                         },
+//                         minDona: {
+//                             required: true,
+//                         },
+//                         start: {
+//                             required: true,
+//                         },
+//                         end: {
+//                             required: true,
+//                         },
+//                     },
+//                   submitHandler: function (form) {
+                	  
+//                       form.submit();
+//                   }
+//               });
+//           });
+          
+//           //
+// 	$.validator.addMethod("regexPass", function(value, element, regex){
+// 	  var regExp = new RegExp(regex);
+// 	  return regExp.test(value);
+// 	});
+
+          
 	$('.datepicker').daterangepicker();
+	
 }
 </script>
 
@@ -90,17 +149,7 @@ window.onload = function(){
 							<!-- 저장, 심사 요청 버튼 (submit) -->
 							<!-- TODO : 시작일 오류, 심사요청으로 자동 변경되게 만들기 -->
 							<!-- 시작일 오류  -->
-							<!-- <button class="err_btn err_button" color="white" disabled> -->
 							<button class="top_btn top_button">
-								<!-- <span> -->
-								<!-- 	<div name="error" class="topb"> -->
-								<!-- 		<svg viewBox="0 0 48 48"> -->
-								<!-- 			<path d="M21.009 15.1083C21.0042 15.05 21.0502 15 21.1087 15H26.8913C26.9498 15 26.9958 15.05 26.991 15.1083L26.0076 26.9083C26.0033 26.9601 25.96 27 25.908 27H22.092C22.04 27 21.9967 26.9601 21.9924 26.9083L21.009 15.1083Z"></path> -->
-								<!-- 			<path d="M21 32C21 30.3431 22.3431 29 24 29C25.6569 29 27 30.3431 27 32C27 33.6569 25.6569 35 24 35C22.3431 35 21 33.6569 21 32Z"></path> -->
-								<!-- 			<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg> -->
-								<!-- 	</div>시작일 오류 -->
-								<!-- </span> -->
-								<!-- </button> -->
 								<span>임시저장</span>
 								<!-- <span>심사요청</span> -->
 							</button>
@@ -460,20 +509,21 @@ window.onload = function(){
 
 						<p>* 제작비, 선물 배송비, 인건비, 예비 비용 등을 함께 고려해주세요.</p>
 						</div>
+						</div>
 					</dl>
 					<div class="arti_cont">
 						<div class="goal_con">
 							<p class="sub_tit">목표금액</p>
 							<div>
-								<div class="wrap">
+								<div class="wrap targetAmtWrap">
 									<span class="input_wrap2 guide">
-										<fmt:parseNumber value = "${projectMap.TARGET_AMT }" var = "targetAmt"/>
-										<input type="text" class="textInput" name="targetAmt" id="targetAmt" value="${targetAmt }" placeholder="50만원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')" >
+										<fmt:parseNumber value = "${projectMap.TARGET_AMT}" pattern = "###,###" var = "targetAmt"/>
+										<input type="text" class="textInput targetAmt text_" name="targetAmt" id="targetAmt" value="" placeholder="50만원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')" >
 										원
 									</span>
 								</div>
 								<div class="notiArea">
-									<p></p>
+									<p id="p_targetAmt"></p>
 								</div>
 							</div>
 							<div class="amtShow">
@@ -500,10 +550,13 @@ window.onload = function(){
 						<div>
 							<div class="wrap">
 								<span class="input_wrap2 guide">
-									<fmt:parseNumber value = "${projectMap.MIN_DONA }" var = "minDona"/>
-									<input type="text" class="textInput" name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
+									<fmt:parseNumber value = "${projectMap.MIN_DONA }" pattern = "###,###" var = "minDona"/>
+									<input type="text" class="textInput minDona text_" name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
 									원
 								</span>
+							</div>
+							<div class="notiArea">
+								<p id="p_minDona"></p>
 							</div>
 						</div>
 						</div>
@@ -513,6 +566,31 @@ window.onload = function(){
 					<dl class="sub_article">
 						<dt class="arti_tit">펀딩 일정</dt>
 						<dd class="defi">설정한 일이 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.</dd>
+						<div class="notice">
+							<div class="noti_tit">
+								<div class="topb">
+									<svg viewBox="0 0 48 48">
+										<path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path>
+										<path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
+								</div>
+								펀딩 일정은 최대 2개월 동안만 진행 가능합니다.
+							</div>
+							<div class="noti_tit">
+								<div class="topb">
+									<svg viewBox="0 0 48 48"><path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path><path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
+								</div>
+								프로젝트가 성공하면 펀딩 종료 다음 날 후원금이 결제됩니다. 결제가 이루어지지 않은 경우 24시간 간격으로 7일 동안 결제를 시도합니다.
+							</div>
+							<div class="noti_tit">
+								<div class="topb">
+									<svg viewBox="0 0 48 48"><path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path><path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
+								</div>
+								모금액은 후원자 결제 종료 다음 날부터 영업일 기준(주말 및 공휴일 제외) 7일째 되는 날 입금됩니다.
+							</div>
+						</div>
 					</dl>
 					<div class="arti_cont">
 						<div class="con_width">
@@ -528,7 +606,7 @@ window.onload = function(){
 														<div class="topb">
 															<svg viewBox="0 0 48 48"><path fill-rule="evenodd" clip-rule="evenodd" d="M43.5 13.6H4.5V11.8C4.5 10.4 5.6 9.3 7 9.3H41.2C42.6 9.3 43.7 10.4 43.7 11.8L43.5 13.6ZM43.5 41.1C43.5 42.5 42.4 43.6 41 43.6H6.9C5.5 43.6 4.4 42.5 4.4 41.1V16.1H43.5V41.1ZM41.1 6.9H38.6V2H36.1V6.9H11.8V2H9.3V6.9H6.9C4.2 6.9 2 9.1 2 11.8V41.1C2 43.8 4.2 46 6.9 46H41.1C43.8 46 46 43.8 46 41.1V11.8C46 9.1 43.8 6.9 41.1 6.9ZM11.2002 27.7001H14.9002C15.3002 27.7001 15.5002 27.4001 15.5002 27.0991V23.4001C15.5002 23.0001 15.2002 22.8001 14.9002 22.8001H11.2002C10.8002 22.8001 10.6002 23.1001 10.6002 23.4001V27.0001C10.5002 27.4001 10.8002 27.7001 11.2002 27.7001ZM25.9002 27.7001H22.2002C21.8002 27.7001 21.5002 27.4001 21.6002 27.0001V23.4001C21.6002 23.1001 21.8002 22.8001 22.2002 22.8001H25.9002C26.2002 22.8001 26.5002 23.0001 26.5002 23.4001V27.0991C26.5002 27.4001 26.3002 27.7001 25.9002 27.7001ZM33.2002 27.7001H36.9002C37.3002 27.7001 37.5002 27.4001 37.5002 27.0991V23.4001C37.5002 23.0001 37.2002 22.8001 36.9002 22.8001H33.2002C32.8002 22.8001 32.5992 23.1001 32.5992 23.4001V27.0001C32.5002 27.4001 32.8002 27.7001 33.2002 27.7001ZM14.9002 37.4999H11.2002C10.8002 37.4999 10.5002 37.1999 10.6002 36.8999V33.1999C10.6002 32.8999 10.8002 32.5999 11.2002 32.5999H14.9002C15.2002 32.5999 15.5002 32.7999 15.5002 33.1999V36.8999C15.5002 37.1999 15.3002 37.4999 14.9002 37.4999ZM22.2002 37.4999H25.9002C26.3002 37.4999 26.5002 37.1999 26.5002 36.8999V33.1999C26.5002 32.7999 26.2002 32.5999 25.9002 32.5999H22.2002C21.8002 32.5999 21.6002 32.8999 21.6002 33.1999V36.8999C21.5002 37.1999 21.8002 37.4999 22.2002 37.4999ZM36.9002 37.4999H33.2002C32.8002 37.4999 32.5002 37.1999 32.5992 36.8999V33.1999C32.5992 32.8999 32.8002 32.5999 33.2002 32.5999H36.9002C37.2002 32.5999 37.5002 32.7999 37.5002 33.1999V36.8999C37.5002 37.1999 37.3002 37.4999 36.9002 37.4999Z"></path></svg>
 														</div>
-															<input type="text" id="start" name="start"  value="시작일" readonly>
+															<input type="text" id="start" name="start"  value="${projectMap.START }" placeholder=" 날짜를 선택해주세요." readonly>
 													</button>
 													</div>
 												</div>
@@ -539,37 +617,59 @@ window.onload = function(){
 											<div class="datePickerWrap">
 												<div class="datePicker">
 													<div class="dateWrap">
-														<input type="text" id="end"  name="end" value="종료일" readonly>
+														<div class="dateInput" type="button" id="date" data-range="true">
+															<div class="topb">
+															</div>
+															<input type="text"  id="end"  name="end" value="${projectMap.END }" placeholder=" 날짜를 선택해주세요." readonly>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+									<div class="fundingTerm">
+										<p class="formTit fTit"><b>펀딩 기간</b></p>
+											<div id="diff">
+<%-- 											<c:if test="${not empty img}"> --%>
+											최대 60일
+<%-- 											</c:if> --%>
+											</div>
+									</div>
 								</li>
-							
+								<li class="fungPlanItem1">
+									<div class="toolTip">
+										<div class="toolTipArea">
+											<div type="button" class="writeAre">
+											<p>후원자 결제 종료</p>
+												<em><div class="topb">
+													<svg viewBox="0 0 48 48"><path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path><path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
+												</div></em>
+											</div>
+										</div>
+									</div>
+									<div id="payDate">
+									종료일 다음 날부터 7일
+									</div>
+								</li>
+								<li class="fungPlanItem1">
+									<div class="toolTip">
+										<div class="toolTipArea">
+											<div type="button" class="writeAre">
+											<p>정산일</p>
+												<em><div class="topb">
+													<svg viewBox="0 0 48 48"><path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path><path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
+												</div></em>
+											</div>
+										</div>
+									</div>
+									<div id="adjDate">
+									후원자 결제 종료 다음 날부터 7영업일
+									</div>
+								</li>
 							</ol>
-							<div class="datePickerWrap">
-
+								<div class="datePickerWrap">
 							</div>
-<!-- 						<input type="text" id="date" value="" class="wrap"  data-range="true" placeholder="시작일 - 종료일" readonly> -->
-<!-- 						<input type="hidden" id="start" name="start" value=""><input type="hidden" id="end" name="end" value=""> -->
 						</div>
-					</div>
-				</div>
-<!-- 				<div class="article_proj"> -->
-<!-- 					<div class="arti_tit">펀딩 종료일</div> -->
-<!-- 					<div class="arti_cont"> -->
-<!-- 					<input type="date" name="end"> -->
-<!-- 					<input type="text" name="end" value="" class="datepicker wrap" placeholder="종료일" readonly id="dp1677469327072"> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-				<div class="article_proj">
-					<div class="arti_tit">펀딩 기간</div>
-					<div class="arti_cont">
-					<ul>
-					<li>후원자 결제 종료일</li>
-					<li>정산일</li>
-					</ul>
 					</div>
 				</div>
 				<div class="article_proj">
@@ -585,13 +685,15 @@ window.onload = function(){
 </form>
 	<script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<script type="text/javascript">
-	let date = new Date();
-	let lastDate = new Date().getMonth() + 3;
-// 	$('#date').daterangepicker('option', 'minDate', date.getDate() + 1);//오늘이후 선택가능
-//     $('#date').daterangepicker('option', 'maxDate', date.getMonth() + 2);//오늘이후 선택가능
+	var today = new Date();
+	
+	today.setDate(today.getDate() + 1);
 	$('#date').daterangepicker({
+		"maxSpan": {
+            "days": 60
+        },
 	    locale: {
-	        "format": "YYYY-MM-DD",
+	    	"format": "YYYY-MM-DD",
 	        "separator": " - ",
 	        "applyLabel": "확인",
 	        "cancelLabel": "취소",
@@ -600,17 +702,37 @@ window.onload = function(){
 	        "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
 	        "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
 	    },
-	        "minDate": date,
-            "maxDate": lastDate,
-
+	        "minDate": today,
+	        "drops" : "auto"
 	}, function (start, end) {
-// 	 	$('#date').daterangepicker('option', 'minDate', date.getDate() + 1);
-// 	    $('#date').daterangepicker('option', 'maxDate', date.getMonth() + 2);
-// 	    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-// 	    $('#inputDate').val(start.format('YYYY/MM/DD') + ' ~ ' + end.format('YYYY/MM/DD'));
+		
+		var term = new Date(end - start) / (1000 * 3600 * 24);
 	    $('#start').val(start.format('YYYY-MM-DD'));
 		$('#end').val(end.format('YYYY-MM-DD'));
+		// 펀딩 기간
+		$('#diff').text(Math.floor(term) + '일');
+		// 후원자 결제 종료일
+		var endDate = new Date(end);
+		$('#payDate').text(dateCal(endDate, 7));
+		// 정산일
+		$('#adjDate').text(dateCal(endDate, 9));
 	});
+	
+	// 계산한 날짜 포맷
+	function dateFormat(date) {
+		var formatDate = date.getFullYear()+ '-' + (date.getMonth()+1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+		return formatDate;
+	}
+	
+	// 결제일, 정산일 계산(주말 제외) 0: 일요일, 6: 토요일
+	function dateCal(date, n) {
+		var calDate = new Date(date.setDate(date.getDate() + n));
+		var realDate = calDate.getDay() == 0 ? dateCal(calDate, 2) :
+				       calDate.getDay() == 6 ? dateCal(calDate, 1) : calDate;
+		
+		return dateFormat(realDate);
+// 		return new Date(date.setDate(date.getDate() + n));
+	}
 	</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

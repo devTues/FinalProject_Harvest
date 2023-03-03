@@ -1,14 +1,18 @@
 package com.itwillbs.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +24,14 @@ import com.itwillbs.utill.UploadFile;
 
 @Controller
 public class CreateController {
+
 	private Map<String, String> projectMap;
+	
+	@Resource(name = "uploadPath")
+	private String uploadPath;
+	
 	@Inject
 	private CreateService createService;
-
-//	@Resource(name = "uploadPath1")
-//	private String uploadPath1;
 
 	@RequestMapping(value = "/creator/start", method = RequestMethod.GET)
 	public String start(Model model, HttpSession session) {
@@ -57,17 +63,35 @@ public class CreateController {
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
 //	@RequestMapping(value = "/creator/projectPro", method = RequestMethod.POST)
 	public String createPro(HttpServletRequest request, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
-
-		if(!mtfRequest.getFile("profile").isEmpty()) {
-			// 프로필 이미지 (사진 1개)
-			projectDto.setCrePro(UploadFile.fileUpload(request, mtfRequest.getFile("profile")));
-		}
+		String myPath = "resources/upload";
+		// 절대 경로
+		String Path = request.getRealPath(myPath);
+		//상대 경로
+//			String uploadPath = request.getSession().getServletContext().getRealPath(myPath);
+		System.out.println(Path);
+		System.out.println(uploadPath);
+		UUID uuid = UUID.randomUUID();
+		
+		MultipartFile prifile = mtfRequest.getFile("profile");
+		
+		String newFileName = uuid.toString() + "_" + prifile.getOriginalFilename();
+		
+		FileCopyUtils.copy(prifile.getBytes(), new File(uploadPath, newFileName));
+		projectDto.setCrePro(newFileName);
+		
+//		if(!mtfRequest.getFile("profile").isEmpty()) {
+//			// 프로필 이미지 (사진 1개)
+//			
+//			projectDto.setCrePro(UploadFile.fileUpload(uploadPath, mtfRequest.getFile("profile")));
+//		}
 		
 		if(!mtfRequest.getFile("images").isEmpty()) {
 			String multiImg = "";
 			// 프로젝트 이미지 (사진 최대 3개) => List<MultipartFile>
 			for(MultipartFile file : mtfRequest.getFiles("images")) {
-				multiImg += UploadFile.fileUpload(request, file) + "&";
+				
+				FileCopyUtils.copy(file.getBytes(), new File(Path, newFileName));
+				multiImg += UUID.randomUUID().toString() + "_" + prifile.getOriginalFilename() + "&";
 			}
 			projectDto.setImg1(multiImg);
 		}
@@ -76,40 +100,11 @@ public class CreateController {
 		return "redirect:/mainpage/main";
 	}
 
-	@RequestMapping(value = "/creator/plan", method = RequestMethod.GET)
-	public String plan(Model model, HttpServletRequest request) {
-		String idx = request.getParameter("idx");
-		
-		if(!idx.equals("0")) {
-			projectMap = createService.getProject(Integer.parseInt(idx));
-			model.addAttribute("projectMap", projectMap);
-		}
-		
-		return "creator/planUpload";
-	}
-	
-	@RequestMapping(value = "/creator/planPro", method = RequestMethod.POST)
-	public String planPro(ProjectDTO projectDto) throws Exception {
-		createService.insertPlan(projectDto);
-		return "redirect:/mainpage/main";
-	}
 
-	@RequestMapping(value = "/creator/funding", method = RequestMethod.GET)
-	public String funding(Model model, HttpServletRequest request) {
-		String idx = request.getParameter("idx");
-		
-		if(!idx.equals("0")) {
-			projectMap = createService.getProject(Integer.parseInt(idx));
-			model.addAttribute("projectMap", projectMap);
-		}
-		
-		return "creator/fundingUpload";
-	}
 
-	@RequestMapping(value = "/creator/fundingPro", method = RequestMethod.POST)
-	public String fundingPro(ProjectDTO projectDto) throws Exception {
-		createService.insertFunding(projectDto);
-		return "redirect:/mainpage/main";
-	}
+
+
+
+
 
 }

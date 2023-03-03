@@ -51,10 +51,10 @@
                      <if test='!schedule.equals("")'>      
                      , SCHEDULE  
                      </if>
-                     <if test='!minDona.equals("")'>    
+                     <if test='!minDona.equals("")  and minDona != null'>    
                      , MIN_DONA    
                      </if>
-                     <if test='!targetAmt.equals("")'>  
+                     <if test='targetAmt neq "," and targetAmt != null'>  
                      , TARGET_AMT  
                      </if>
                      <if test='!start.equals("")'>
@@ -108,16 +108,16 @@
                       <if test='!schedule.equals("")'>  
                       , #{schedule}
                       </if>
-                       <if test='!minDona.equals("")'>  
-                      , IFNULL(REPLACE(#{minDona}, ',', NULL), 0)
+                       <if test='!minDona.equals("") and minDona != null'>  
+                      , REPLACE(#{minDona}, ',', '')
                       </if>
-                      <if test='!targetAmt.equals("")'>  
-                      , IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0)
+                      <if test='targetAmt neq "," and targetAmt != null'>  
+                      , REPLACE(#{targetAmt}, ',', '')
                       </if>
-                      <if test='!start.equals("")'>  
+                      <if test='!start.equals("") and start != null'>  
                       , #{start}
                       </if>
-                      <if test='!end.equals("")'>
+                      <if test='!end.equals("") and end != null'>
                       , #{end}
                       </if>
                       , #{status}
@@ -157,16 +157,16 @@
 				   <if test='!schedule.equals("")'> 
 				   , SCHEDULE    = #{schedule}
 				   </if>
-				    <if test='!minDona.equals("")'>  
-				   , MIN_DONA    = IFNULL(REPLACE(#{minDona}, ',', NULL), 0)  
+				    <if test='!minDona.equals("") and minDona != null'>  
+				   , MIN_DONA    = REPLACE(#{minDona}, ',', '')
 				   </if> 
-				    <if test='!targetAmt.equals("")'>  
-				   , TARGET_AMT  = IFNULL(REPLACE(#{targetAmt}, ',', NULL), 0) 
+				    <if test='targetAmt neq "," and targetAmt != null'>  
+				   , TARGET_AMT  = REPLACE(#{targetAmt}, ',', '')
 				   </if>
-				   <if test='!start.equals("")'>
+				   <if test='!start.equals("") and start != null'>
 				   , START        = #{start}
 				   </if>
-				   <if test='!end.equals("")'>
+				   <if test='!end.equals("") and end != null'>
 				   , END         = #{end}
 				   </if>
 				   <if test='!status.equals("")'>
