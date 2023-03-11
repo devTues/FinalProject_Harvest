@@ -38,7 +38,9 @@
 							<div class="card-header p-0">
 								<!-- 찜버튼 -->
 								<div class="blog-media">
-									<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
+								<a href="${pageContext.request.contextPath }/project/projectOpen?idx=${getExpectList.IDX }">
+									<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getExpectList.IMG1,'&')[0]}" alt="" class="w-100">
+								</a>
 								</div>
 							</div>
 							<div class="card-body px-0">
@@ -48,7 +50,7 @@
 								<input type="hidden" value="${sessionScope.id }">
 								
 								<p class="my-2">${getExpectList.CATEGORY } | ${getExpectList.CRE_NM }</p>
-								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getExpectList.IDX }">
+								<a href="${pageContext.request.contextPath }/project/projectOpen?idx=${getExpectList.IDX }">
 									<h5 class="card-title mb-2">${getExpectList.TITLE }</h5>
 								</a>	
 								<span class="text-muted">${getExpectList.START } 공개예정입니다.</span><br>
@@ -110,7 +112,7 @@
 				  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
 				  $('#alramBtn_' + pjIdx).attr('src', src);
 			  }
-			})
+			});
 	}
 	
 	</script>

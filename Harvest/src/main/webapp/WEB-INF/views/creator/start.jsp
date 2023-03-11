@@ -62,6 +62,20 @@
   					</div>
   				</div>
 				</c:forEach>
+				
+  				<!-- 페이징 처리 -->
+				<div  class="pre">
+				<c:if test="${pageMap.startPage > pageMap.pageBlock }">
+					<a href="${pageContext.request.contextPath }/creator/start?pageNum=${pageMap.startPage-pageMap.pageBlock}">Prev</a>
+				</c:if>
+				</div>
+   
+				<div class="next">
+				<c:if test="${pageMap.startPage < pageMap.pageCount }">
+			    	<a href="${pageContext.request.contextPath }/creator/start?pageNum=${pageMap.startPage+pageMap.pageBlock}">Next</a>
+				</c:if>
+				</div>
+			    
 				<div class="newBtnWrap">
 					<button class="newBtn wd" onclick="location.href='${pageContext.request.contextPath}/creator/project?idx=0'">
 						<span>새 프로젝트 작성하기</span>

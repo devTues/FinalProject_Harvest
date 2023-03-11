@@ -25,6 +25,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService{
 	public ProjectDTO getProjectInfo(Map<String, String> param) {
 		return projectDAO.getProjectInfo(param);
 	}
+	
+	@Override
+	public Map<String, String> getOpenPjInfo(Map<String, String> param) {
+		return projectDAO.getOpenPjInfo(param);
+	}
 
 	@Override
 	public String setLike(Map<String, String> param) {

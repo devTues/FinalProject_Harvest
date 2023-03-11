@@ -27,6 +27,11 @@ public class ProjectInfoDAOImpl implements ProjectInfoDAO {
 	public ProjectDTO getProjectInfo(Map<String, String> param) {
 		return sqlSession.selectOne(namespace + ".getProjectInfo", param);
 	}
+	
+	@Override
+	public Map<String, String> getOpenPjInfo(Map<String, String> param) {
+		return sqlSession.selectOne(namespace + ".getOpenPjInfo", param);
+	}
 
 	@Override
 	public String getLike(Map<String, String> param) {

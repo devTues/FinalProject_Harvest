@@ -11235,8 +11235,17 @@ hr {
 
 .blog-media {
   position: relative;
+  /* 연서 수정*/
+  overflow:hidden;
 }
 
+.blog-media:hover img.w-100 {
+	transform: scale(1.2);
+}
+img.w-100 {
+	transition: .2s;
+}
+/* 연서 수정 끝*/
 .blog-media .badge {
   position: absolute;
   right: 0;

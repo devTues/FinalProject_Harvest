@@ -60,13 +60,13 @@
 			 , TITLE
 			 , START
 			 , IMG1
-		 	 , CASE when (SELECT COUNT(*)
+		 	 , CASE WHEN (SELECT COUNT(*)
 					      FROM alram_tb
 					     WHERE PJ_IDX = P.IDX
 						  AND USER_ID = #{SESSIONID}) = 1 THEN 'alram_fill.svg'
 			   											  ELSE 'alram.svg'
 			   											  END AS ALRAM
-			 , CASE when (SELECT COUNT(*)
+			 , CASE WHEN (SELECT COUNT(*)
 		       		       FROM alram_tb
 					      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
 													        FROM alram_tb

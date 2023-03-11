@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- 시스템 시간 -->
 <jsp:useBean id="now" class="java.util.Date" />
@@ -10,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>productPage.jsp</title>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.js"></script>
+<	<script src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/projectInfoPage.js"></script>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/projectOpenPage.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -24,22 +25,22 @@ $(document).ready(function(){
 	// 공유하기 닫기
 	$("#shareX").click(offDisplay)
 	// 후원하기 열기
-	$(".funding_btn").click(showFunding)
+// 	$(".funding_btn").click(showFunding)
 	// 후원하기 닫기
-	$(".info_x").click(hideFunding)
+// 	$(".info_x").click(hideFunding)
 	// 후원금액 미입력 시 입력창
 // 	$('#donaBtn').click(donationPay)
 	// 후원금액 미입력 시 이동불가
-	$('#donaBtn').click(changeBtn)
-	$('#userDona').keydown(keyDown)
+// 	$('#donaBtn').click(changeBtn)
+// 	$('#userDona').keydown(keyDown)
 	// 최소금액 선택
-	$('#minPayment').click(minPayment)
+// 	$('#minPayment').click(minPayment)
 	// 금액 직접 입력
-	$('#userPayment').click(userPayment)
-	$('div[id^="secBtn"]').click(btnColor)
-	$('#secBtn1').click(pageScroll1)
-	$('#secBtn2').click(pageScroll2)
-	$('#secBtn3').click(pageScroll3)
+// 	$('#userPayment').click(userPayment)
+// 	$('div[id^="secBtn"]').click(btnColor)
+// 	$('#secBtn1').click(pageScroll1)
+// 	$('#secBtn2').click(pageScroll2)
+// 	$('#secBtn3').click(pageScroll3)
 })
 
 function btnColor() {
@@ -78,7 +79,7 @@ function changeBtn() {
 		}).then((result) => {
 			if(result.value)	return false;
 		})
-	} else if($('#userDona').val() <= ${projectDTO.sumMoney} && $('#userPayment').is(':checked') == true) { // 최소 후원금 이하일 경우 
+	} else if($('#userDona').val() <= ${OpenParam.sumMoney} && $('#userPayment').is(':checked') == true) { // 최소 후원금 이하일 경우 
 		Swal.fire({
 			title: '최소금액보다 큰 금액을 입력해주세요.',
 			icon: 'warning',
@@ -103,7 +104,7 @@ function keyDown(e) {
 
 // 좋아요 버튼
 function like() {
-	if(${empty sessionScope.iD}) {
+	if(${empty sessionScope.id}) {
 		Swal.fire({
 			title: '로그인 후 사용할 수 있습니다.',
 			icon: 'warning',
@@ -112,7 +113,7 @@ function like() {
 			confirmButtonText: '로그인',
 		}).then((result) => {
 			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/main/mainList';
+				window.location = '${pageContext.request.contextPath}/user/login';
 			}
 		})
 	}
@@ -120,12 +121,12 @@ function like() {
 		  url	: "${pageContext.request.contextPath}/project/likePro", // 요청이 전송될 URL 주소
 		  type	: "POST", // http 요청 방식 (default: ‘GET’)
 		  data  : {'PJ_IDX' : $('#pjIdx').val(),
-			  	   'USER_ID' : '${sessionScope.iD}'}, // TODO session 아이디로 바까라 좋은말 할때...
+			  	   'USER_ID' : '${sessionScope.id}'}, // TODO session 아이디로 바까라 좋은말 할때...
 		  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
 		  success : function(data) {
 			  var src = $('#likeBtn').attr('src');
 			  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
-			  if(${!empty sessionScope.iD}) {
+			  if(${!empty sessionScope.id}) {
 				  $('#likeBtn').attr('src', src);
 			  }
 		  }
@@ -149,22 +150,42 @@ function offDisplay() {
 }
 // 공유하기 - 트위터
 function shareTwitter() {
-    var sendText = "${projectDTO.title}"; // 전달할 텍스트
-    var sendUrl = "http://localhost:8080/main/project/projectInfo?idx=${projectDTO.idx}"; // 전달할 URL
+    var sendText = "${OpenParam.TITLE}"; // 전달할 텍스트
+    var sendUrl = "http://localhost:8080/main/project/projectOpen?idx=${OpenParam.IDX}"; // 전달할 URL
     window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
 }
 //공유하기 - 페이스북
 function shareFacebook() {
-    var sendUrl = "http://localhost:8080/main/project/projectInfo?idx=${projectDTO.idx}"; // 전달할 URL
+    var sendUrl = "http://localhost:8080/main/project/projectOpen?idx=${OpenParam.IDX}"; // 전달할 URL
     window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+}
+//공유하기 - 카카오톡 
+function shareKakao() {
+  // 사용할 앱의 JavaScript 키 설정
+  Kakao.init('c6695526da12e98bb7f09606bb9a0d92');
+
+  // 카카오링크 버튼 생성
+  Kakao.Link.createDefaultButton({
+    container: '#btnKakao', // 카카오공유버튼ID
+    objectType: 'feed',
+    content: {
+      title: "harVest", // 보여질 제목
+      description: "펀딩사이트, harVest", // 보여질 설명
+      imageUrl: "http://localhost:8080/${pageContext.request.contextPath}/project/projectInfo?idx=${projectDTO.idx}", // 콘텐츠 URL
+      link: {
+         mobileWebUrl: "http://localhost:8080/${pageContext.request.contextPath}/project/projectInfo?idx=${projectDTO.idx}",
+         webUrl: "http://localhost:8080/${pageContext.request.contextPath}/project/projectInfo?idx=${projectDTO.idx}"
+      }
+    }
+  });
 }
 
 // 후원금액 자릿수
-function handleInputLength(el, max) {
-	if(el.value.length > max) {
-	  el.value = el.value.substr(0, max);
-	}
-}
+// function handleInputLength(el, max) {
+// 	if(el.value.length > max) {
+// 	  el.value = el.value.substr(0, max);
+// 	}
+// }
 //후원금액 ',' 표시
 // function inputNumberFormat(obj) {
 // 	obj.value = comma(uncomma(obj.value));
@@ -178,72 +199,72 @@ function handleInputLength(el, max) {
 // 	return str.replace(/[^\d]+/g, '');
 // }
 // 후원금액 ',' 없애기
-function cf_getNumberOnly (str) {
-    var len      = str.length;
-    var sReturn  = "";
+// function cf_getNumberOnly (str) {
+//     var len      = str.length;
+//     var sReturn  = "";
 
-    for (var i=0; i < len; i++){
-        if ( (str.charAt(i) >= "0") && (str.charAt(i) <= "9") ){
-            sReturn += str.charAt(i);
-        }
-    }
-    return sReturn;
-}
+//     for (var i=0; i < len; i++){
+//         if ( (str.charAt(i) >= "0") && (str.charAt(i) <= "9") ){
+//             sReturn += str.charAt(i);
+//         }
+//     }
+//     return sReturn;
+// }
 
 // 후원하기 나타내기
-function showFunding() {
-	if(${empty sessionScope.iD}) {
-		Swal.fire({
-			title: '로그인 후 사용할 수 있습니다.',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '로그인',
-		}).then((result) => {
-			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/main/mainList';
-			}
-		})
-	}
+// function showFunding() {
+// 	if(${empty sessionScope.id}) {
+// 		Swal.fire({
+// 			title: '로그인 후 사용할 수 있습니다.',
+// 			icon: 'warning',
+// 			confirmButtonColor: '#3085d6',
+// 			cancelButtonColor: '#d33',
+// 			confirmButtonText: '로그인',
+// 		}).then((result) => {
+// 			if (result.value) {
+// 				window.location = '${pageContext.request.contextPath}/user/login';
+// 			}
+// 		})
+// 	}
 	
-	if(${!empty sessionScope.iD}) {
-		if($(".project_info_box").css("display") == "none") {
-			$(".project_info_box, .info_bg").show();
-		}
-	}
+// 	if(${!empty sessionScope.id}) {
+// 		if($(".project_info_box").css("display") == "none") {
+// 			$(".project_info_box, .info_bg").show();
+// 		}
+// 	}
 	// 
 	
 	// 후원 입력 안 보이게
-	if($("#minPayment").is(":checked") == true) {
-		$(".user_donation").hide();
-	}
-	$("#minPayment").click(function(){
-		$(".user_donation").hide();
-	})
-	$("#userPayment").click(function(){
-		$(".user_donation").show();
-	})
-}
+// 	if($("#minPayment").is(":checked") == true) {
+// 		$(".user_donation").hide();
+// 	}
+// 	$("#minPayment").click(function(){
+// 		$(".user_donation").hide();
+// 	})
+// 	$("#userPayment").click(function(){
+// 		$(".user_donation").show();
+// 	})
+// }
 // 후원하기 닫기
-function hideFunding() {
-	if($(".project_info_box").css("display") != "none") {
-		$(".project_info_box, .info_bg").hide();
-// 		return false;
-	}
-}
+// function hideFunding() {
+// 	if($(".project_info_box").css("display") != "none") {
+// 		$(".project_info_box, .info_bg").hide();
+// // 		return false;
+// 	}
+// }
 
 // 후원하기 값 선택
-function minPayment() {
-	if($(this).is(':checked')== true) {
-		$('#userDona').val('');
-		$('#userDona').attr('readonly',true);
-	}
-}
-function userPayment() {
-	if($(this).is(':checked')== true) {
-		$('#userDona').attr('readonly',false);
-	}
-}
+// function minPayment() {
+// 	if($(this).is(':checked')== true) {
+// 		$('#userDona').val('');
+// 		$('#userDona').attr('readonly',true);
+// 	}
+// }
+// function userPayment() {
+// 	if($(this).is(':checked')== true) {
+// 		$('#userDona').attr('readonly',false);
+// 	}
+// }
 </script>
 
 <script type="text/javascript">
@@ -272,25 +293,19 @@ function userPayment() {
 </script>
 </head>
 <body>
-<%-- 	<c:if test="${empty sesssionScope.iD}"> --%>
-	<div style="position:fixed;top:0;left:0;z-index:9999;color:red;">
-	${sessionScope.iD}님이 로그인했습니다.
-	<button onclick="location.href='${pageContext.request.contextPath}/member/logout'">로그아웃</button>
-	</div>
-<%-- 	</c:if> --%>
 	<!-- 상품 이미지 및 간략 정보 -->
 	<div id="productContent">
 		<div class="prod_title">
-			<button>${projectDTO.category}</button>
+			<button>${OpenParam.CATEGORY}</button>
 			<div>
 		  		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e4527f" class="bi bi-calendar-check" viewBox="0 0 16 16">
 			  		<path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
 			  		<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
 		  		</svg>
-		  		<strong>${projectDTO.start} 공개 예정</strong>
+		  		<strong>${OpenParam.START} 공개 예정</strong>
 		  	</div>
-			<h1>${projectDTO.title}</h1>
-			<input type="hidden" id="pjIdx" value="${projectDTO.idx}">
+			<h1>${OpenParam.TITLE}</h1>
+			<input type="hidden" id="pjIdx" value="${OpenParam.IDX}">
 		</div>
 		<div class="prod_cont">
 			<div> <!-- 이미지 캐러셀 -->
@@ -301,15 +316,22 @@ function userPayment() {
 				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 				  </div>
 				  <div class="carousel-inner">
-				    <div class="carousel-item active">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img1}" class="d-block w-100" alt="...">
-				    </div>
-				    <div class="carousel-item">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img2}" class="d-block w-100" alt="...">
-				    </div>
-				    <div class="carousel-item">
-				      <img src="${pageContext.request.contextPath}/resources/harVest_img/${projectDTO.img3}" class="d-block w-100" alt="...">
-				    </div>
+					<c:set var="img" value="${OpenParam.IMG1}"/>
+	                  <c:if test="${not empty img}">
+	                     <div class="carousel-item active">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${fn:split(img,'&')[0]}" class="d-block w-100" alt="...">
+	                     </div>
+	                     <c:if test="${not empty fn:split(img,'&')[1]}">
+	                        <div class="carousel-item">
+	                           <img src="${pageContext.request.contextPath}/resources/upload/${fn:split(img,'&')[1]}" class="d-block w-100" alt="...">
+	                        </div>
+	                     </c:if>
+	                     <c:if test="${not empty fn:split(img,'&')[2]}">
+	                        <div class="carousel-item">
+	                           <img src="${pageContext.request.contextPath}/resources/upload/${fn:split(img,'&')[2]}" class="d-block w-100" alt="...">
+	                        </div>
+	                     </c:if>
+	                  </c:if>
 				  </div>
 				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -321,7 +343,13 @@ function userPayment() {
 				  </button>
 				  <div class="project_btn_wrap">
 				  	<div>
-					  	<div class="funding_btn" id="fundingBtn">알림신청</div>
+<!-- 					  	<div class="funding_btn" id="fundingBtn">알림신청</div> -->
+					  	<button id="btn_${OpenParam.IDX }" class="alram funding_btn" id="fundingBtn" style="background-color:transparent; border:1px solid transparent; border-color: #adb5bd; width:100%;">
+									<c:if test="${empty sesssionScope.id}">
+										<img width="16" height="16" id="alramBtn_${OpenParam.IDX }" src="${pageContext.request.contextPath}/resources/harVest_img/${OpenParam.ALRAM}">
+									</c:if>
+									알림신청
+								</button>
 					  	<div class="share_wrap">
 							<a id="btnTwitter" class="link_icon twitter" href="javascript:shareTwitter();"></a>
 							<a id="btnFacebook" class="link_icon facebook" href="javascript:shareFacebook();"></a>    
@@ -351,23 +379,15 @@ function userPayment() {
 					<div class="scroll_btn">
 						<div id="secBtn1" class="section1">프로젝트 소개</div>
 					</div>
-						${projectDTO.intro}
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+						${OpenParam.INTRO}
 					</div>
 					<div id="secCont2" class="section target">
 					<hr>
-					${projectDTO.budget}원
+					${OpenParam.BUDGET}
 					</div>
 					<div id="secCont3" class="section target">
 					<hr>
-					${projectDTO.start}~${projectDTO.end}
+					${OpenParam.SCHEDULE}
 					</div>
 				</div>
 			</div>
@@ -375,8 +395,45 @@ function userPayment() {
 	</div>
 	<!-- 상세 페이지 및 창작자 소개, 금액 -->
 	<div class=""></div>
+	 <!-- Page Footer -->
+    <jsp:include page="../inc/footer.jsp"></jsp:include>
+
+	<script type="text/javascript">
+	/* TODO: 알람 제이쿼리 오류남 ㅜ 해결 못 하겠어서 다음에 쌤한테 물어보기.. */
+	$(document).ready(function(){
+		$(".alram").click(alram)
+	})
 	
+	function alram() {
+	// 알람
+			$.ajax({
+				  url	: "${pageContext.request.contextPath}/project/alramPro", // 요청이 전송될 URL 주소
+				  type	: "POST", // http 요청 방식 (default: ‘GET’)
+				   data  : {'PJ_IDX' : $('#pjIdx').val(),
+					        'USER_ID' : '${sessionScope.id}'},
+// 					       'TITLE' : title
+	// 				       'START' : start
+	// 				       },
+				  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
+				  success : function(data) {
+					  alert('성공');
+					  var src = $('#alramBtn_' + pjIdx).attr('src');
+					  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
+					  $('#alramBtn_' + pjIdx).attr('src', src);
+				  }
+			});
+	}
 	
+// 		function alram() {
+// 			let pjIdx = this.id.split('_')[1];
+	// 		var title = $('#title').val();
+	// 		var start = $('#start').val();
+			
+			
+// 		}
+// 	});
+	
+	</script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>

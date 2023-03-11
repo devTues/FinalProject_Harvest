@@ -10,169 +10,171 @@
 		FROM PROJECT_TB
 		WHERE ID = #{id}
 		  AND STATUS = 'PJT03'
+<!--   		LIMIT #{startRow}, #{pageSize} -->
 	</select>
 	<!-- 수정 -->
 	<select id="getProject" parameterType="map" resultType="hashMap">
-		SELECT P.*, C.CATEGORY_NM
+		SELECT P.*
+			 , C.CATEGORY_NM
+			 , FORMAT(p.TARGET_AMT, 0) AS COMMA_AMT
+			 , FORMAT((p.TARGET_AMT * 0.05), 0) AS FEE
+			 , FORMAT((p.TARGET_AMT - (p.TARGET_AMT * 0.05)), 0) AS TOTAL_AMT
 		  FROM PROJECT_TB P JOIN CATEGORY_TB C
 		    ON P.CATEGORY = C.CATEGORY_CD
 		 WHERE P.IDX = #{idx}
 	</select>
 
-   <insert id="insertProject" parameterType="map">
-            INSERT INTO PROJECT_TB (
-                       IDX   
-                     , ID 
-                     <if test='!creNm.equals("")'>      
-                     , CRE_NM
+    <insert id="insertProject" parameterType="map">
+           INSERT INTO PROJECT_TB (
+                      IDX   
+                    , ID 
+                    <if test='!creNm.equals("")'>      
+                    , CRE_NM
+                    </if>
+                    <if test='!"".equals(crePro) and crePro != null'>     
+                    , CRE_PRO
+                    </if>
+                    <if test='!creIntro.equals("") '>     
+                    , CRE_INTRO 
+                    </if>
+                    , CATEGORY 
+                    <if test='!title.equals("")'>   
+                    , TITLE 
+                    </if>
+                    <if test='!productNm.equals("")'>      
+                    , PRODUCT_NM
+                    </if>
+                    <if test='!"".equals(img1) and img1 != null'>  
+                    , IMG1  
+                    </if>
+                    <if test='!intro.equals("")'>
+                    , INTRO  
+                    </if>
+                    <if test='!budget.equals("")'>    
+                    , BUDGET
+                    </if>
+                    <if test='!schedule.equals("")'>      
+                    , SCHEDULE  
+                    </if>
+                    <if test='!minDona.equals("")'>    
+                    , MIN_DONA    
+                    </if>
+                    <if test='!targetAmt.equals(",")'>  
+                    , TARGET_AMT  
+                    </if>
+                    <if test='!start.equals("")'>
+                    , START
+                    </if> 
+                    <if test='!end.equals("")'>  
+                    , END  
+                    </if>       
+                    , STATUS
+                  ) 
+              VALUES ( 
+              		   IFNULL( (SELECT IDX
+						      FROM (
+						      		SELECT IDX 
+						      		  FROM PROJECT_TB
+						             WHERE IDX = #{idx}) A )
+						 , (SELECT IDX
+				              FROM ( 
+				             		SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+   				 			  		  FROM PROJECT_TB) B )
+            		  )
+                 	  , #{id}
+                 	  <if test='!creNm.equals("")'>
+                     , #{creNm}  
                      </if>
-                     <if test='crePro neq "" and crePro != null'>     
-                     , CRE_PRO
+                     <if test='!"".equals(crePro) and crePro != null'>    
+                     , #{crePro}
                      </if>
-                     <if test='!creIntro.equals("")'>     
-                     , CRE_INTRO 
+                     <if test='!creIntro.equals("")'> 
+                     , #{creIntro}
                      </if>
-                     , CATEGORY 
-                     <if test='!title.equals("")'>   
-                     , TITLE 
+                     , (SELECT CATEGORY_CD
+                     	   FROM (SELECT CATEGORY_CD
+ 								   FROM CATEGORY_TB
+                                 WHERE CATEGORY_NM = #{category}) CATEGORY)
+                     <if test='!title.equals("")'> 
+                     , #{title}
                      </if>
-                     <if test='!productNm.equals("")'>      
-                     , PRODUCT_NM
+                     <if test='!productNm.equals("")'>  
+                     , #{productNm}
                      </if>
-                     <if test='img1 neq "" and img1 != null'>  
-                     , IMG1  
-                     </if>
-                     <if test='!intro.equals("")'>
-                     , INTRO  
-                     </if>
-                     <if test='!budget.equals("")'>    
-                     , BUDGET
-                     </if>
-                     <if test='!schedule.equals("")'>      
-                     , SCHEDULE  
-                     </if>
-                     <if test='!minDona.equals("")  and minDona != null'>    
-                     , MIN_DONA    
-                     </if>
-                     <if test='targetAmt neq "," and targetAmt != null'>  
-                     , TARGET_AMT  
-                     </if>
-                     <if test='!start.equals("")'>
-                     , START
-                     </if> 
-                     <if test='!end.equals("")'>  
-                     , END  
-                     </if>       
-                     , STATUS
-                   ) 
-               VALUES ( 
-               		   IFNULL( (SELECT IDX
-							      FROM (
-							      		SELECT IDX 
-							      		  FROM PROJECT_TB
-							             WHERE IDX = #{idx}) A )
-							 , (SELECT IDX
-					              FROM ( 
-					             		SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
-	   				 			  		  FROM PROJECT_TB) B )
-             		  )
-                  	  , #{id}
-                  	  <if test='!creNm.equals("")'>
-                      , #{creNm}  
-                      </if>
-                      <if test='crePro neq "" and crePro != null'>    
-                      , #{crePro}
-                      </if>
-                      <if test='!creIntro.equals("")'> 
-                      , #{creIntro}
-                      </if>
-                      , (SELECT CATEGORY_CD
-                      	   FROM (SELECT CATEGORY_CD
-  								   FROM CATEGORY_TB
-                                  WHERE CATEGORY_NM = #{category}) CATEGORY)
-                      <if test='!title.equals("")'> 
-                      , #{title}
-                      </if>
-                      <if test='!productNm.equals("")'>  
-                      , #{productNm}
-                      </if>
-                     <if test='img1 neq "" and img1 != null'>
+                     <if test='!"".equals(img1) and img1 != null'>
 				      , #{img1}
 				      </if> 
-				      <if test='!intro.equals("")'>       
-                      , #{intro}  
-                      </if>
-                      <if test='!budget.equals("")'>
-                      , #{budget} 
-                      </if> 
-                      <if test='!schedule.equals("")'>  
-                      , #{schedule}
-                      </if>
-                       <if test='!minDona.equals("") and minDona != null'>  
-                      , REPLACE(#{minDona}, ',', '')
-                      </if>
-                      <if test='targetAmt neq "," and targetAmt != null'>  
-                      , REPLACE(#{targetAmt}, ',', '')
-                      </if>
-                      <if test='!start.equals("") and start != null'>  
-                      , #{start}
-                      </if>
-                      <if test='!end.equals("") and end != null'>
-                      , #{end}
-                      </if>
-                      , #{status}
-                      )
-              ON DUPLICATE KEY
-			  UPDATE ID = #{id}
-                   <if test='!creNm.equals("")'>   
-			  	   , CRE_NM 	 = #{creNm}
-			  	   </if>
-			  	   <if test='crePro neq "" and crePro != null'>
-				   , CRE_PRO     = #{crePro}
-				   </if>
-                   <if test='!creIntro.equals("")'>  
-				   , CRE_INTRO   = #{creIntro}
-				   </if>
-                   <if test='!category.equals("")'>  
-				   , CATEGORY    = (SELECT CATEGORY_CD
-                      	  			  FROM (SELECT CATEGORY_CD
-  								              FROM CATEGORY_TB
-                                             WHERE CATEGORY_NM = #{category}) CATEGORY)
-				   </if>
-				   <if test='!title.equals("")'> 
-			       , TITLE       = #{title}
-			       </if>
-			        <if test='!productNm.equals("")'> 
-				   , PRODUCT_NM  = #{productNm}
-				   </if>
-				   <if test='img1 neq "" and img1 != null'>
-				   , IMG1        = #{img1} 
-				   </if>
-				   <if test='!intro.equals("")'> 
-				   , INTRO       = #{intro}
-				   </if>
-				   <if test='!budget.equals("")'> 
-				   , BUDGET      = #{budget} 
-				   </if>
-				   <if test='!schedule.equals("")'> 
-				   , SCHEDULE    = #{schedule}
-				   </if>
-				    <if test='!minDona.equals("") and minDona != null'>  
-				   , MIN_DONA    = REPLACE(#{minDona}, ',', '')
-				   </if> 
-				    <if test='targetAmt neq "," and targetAmt != null'>  
-				   , TARGET_AMT  = REPLACE(#{targetAmt}, ',', '')
-				   </if>
-				   <if test='!start.equals("") and start != null'>
-				   , START        = #{start}
-				   </if>
-				   <if test='!end.equals("") and end != null'>
-				   , END         = #{end}
-				   </if>
-				   <if test='!status.equals("")'>
-				   , STATUS		 = #{status}
-				   </if>
-   </insert>
+				     <if test='!intro.equals("")'>       
+                     , #{intro}  
+                     </if>
+                     <if test='!budget.equals("")'>
+                     , #{budget} 
+                     </if> 
+                     <if test='!schedule.equals("")'>  
+                     , #{schedule}
+                     </if>
+                      <if test='!minDona.equals("")'>  
+                     , REPLACE(#{minDona}, ',', '')
+                     </if>
+                     <if test='!targetAmt.equals(",")'>  
+                     , REPLACE(#{targetAmt}, ',', '')
+                     </if>
+                     <if test='!start.equals("")'>  
+                     , #{start}
+                     </if>
+                     <if test='!end.equals("")'>
+                     , #{end}
+                     </if>
+                     , #{status}
+                     )
+             ON DUPLICATE KEY
+		  UPDATE ID = #{id}
+                  <if test='!creNm.equals("")'>   
+		  	   , CRE_NM 	 = #{creNm}
+		  	   </if>
+		  	   <if test='!"".equals(crePro)'>
+			   , CRE_PRO     = #{crePro}
+			   </if>
+                  <if test='!creIntro.equals("")'>  
+			   , CRE_INTRO   = #{creIntro}
+			   </if>
+			   , CATEGORY    = (SELECT CATEGORY_CD
+                     	  			  FROM (SELECT CATEGORY_CD
+ 								              FROM CATEGORY_TB
+                                            WHERE CATEGORY_NM = #{category}) CATEGORY)
+			   <if test='!title.equals("")'> 
+		       , TITLE       = #{title}
+		       </if>
+		        <if test='!productNm.equals("")'> 
+			   , PRODUCT_NM  = #{productNm}
+			   </if>
+			   <if test='"".equals(img1)'>
+			   , IMG1        = #{img1} 
+			   </if>
+			   <if test='!intro.equals("")'> 
+			   , INTRO       = #{intro}
+			   </if>
+			   <if test='!budget.equals("")'> 
+			   , BUDGET      = #{budget} 
+			   </if>
+			   <if test='!schedule.equals("")'> 
+			   , SCHEDULE    = #{schedule}
+			   </if>
+			    <if test='!minDona.equals("")'>  
+			   , MIN_DONA    = REPLACE(#{minDona}, ',' , '')
+			   </if> 
+			    <if test='!targetAmt.equals(",")'>  
+			   , TARGET_AMT  = REPLACE(#{targetAmt}, ',' , '')
+			   </if>
+			   <if test='!start.equals("")'>
+			   , START        = #{start}
+			   </if>
+			   <if test='!end.equals("")'>
+			   , END         = #{end}
+			   </if>
+			   , STATUS		 = #{status}
+    </insert>
+   
 	<select id="getCategoryList" resultType="java.lang.String">
 		SELECT CATEGORY_NM
   		  FROM CATEGORY_TB
@@ -180,6 +182,11 @@
 	
 	<select id="getMax" resultType="java.lang.Integer">
 		SELECT MAX(IDX)
-		FROM PROJECT_TB
+		  FROM PROJECT_TB
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT COUNT(IDX)
+		  FROM PROJECT_TB
 	</select>
 </mapper>

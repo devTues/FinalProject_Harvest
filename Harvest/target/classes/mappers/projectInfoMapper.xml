@@ -23,6 +23,29 @@
         WHERE P.IDX = #{IDX};
 	</select>
 	
+	<select id="getOpenPjInfo" resultType="HashMap">
+	SELECT p.*
+          , COUNT(PAY.ID) AS sumUser
+          , SUM(PAY.AMOUNT) AS sumMoney
+          , CASE WHEN (SELECT COUNT(*)
+					      FROM alram_tb
+					     WHERE PJ_IDX = P.IDX
+						  AND USER_ID = #{SESSIONID}) = 1 THEN 'alram_fill.svg'
+			   											  ELSE 'alram.svg'
+			   											  END AS ALRAM
+		  , CASE WHEN (SELECT COUNT(*)
+		       		       FROM alram_tb
+					      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
+													        FROM alram_tb
+													       WHERE PJ_IDX = P.IDX)
+			   										ELSE 0
+			   										END AS COUNT  	
+          FROM PROJECT_TB P
+          JOIN PAYMENT_TB PAY
+          ON P.IDX = PAY.pj_IDX
+        WHERE P.IDX = #{IDX};
+	</select>
+	
 	<!-- 프로젝트에 대한 총 좋아요 수 -->
 	<select id="getLike" resultType="HashMap" parameterType="HashMap">
 		SELECT COUNT(*)  AS CNT

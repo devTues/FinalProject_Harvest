@@ -175,7 +175,7 @@ img#likeBtn {
 		font-size: .8em;
 	}
 }
-@media all and (max-width:480px) {
+@media all and (max-width:420px) {
 	.project_info > div > h2 {
 		font-size: .8em;
 	}
@@ -193,7 +193,7 @@ img#likeBtn {
 		box-shadow: 0 -3px 3px rgba(0,0,0,.1);
 	}
 }
-
+::-webkit-srcollbar-thub {display: none !imporant};
 /* 상품 상세 페이지 */
 #productInfoMore {
 	position: relative;

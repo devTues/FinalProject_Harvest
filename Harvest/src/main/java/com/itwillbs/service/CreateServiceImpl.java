@@ -17,10 +17,15 @@ public class CreateServiceImpl implements CreateService {
 	private CreateDAO createDAO;
 
 	@Override
-	public List<Map<String, String>> getProjectList(String id) {
-		return createDAO.getProjectList(id);
+	public List<Map<String, String>> getProjectList(Map<String, String> projectMap) {
+		return createDAO.getProjectList(projectMap);
 	}
 
+	@Override
+	public int getCount() {
+		return createDAO.getCount();
+	}
+	
 	@Override
 	public Map<String, String> getProject(int idx) {
 		return createDAO.getProject(idx);
@@ -31,19 +36,6 @@ public class CreateServiceImpl implements CreateService {
 		createDAO.insertProject(projectDto);
 	}
 	
-//	@Override
-	public void insertPlan(ProjectDTO projectDto) {
-//		if(projectDto.getIdx() == 0) {
-//			projectDto.setIdx(createDAO.getMax() + 1);
-//		}
-//		createDAO.insertProject(projectDto);
-	}
-
-	@Override
-	public void insertFunding(ProjectDTO projectDto) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public List<String> getCategoryList() {

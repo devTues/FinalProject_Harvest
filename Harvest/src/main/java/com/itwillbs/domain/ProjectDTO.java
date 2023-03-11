@@ -21,31 +21,10 @@ public class ProjectDTO {
 	private Date end;
 	private String status;
 	
-	private int sumMoney;
-	private int sumUser;
+   private int sumMoney;
+   private int sumUser;
+   private String heart;
 	
-	
-	
-	private String heart;
-	
-	public String getHeart() {
-		return heart;
-	}
-	public void setHeart(String heart) {
-		this.heart = heart;
-	}
-	public int getSumMoney() {
-		return sumMoney;
-	}
-	public void setSumMoney(int sumMoney) {
-		this.sumMoney = sumMoney;
-	}
-	public int getSumUser() {
-		return sumUser;
-	}
-	public void setSumUser(int sumUser) {
-		this.sumUser = sumUser;
-	}
 	public int getIdx() {
 		return idx;
 	}
@@ -148,6 +127,27 @@ public class ProjectDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public int getSumMoney() {
+		return sumMoney;
+	}
+	public void setSumMoney(int sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+	public int getSumUser() {
+		return sumUser;
+	}
+	public void setSumUser(int sumUser) {
+		this.sumUser = sumUser;
+	}
+	public String getHeart() {
+		return heart;
+	}
+	public void setHeart(String heart) {
+		this.heart = heart;
+	}
+
+	
+
 
 	
 }

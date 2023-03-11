@@ -113,10 +113,10 @@
 /* 저장하기 버튼 */
 .top_button {
 	font-weight: 1000!important;
-    background: #daddca!important;
+    background: #e4527f!important;
     width: 112px;
     height: 40px;
-    color: #2d2d2d255255255!important;
+    color: #FFFFFF!important;
     font-size: 12px !important;
     line-height: 20px !important;
 }
@@ -143,9 +143,14 @@
     font-weight: normal;
     box-sizing: border-box;
     padding: 0px 16px;
-    background:#daddca;
-    color: #2d2d2d255255255;
+    background:#e4527f;
+/*     color: #2d2d2d255255255; */
 }
+
+.top_btn:disabled {
+	background: rgb(240, 240, 240);
+}
+
 /* 시간 오류 버튼 */
 /* <style> */
 /* .hgsFUp span { */
@@ -170,14 +175,14 @@
     color: rgb(61, 61, 61);
     cursor: auto;
     pointer-events: none;
-    background-color: rgb(208, 208, 208);
+    background-color: #fdfef3;
 }
 .err_button {
     font-weight: 500;
-    background: rgb(248, 100, 83);
+    background: #fdfef3;
     width: 112px;
     height: 40px;
-    color: rgb(255, 255, 255);
+    color: #fdfef3;
     font-size: 12px !important;
     line-height: 20px !important;
     font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
@@ -197,7 +202,7 @@
 .err_button:disabled {
     background: rgb(255, 241, 241);
     border: 1px solid rgb(255, 209, 209);
-    color: rgb(229, 60, 65);
+    color: #fdfef3;
 }
 
 .err_button:disabled svg {
@@ -210,6 +215,8 @@
     position: relative;
     top: 2px;
 }
+
+
 
 /* 미리보기 버튼 */
 .pre_width:disabled {
@@ -501,7 +508,7 @@ ul {
     display: block;
     width: 100%;
     height: 2px;
-    background: #daddca;
+    background: #a4bb73;
 }
 
 /* .item2:after { */
@@ -802,9 +809,9 @@ p:last-child {
     margin-bottom: 0em;
 }
 
-input {
-    line-height: normal;
-}
+/* input { */
+/*     line-height: normal; */
+/* } */
 
 .up_wrap input {
     display: none;
@@ -851,7 +858,7 @@ input {
     padding: 12px;
 }
 .taInput {
-	caret-col
+	
 	width: 100%;
     min-height: auto;
     border: 0px;
@@ -872,7 +879,7 @@ textarea {
     width: 100%;
     height: 100%;
     border: 0px;
-    padding: 0px;
+    padding: 10px 0px;
     resize: none;
     overflow: hidden;
 }
@@ -905,6 +912,9 @@ select:required:invalid {
   color: gray;
 }
 option[value=""][disabled] {
+  display: none;
+}
+option[selected] {
   display: none;
 }
 option {
@@ -1010,9 +1020,9 @@ option {
     fill: rgb(248, 100, 83);
 }
 
-input {
-    line-height: normal;
-}
+/* input { */
+/*     line-height: normal; */
+/* } */
 .filewrap input[type="file"] {
     display: block;
     width: 100%;
@@ -1437,4 +1447,105 @@ p:first-child {
 }
 .redBoarder{
 	border: 1px solid red;
+}
+
+
+.accountWrap {
+    border: 1px solid rgb(238, 238, 238);
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 40px 16px;
+    list-style: none;
+    margin: 0px;
+}
+
+@media (min-width: 1080px) {
+.accountWrap {
+   	 	padding: 40px 24px;
+	}
+}
+
+
+.accountWrap > li {
+    margin-bottom: 24px;
+}
+
+@media (min-width: 1080px) {
+.accountWrap > li {
+    margin-bottom: 32px;
+}
+
+.accountWrap .halfContents {
+    display: flex;
+}
+
+.accountWrap .itemName {
+    font-weight: 500;
+    color: rgb(13, 13, 13);
+    margin-bottom: 8px;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.AWrap {
+    position: relative;
+}
+
+
+
+/* .accountWrap .halfContents > div:first-child { */
+/*     padding-left: 0px; */
+/* } */
+
+.accountWrap .halfContents > div {
+    width: 50%;
+    padding: 0px 7px;
+}
+
+.bXlLWE {
+    border: 0px;
+    outline: none;
+    color: rgb(13, 13, 13);
+    background: rgb(248, 248, 248);
+    max-height: 44px;
+    min-width: 100px;
+    display: flex;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: -0.015em;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 1px;
+}
+
+
+.dvfxOp {
+    background: rgb(255, 255, 255);
+    color: rgb(201, 201, 201);
+}
+
+.none {
+	width: 100%;
+    background: transparent;
+    border: 0px;
+    padding: 11px 0px;
+    box-sizing: border-box;
+    height: 100%;
+    outline: none;
+    margin: 0px;
+    appearance: none !important;
+}
+
+.accInput {
+    width: 100%;
+    background: transparent;
+    border: 0px !important;
+    outline: none !important;
+    padding: 11px 0px;
+    box-sizing: border-box;
+    height: 100%;
+    outline: none;
+    margin: 0px;
+    appearance: none !important;
 }

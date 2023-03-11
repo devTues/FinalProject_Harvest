@@ -58,7 +58,7 @@ public class ProjectInfoController {
 	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session, CommunityDTO communityDTO, ProductUpdateDTO productUpdateDTO) {
 		
 		Map<String, String> param = new HashMap<String, String>();
-		String sessionId = (String)session.getAttribute("iD");
+		String sessionId = (String)session.getAttribute("id");
 		if(sessionId != null) {
 			param.put("SESSIONID", sessionId);
 		}
@@ -66,15 +66,16 @@ public class ProjectInfoController {
 		
 		ProjectDTO projectDTO = projectService.getProjectInfo(param);
 		
-		List<ProductUpdateDTO> productUpdateList = productUpdateService.getUpdateList(productUpdateDTO);
-		
 		model.addAttribute("projectDTO", projectDTO);
 		
-		// 숙
+		// 쑥
+		List<ProductUpdateDTO> productUpdateList = productUpdateService.getUpdateList(productUpdateDTO);
+		
 		model.addAttribute("productUpdateList", productUpdateList);
 		
 		model.addAttribute("productUpdateDTO", productUpdateDTO);
 		model.addAttribute("communityDTO", communityDTO);
+		
 		return "projectInfo/projectInfoPage";
 	}
 
@@ -133,6 +134,25 @@ public class ProjectInfoController {
 
 		
 		return "redirect:/projectInfo/projectInfoPage"; 
+	}
+	
+	
+	// 공개예정 페이지
+	@RequestMapping(value = "/project/projectOpen", method = RequestMethod.GET)
+	public String projectOpen(@RequestParam("idx")int idx, Model model, HttpSession session) {
+		Map<String, String> param = new HashMap<String, String>();
+		
+		String sessionId = (String)session.getAttribute("id");
+		
+		if(sessionId != null) {
+			param.put("SESSIONID", sessionId);
+		}
+		param.put("IDX", idx + "");
+		
+		param = projectService.getOpenPjInfo(param);
+		
+		model.addAttribute("OpenParam", param);
+		return "projectInfo/projectOpenPage";
 	}
 	
 	

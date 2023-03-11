@@ -11,8 +11,11 @@
 <title>결제</title>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/payment.css" rel="stylesheet">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/jquery-3.6.3.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+// 	let addrCnt = 0; 
+	
 	// 금액 변경창 열기
 	$(".pay_change").click(modalOpen)
 	// 금액 변경창 닫기
@@ -26,7 +29,25 @@ $(document).ready(function() {
 	$("input[name=pay_checked]").click(checkNone)
 	$(".agree_cont").click(agreeShow)
 	$(".notice_cont").click(noticeShow)
+	
+	// 우편 모달창 열기
+	$(".postBtn").click(modaladdOpen)
+	// 우편 모달창 닫기
+	$(".close_modal").click(modaladdClose)
+	$("#addBtn").click(changeAdd)
+	
+	$('input[type^=radio]').click(function() { 
+		alert("동작"); 
+	});
 })
+
+function modaladdOpen() {
+	$(".modal_add").show();
+}
+function modaladdClose() {
+	$(".modal_add").hide();
+}
+
 function agreeShow() {
 	if($(".agree_article").css("display") == "none") {
 		$(".agree_article").show()
@@ -88,11 +109,52 @@ function changePay() {
 		$('#payForm').submit();
 	}
 }
+
+function changeAdd(){
+	
+	if($("#name").val() == ''){
+		alert("이름을 입력해주세요");
+		return false;
+	} 
+	
+	if($("#phone").val() == ''){
+		alert("전화번호를 입력해주세요");
+		return false;
+	}
+}
+
 function keyDown(e) {
     if(e.key == 'Enter'||e.keyCode == 13){
     	changePay();
     	return false;
     }
+}
+
+function address(){ 
+	let addrCnt = 0; 
+	document.getElementById("addAddress").addEventListener("click", function(){ //주소추가 버튼을 누르면 실행되는 함수  
+	
+		if(addrCnt > 2){ //최대 주소 3개까지 추가 가능 
+			alert('주소는 3개 까지만 가능'); 
+			return;
+		} 
+		
+		new daum.Postcode({ //주소 선택하면 담기는 상자 나오고 값 채워짐 
+					oncomplete : function(data) { 
+						addrCnt++; 
+						// input 생성 
+	                	var addr = ''; // 주소 변수
+						var input = '<div class="selAdd">';
+						input += '<input type="radio" name="radd" value="' + addrCnt + '" checked id="radd' + addrCnt + '"> '; 
+						input += '이름 : <input type="text" class="name1" id="name" name="name"><br>'; 
+						input += '주소'+ addrCnt	+ ' : <input type="text" class="addressNm1" id="address' + addrCnt + '" name="addressNm' + addrCnt + '" readonly="" value="' + data.address + '"><br> ';
+						input += '상세주소 : <input type="text" class="detail1" id="detail' + addrCnt + '" name="detail"><br> '; 
+						input += '전화번호 : <input type="text" class="phone1" id="phone'+addrCnt+'" name="phone"><br>'; 
+						input += '</div></br> '; 
+						$('#addr').append(input); 
+					} 
+		}).open(); 
+	});
 }
 </script>
 	<!-- jQuery -->
@@ -104,6 +166,11 @@ function keyDown(e) {
 <script type="text/javascript">
 		IMP.init("imp22281850");
 		function requestPay() {
+// 			let name = $('.name1').val();
+// 			let addressNm1 = $('.addressNm1').val();
+// 			let detail = $('.detail1').val();
+// 			let phone = $('.phone1').val();
+			
 			IMP.request_pay(
 					{
 					pg : "kakaopay", //KG이니시스 코드값
@@ -125,16 +192,14 @@ function keyDown(e) {
 							// 결제 성공 시 로직
 							var msg = "후원이 완료되었습니다! 결제는 ${pdto.end}일에 진행 됩니다.";
 							alert(msg);
-// 							location.href = "${pageContext.request.contextPath}/payment/paySuccessPro"; 
-// 							$(".payment").submit();
 					        	$.ajax({
 									url : "${pageContext.request.contextPath}/payment/paySuccessPro", // 결제저장경로
 									data : {
 										 'pjIdx' : $('.idx').val(),
 										    'id' : $('.id').val(),
 										'amount' : ${paydto.userDona},
-									   'address' : $('.address').val(),
-										 'phone' : $('.phone').val(),
+									   'address' : $('#rAddress').val(),
+										 'phone' : $('#rPhone').val(),
 										  'date' : $('.date').val(),
 									  'payDate' : $('.payDate').val(),
 										'status' : $('.status').val(),
@@ -150,6 +215,34 @@ function keyDown(e) {
 							}
 						});
 					}
+		
+		$(document).on("click", "#addBtn", function() {
+			let name = $('.name1').val();
+			let addressNm1 = $('.addressNm1').val();
+			let detail = $('.detail1').val();
+			let phone = $('.phone1').val();
+			
+	   		$.ajax({
+				url : "${pageContext.request.contextPath}/payment/addressPro", // 결제저장경로
+				data : {
+			        	'id' : $('.id').val(),
+			     	   'idx' : $('.idx').val(),
+					 'name' : name,
+				  'addressNm1' : addressNm1,
+				   'detail' : detail,
+				    'phone' : phone
+				}, 
+				success : function(data) { 
+// 					debugger;
+					$('#rName').val(name);
+					$('#rPhone').val(phone);
+					$('#rAddress').val(addressNm1);
+					modaladdClose();
+					// rName, rPhone, rAddress
+// 					location.href = "${pageContext.request.contextPath}/payment/payment"; 
+				}
+	   		});
+		});
 	</script>
 </head>
 <body>
@@ -192,7 +285,7 @@ function keyDown(e) {
 									<table>
 										<tr>
 											<th>후원금액</th>
-											<td><fmt:formatNumber value="${paydto.userDona}" />원</td>
+											<td><fmt:formatNumber value="${paydto.userDona}"/>원</td>
 										</tr>
 									</table>
 									<div class="pay_change">변경</div>
@@ -226,10 +319,10 @@ function keyDown(e) {
 													<p style="margin-top:0;">받는 사람</p>
 <!-- 													<input type="text" name="user_name"> -->
 														<c:if test="${empty dto.address}">
-															<input type="text" name="name" onclick="address()">
+															<input type="text" id="rName" name="name" onclick="address()">
 														</c:if>
 														<c:if test="${! empty dto.address}">
-															<input type="text" name="name" value="${dto.name}" readonly>
+															<input type="text" id="rName" name="name" value="${dto.name}" readonly>
 <!-- 															<input type="button" value="변경" id="address" -->
 <%-- 																onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
 <%-- 															<button type="button" class="postBtn" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">변경</button>	 --%>
@@ -245,24 +338,33 @@ function keyDown(e) {
 												<div>
 													<p>주소</p>
 														<c:if test="${empty dto.address}">
-																<input type="button" class="postBtn" name="address" class="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">
-<%-- 																<input type="button" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
+																	<button type="button" class="postBtn" onclick="address()">변경</button>
 														</c:if>
 														<c:if test="${! empty dto.address}">
-																<input type="text" name="address"  value="${dto.address}" id="paddress" readonly>
-<!-- 															<input type="button" value="변경" id="address" -->
-<%-- 																onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
-															<button type="button" class="postBtn" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">변경</button>	
-															<!-- 오른쪽으로 옮기기..-->
+																<input type="text" name="address" id="rAddress" value="${dto.address}" readonly>
+															<button type="button" class="postBtn" onclick="address()">변경</button>	
 														</c:if>
-													<c:if test="${empty dto.address}">
-																<input type="button" name="address" value="배송지 추가하기" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">
-													</c:if>
-													<c:if test="${! empty dto.address}">
-													<p>전화번호</p>
-															<input type="text" name="phone" value="${dto.phone}" id="phone" readonly>
-													</c:if>
+														<c:if test="${! empty dto.address}">
+														<p>전화번호</p>
+																<input type="text" name="phone" id="rPhone" value="${dto.phone}" readonly>
+														</c:if>
 												</div>
+												<!-- 우편 모달창 -->
+												<div class="modal_add">
+													<div class="m_add_cont">
+													 <span class="close_modal">닫기</span>
+<%-- 													  <form action="${pageContext.request.contextPath}/payment/addressPro" id="addressForm" method="post"> --%>
+														 <input type="button" name="address" id="addAddress" value="배송지 추가하기" onclick="address()">
+														 <input type="hidden" name="idx" value="${pdto.idx}">
+														 <input type="hidden" name="userDona" value="${paydto.userDona}">
+														 <input type="hidden" name="id" value="${dto.id}">
+													 	 <input type="button" id="addBtn" value="저장">
+														 <div id="addr">
+													 	</div>
+<!-- 													 </form> -->
+													</div>
+												</div>
+												<!-- 우편 모달창 -->
 											</td>
 										</tr>
 									</table>
@@ -355,17 +457,13 @@ function keyDown(e) {
 							<input type="text" name="userDona" id="userDona" placeholder="후원금액을 입력해주세요." maxlength="7"><span style="color:#c8cbb6;font-weight:900;">원</span>
 						</div>
 						<div>
-							<button id="payBtn" type="button">변경하기</button>
+							<button id="payBtn" type="submit">변경하기</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-		<!-- 주소값 바꾸기  -->
-		
-		<!-- 주소값 바꾸기  -->
 	</div>
-	
 	<input type="hidden" name="idx" class="idx" value="${pdto.idx}"> 
 	<input type="hidden" name="pjIdx" class="pjIdx" value="${pdto.idx}">
 	<input type="hidden" name="id" class="id" value="${dto.id}">
