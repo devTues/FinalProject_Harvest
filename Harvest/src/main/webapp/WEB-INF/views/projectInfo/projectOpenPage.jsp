@@ -11,11 +11,14 @@
 <head>
 <meta charset="UTF-8">
 <title>productPage.jsp</title>
-<	<script src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery-3.4.1.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/projectInfoPage.js"></script>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/projectOpenPage.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/assets/css/joeblog.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-
+<style>
+nav {position: relative !important;}
+</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	// 찜하기 버튼
@@ -24,29 +27,9 @@ $(document).ready(function(){
 	$("#shareBtn").click(shareDisplay)
 	// 공유하기 닫기
 	$("#shareX").click(offDisplay)
-	// 후원하기 열기
-// 	$(".funding_btn").click(showFunding)
-	// 후원하기 닫기
-// 	$(".info_x").click(hideFunding)
-	// 후원금액 미입력 시 입력창
-// 	$('#donaBtn').click(donationPay)
-	// 후원금액 미입력 시 이동불가
-// 	$('#donaBtn').click(changeBtn)
-// 	$('#userDona').keydown(keyDown)
-	// 최소금액 선택
-// 	$('#minPayment').click(minPayment)
-	// 금액 직접 입력
-// 	$('#userPayment').click(userPayment)
-// 	$('div[id^="secBtn"]').click(btnColor)
-// 	$('#secBtn1').click(pageScroll1)
-// 	$('#secBtn2').click(pageScroll2)
-// 	$('#secBtn3').click(pageScroll3)
 })
 
 function btnColor() {
-// 	$('html, body').animate({scrollTop: $($.attr(this, 'href')).offset(top:50)},100);
-// 	var offset = $('div[id="secCont1"]').offset();
-// 	$('html, body').animate({scrollTop: offset.top}, 100);
 	if($(this).click){
 		$('div[class^="section"]').css('background','white')
 		$(this).css('background', '#a4bb73')
@@ -179,120 +162,11 @@ function shareKakao() {
     }
   });
 }
-
-// 후원금액 자릿수
-// function handleInputLength(el, max) {
-// 	if(el.value.length > max) {
-// 	  el.value = el.value.substr(0, max);
-// 	}
-// }
-//후원금액 ',' 표시
-// function inputNumberFormat(obj) {
-// 	obj.value = comma(uncomma(obj.value));
-// }
-// function comma(str) {
-// 	str = String(str);
-// 	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-// }
-// function uncomma(str) {
-// 	str = String(str);
-// 	return str.replace(/[^\d]+/g, '');
-// }
-// 후원금액 ',' 없애기
-// function cf_getNumberOnly (str) {
-//     var len      = str.length;
-//     var sReturn  = "";
-
-//     for (var i=0; i < len; i++){
-//         if ( (str.charAt(i) >= "0") && (str.charAt(i) <= "9") ){
-//             sReturn += str.charAt(i);
-//         }
-//     }
-//     return sReturn;
-// }
-
-// 후원하기 나타내기
-// function showFunding() {
-// 	if(${empty sessionScope.id}) {
-// 		Swal.fire({
-// 			title: '로그인 후 사용할 수 있습니다.',
-// 			icon: 'warning',
-// 			confirmButtonColor: '#3085d6',
-// 			cancelButtonColor: '#d33',
-// 			confirmButtonText: '로그인',
-// 		}).then((result) => {
-// 			if (result.value) {
-// 				window.location = '${pageContext.request.contextPath}/user/login';
-// 			}
-// 		})
-// 	}
-	
-// 	if(${!empty sessionScope.id}) {
-// 		if($(".project_info_box").css("display") == "none") {
-// 			$(".project_info_box, .info_bg").show();
-// 		}
-// 	}
-	// 
-	
-	// 후원 입력 안 보이게
-// 	if($("#minPayment").is(":checked") == true) {
-// 		$(".user_donation").hide();
-// 	}
-// 	$("#minPayment").click(function(){
-// 		$(".user_donation").hide();
-// 	})
-// 	$("#userPayment").click(function(){
-// 		$(".user_donation").show();
-// 	})
-// }
-// 후원하기 닫기
-// function hideFunding() {
-// 	if($(".project_info_box").css("display") != "none") {
-// 		$(".project_info_box, .info_bg").hide();
-// // 		return false;
-// 	}
-// }
-
-// 후원하기 값 선택
-// function minPayment() {
-// 	if($(this).is(':checked')== true) {
-// 		$('#userDona').val('');
-// 		$('#userDona').attr('readonly',true);
-// 	}
-// }
-// function userPayment() {
-// 	if($(this).is(':checked')== true) {
-// 		$('#userDona').attr('readonly',false);
-// 	}
-// }
 </script>
-
-<script type="text/javascript">
-// function pay() {
-// 	var a = document.getElementById('aa').value;
-// 	document.getElementById('bb').value = a
-// };
-
-// $(document).ready(function() {
-// 	$('#fundingName').click(function() {
-// 		if(
-// 			$(this).is(':checked')== true
-// 		) {
-// 			$('#userDona').val('');
-// 			$('#userDona').attr('readonly',true);
-// 		}
-// 	});
-// 	$('#fundingName2').click(function() {
-// 		if(
-// 			$(this).is(':checked')== true
-// 		) {
-// 			$('#userDona').attr('readonly',false);
-// 		}
-// 	});
-// });
-</script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 </head>
 <body>
+<jsp:include page="../inc/header.jsp"></jsp:include>
 	<!-- 상품 이미지 및 간략 정보 -->
 	<div id="productContent">
 		<div class="prod_title">
@@ -345,9 +219,9 @@ function shareKakao() {
 				  <div class="project_btn_wrap">
 				  	<div>
 <!-- 					  	<div class="funding_btn" id="fundingBtn">알림신청</div> -->
-					  	<button id="btn_${OpenParam.IDX }" class="alram funding_btn" id="fundingBtn" style="background-color:transparent; border:1px solid transparent; border-color: #adb5bd; width:100%;">
+					  	<button id="btn_${OpenParam.IDX }" class="alram funding_btn" id="fundingBtn" style="border:1px solid transparent;  width:100%;">
 							<c:if test="${empty sesssionScope.id}">
-								<img width="16" height="16" id="alramBtn" src="${pageContext.request.contextPath}/resources/harVest_img/${OpenParam.ALRAM}">
+								<img width="16" height="16" id="alramBtn" src="${pageContext.request.contextPath}/resources/harVest_img/${fn:split(OpenParam.ALRAM, '.')[0]}.png">
 							</c:if>
 							알림신청
 						</button>
@@ -407,13 +281,10 @@ function shareKakao() {
 		$.ajax({
 			  url	: "${pageContext.request.contextPath}/project/alramPro", // 요청이 전송될 URL 주소
 			  type	: "POST", // http 요청 방식 (default: ‘GET’)
-// 			  dataType:"json",
 			  data  : {'PJ_IDX' : $('#pjIdx').val(),
 				        'USER_ID' : '${sessionScope.id}',
 				       	'TITLE' : $('#title').val() },
-// 				       	'START' : $('#start').val()
 			  success : function(data) {
-				  debugger;
 				  alert('성공');
 				  var src = $('#alramBtn').attr('src');
 				  src = src.substring(0, src.lastIndexOf('/') + 1) + data;

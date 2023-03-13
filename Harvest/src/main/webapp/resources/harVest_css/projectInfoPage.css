@@ -166,6 +166,10 @@ img#likeBtn {
 	.project_summary > div > div {
 		font-size: 1em;
 	}
+	#secCont1 img {
+		width: 90% !important;
+		height: auto;
+	}
 }
 @media all and (max-width:768px) {
 	.project_info > div > h2 {
@@ -174,6 +178,7 @@ img#likeBtn {
 	.project_summary > div > div {
 		font-size: .8em;
 	}
+	
 }
 @media all and (max-width:420px) {
 	.project_info > div > h2 {
@@ -349,6 +354,7 @@ span[class^="heart"] {
 	position: sticky;
 	top:60px;
 	padding-bottom: 30px;
+	z-index:999;
 }
 .scroll_btn div {
 	text-decoration: none;
@@ -583,7 +589,7 @@ ul#myTab {
 	position: sticky;
 	top:0;
 	z-index:999;
-	padding-left: 150px;
+	padding-left: 10%;
 	border: none !important;
 	box-shadow: 0 3px 3px rgba(0,0,0,.1);
 	background:white !important;
@@ -649,6 +655,5 @@ ul.list::after {
 .tab_show {
 	display: block;
 }
-
 
 

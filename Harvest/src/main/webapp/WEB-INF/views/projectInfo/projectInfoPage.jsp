@@ -138,9 +138,6 @@ function deleteComm(idx){
 }
 
 function btnColor() {
-// 	$('html, body').animate({scrollTop: $($.attr(this, 'href')).offset(top:50)},100);
-// 	var offset = $('div[id="secCont1"]').offset();
-// 	$('html, body').animate({scrollTop: offset.top}, 100);
 	if($(this).click){
 		$('div[class^="section"]').css('background','white')
 		$(this).css('background', '#a4bb73')
@@ -279,30 +276,6 @@ function handleInputLength(el, max) {
 	  el.value = el.value.substr(0, max);
 	}
 }
-//후원금액 ',' 표시
-// function inputNumberFormat(obj) {
-// 	obj.value = comma(uncomma(obj.value));
-// }
-// function comma(str) {
-// 	str = String(str);
-// 	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-// }
-// function uncomma(str) {
-// 	str = String(str);
-// 	return str.replace(/[^\d]+/g, '');
-// }
-// 후원금액 ',' 없애기
-// function cf_getNumberOnly (str) {
-//     var len      = str.length;
-//     var sReturn  = "";
-
-//     for (var i=0; i < len; i++){
-//         if ( (str.charAt(i) >= "0") && (str.charAt(i) <= "9") ){
-//             sReturn += str.charAt(i);
-//         }
-//     }
-//     return sReturn;
-// }
 
 // 후원하기 나타내기
 function showFunding() {
@@ -444,40 +417,10 @@ function commSubmit(){
 	
 }
 </script>
-
-<script type="text/javascript">
-// function pay() {
-// 	var a = document.getElementById('aa').value;
-// 	document.getElementById('bb').value = a
-// };
-
-// $(document).ready(function() {
-// 	$('#fundingName').click(function() {
-// 		if(
-// 			$(this).is(':checked')== true
-// 		) {
-// 			$('#userDona').val('');
-// 			$('#userDona').attr('readonly',true);
-// 		}
-// 	});
-// 	$('#fundingName2').click(function() {
-// 		if(
-// 			$(this).is(':checked')== true
-// 		) {
-// 			$('#userDona').attr('readonly',false);
-// 		}
-// 	});
-// });
-</script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 </head>
 <body>
-<%-- 	<c:if test="${empty sesssionScope.iD}"> --%>
-<!-- 	<div style="position:fixed;top:0;left:0;z-index:9999;color:red;"> -->
-<%-- 	${sessionScope.iD}님이 로그인했습니다. --%>
-<%-- 	<button onclick="location.href='${pageContext.request.contextPath}/member/logout'">로그아웃</button> --%>
-<!-- 	</div> -->
-<%-- 	</c:if> --%>
 <jsp:include page="../inc/header.jsp"></jsp:include>
 	<!-- 상품 이미지 및 간략 정보 -->
 		<div class="prod_title">
