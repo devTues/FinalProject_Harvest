@@ -19,6 +19,16 @@
     background: rgb(252, 252, 252);
 }
 
+body::-webkit-scrollbar {
+	width:10px;
+}
+body::-webkit-scrollbar-thumb {
+	background:#c3a371;
+	border-radius:5px;
+}
+body::-webkit-scrollbar-track {
+	background:#dcc8a9;
+}
 .top {
 	width: 100%;
     box-shadow: rgb(0 0 0 / 4%) 0px 1px 8px, rgb(0 0 0 / 2%) 0px 1px 0px;

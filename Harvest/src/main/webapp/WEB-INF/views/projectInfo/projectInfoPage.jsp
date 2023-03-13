@@ -517,21 +517,19 @@ function commSubmit(){
 					</div>
 					<div>
 						<div>결제 일시</div>
-						<div>목표금액 달성시 <span class="point_font">2023.03.06</span>에 결제 진행</div>
-						<c:if test="${(dbDtParse - nowDtParse) + 1 > 0}">
-							<c:if test="${projectDTO.sumMoney > projectDTO.targetAmt}">
+						<div>목표금액 달성시 <span class="point_font">${payDate }</span>에 결제 진행</div>
+						<c:if test="${(dbDtParse - nowDtParse) + 1 < 0}">
+							<c:if test="${projectDTO.sumMoney >= projectDTO.targetAmt}">
 							<div>목표 달성</div>
 							</c:if>
-						</c:if>
-						<c:if test="${(dbDtParse - nowDtParse) + 1 > 0}">
-							<c:if test="${projectDTO.sumMoney < projectDTO.targetAmt}">
-							<div>진행 중</div>
-							</c:if>
-						</c:if>
-						<c:if test="${(dbDtParse - nowDtParse) + 1 <= 0}">
 							<c:if test="${projectDTO.sumMoney < projectDTO.targetAmt}">
 							<div>달성 실패</div>
 							</c:if>
+						</c:if>
+						<c:if test="${(dbDtParse - nowDtParse) + 1 >= 0}">
+<%-- 							<c:if test="${projectDTO.sumMoney < projectDTO.targetAmt}"> --%>
+							<div>진행 중</div>
+<%-- 							</c:if> --%>
 						</c:if>
 					</div>
 				</div>

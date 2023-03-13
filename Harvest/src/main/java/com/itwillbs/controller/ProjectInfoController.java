@@ -1,6 +1,9 @@
 package com.itwillbs.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +69,20 @@ public class ProjectInfoController {
 		
 		ProjectDTO projectDTO = projectService.getProjectInfo(param);
 		
+//		String endDate = String.valueOf();
+//		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = projectDTO.getEnd();
+		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		// 결제일 계산
+		cal.add(Calendar.DATE, 1);
+		String payDate = sdfYMD.format(cal.getTime());
+		
 		model.addAttribute("projectDTO", projectDTO);
+		model.addAttribute("payDate", payDate);
 		
 		// 쑥
 		List<ProductUpdateDTO> productUpdateList = productUpdateService.getUpdateList(productUpdateDTO);

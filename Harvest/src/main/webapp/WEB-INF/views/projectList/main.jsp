@@ -214,7 +214,7 @@
 					</a>
 				</div>
               	<p class="my-2">${getExpList.CATEGORY } | ${getExpList.CRE_NM }</p>
-              	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getExpList.IDX }">
+              	<a href="${pageContext.request.contextPath }/project/projectOpen?idx=${getExpList.IDX }">
                 	<h6 class="m-0">${getExpList.TITLE }</h6>
                 </a>
                 <span class="text-muted">${getExpList.START } 공개예정</span>
