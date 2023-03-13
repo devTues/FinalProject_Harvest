@@ -72,17 +72,18 @@ public class AjaxController {
 		return result;
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/project/alramPro" , method = RequestMethod. POST)
+	@ResponseBody
 	public String alram(@RequestParam(value = "PJ_IDX") String pjIdx,
 						@RequestParam(value = "USER_ID") String userId,
 						@RequestParam(value = "TITLE") String title
 //						@RequestParam(value = "START") String start
 						) throws Exception {
+		System.out.println("@@@ 호출됨");
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
-		param.put("TITLE", title);
+//		param.put("TITLE", title);
 		String result = projectInfoService.setAlram(param);
 		String content = "프로젝트펀딩이 시작되었습니다. https://tumblbug.com/";
         String from = "ki6532@naver.com";

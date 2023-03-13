@@ -73,7 +73,8 @@
 	     WHERE PJ_IDX = #{PJ_IDX}
 	       AND USER_ID = #{USER_ID}
 	</delete>
-		<delete id="deleteAlram2">
+	
+	<delete id="deleteAlram2">
 		<![CDATA[ DELETE A FROM ALRAM_TB AS A
 					LEFT JOIN PROJECT_TB AS P
 					ON A.pj_IDX = P.IDX
@@ -88,4 +89,34 @@
 		  ON A.PJ_IDX = P.IDX
 		 WHERE START = CURDATE()
 	</select>
+	
+	<select id="getAlram" resultType="HashMap" parameterType="HashMap">
+		SELECT COUNT(*)  AS CNT
+	      FROM ALRAM_TB
+	     WHERE PJ_IDX = #{PJ_IDX}
+	       AND USER_ID = #{USER_ID}
+	</select>
+	
+	<insert id="insertAlram" parameterType="HashMap">
+		INSERT INTO ALRAM_TB
+			 ( IDX
+			 , PJ_IDX
+			 , USER_ID
+			 , CODE)
+		     VALUES (
+		     (SELECT NUM
+			    FROM (SELECT IFNULL(MAX(IDX), 0) + 1 AS NUM
+					    FROM ALRAM_TB) A)
+			 , #{PJ_IDX}
+		     , #{USER_ID}
+		     , 'ALM2'
+		     )
+	</insert>
+	
+	<delete id="delAlram" parameterType="HashMap">
+		DELETE FROM ALRAM_TB
+	     WHERE PJ_IDX = #{PJ_IDX}
+	       AND USER_ID = #{USER_ID}
+	</delete>
+	
 </mapper>

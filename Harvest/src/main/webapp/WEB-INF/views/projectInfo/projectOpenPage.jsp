@@ -305,6 +305,7 @@ function shareKakao() {
 		  		<strong>${OpenParam.START} 공개 예정</strong>
 		  	</div>
 			<h1>${OpenParam.TITLE}</h1>
+			<input type="hidden" id="title" value="${OpenParam.TITLE}">
 			<input type="hidden" id="pjIdx" value="${OpenParam.IDX}">
 		</div>
 		<div class="prod_cont">
@@ -345,11 +346,11 @@ function shareKakao() {
 				  	<div>
 <!-- 					  	<div class="funding_btn" id="fundingBtn">알림신청</div> -->
 					  	<button id="btn_${OpenParam.IDX }" class="alram funding_btn" id="fundingBtn" style="background-color:transparent; border:1px solid transparent; border-color: #adb5bd; width:100%;">
-									<c:if test="${empty sesssionScope.id}">
-										<img width="16" height="16" id="alramBtn_${OpenParam.IDX }" src="${pageContext.request.contextPath}/resources/harVest_img/${OpenParam.ALRAM}">
-									</c:if>
-									알림신청
-								</button>
+							<c:if test="${empty sesssionScope.id}">
+								<img width="16" height="16" id="alramBtn" src="${pageContext.request.contextPath}/resources/harVest_img/${OpenParam.ALRAM}">
+							</c:if>
+							알림신청
+						</button>
 					  	<div class="share_wrap">
 							<a id="btnTwitter" class="link_icon twitter" href="javascript:shareTwitter();"></a>
 							<a id="btnFacebook" class="link_icon facebook" href="javascript:shareFacebook();"></a>    
@@ -399,40 +400,30 @@ function shareKakao() {
     <jsp:include page="../inc/footer.jsp"></jsp:include>
 
 	<script type="text/javascript">
-	/* TODO: 알람 제이쿼리 오류남 ㅜ 해결 못 하겠어서 다음에 쌤한테 물어보기.. */
 	$(document).ready(function(){
 		$(".alram").click(alram)
 	})
-	
 	function alram() {
-	// 알람
-			$.ajax({
-				  url	: "${pageContext.request.contextPath}/project/alramPro", // 요청이 전송될 URL 주소
-				  type	: "POST", // http 요청 방식 (default: ‘GET’)
-				   data  : {'PJ_IDX' : $('#pjIdx').val(),
-					        'USER_ID' : '${sessionScope.id}'},
-// 					       'TITLE' : title
-	// 				       'START' : start
-	// 				       },
-				  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
-				  success : function(data) {
-					  alert('성공');
-					  var src = $('#alramBtn_' + pjIdx).attr('src');
-					  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
-					  $('#alramBtn_' + pjIdx).attr('src', src);
-				  }
-			});
+		$.ajax({
+			  url	: "${pageContext.request.contextPath}/project/alramPro", // 요청이 전송될 URL 주소
+			  type	: "POST", // http 요청 방식 (default: ‘GET’)
+// 			  dataType:"json",
+			  data  : {'PJ_IDX' : $('#pjIdx').val(),
+				        'USER_ID' : '${sessionScope.id}',
+				       	'TITLE' : $('#title').val() },
+// 				       	'START' : $('#start').val()
+			  success : function(data) {
+				  debugger;
+				  alert('성공');
+				  var src = $('#alramBtn').attr('src');
+				  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
+				  $('#alramBtn').attr('src', src);
+			  },
+			 error :  function(request,status,error){
+	        	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	 }
+		});
 	}
-	
-// 		function alram() {
-// 			let pjIdx = this.id.split('_')[1];
-	// 		var title = $('#title').val();
-	// 		var start = $('#start').val();
-			
-			
-// 		}
-// 	});
-	
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
