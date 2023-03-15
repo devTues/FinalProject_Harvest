@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <link href="${pageContext.request.contextPath}/resources/harVest_css/admin.css" rel="stylesheet" type="text/css" >
 <title>sidebar.jsp</title>
-<script src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.1.1.min.js"></script>
 <script>
-	$(function () {
+	$(document).ready(function() {
 	    $(".left_sub_menu").hide();
 	    $(".has_sub").click(function () {
 	        $(".left_sub_menu").fadeToggle(300);

@@ -15,7 +15,7 @@
 			 , (SELECT IFNULL(SUM(AMOUNT), 0)
                   FROM PAYMENT_TB 
                  WHERE PJ_IDX = p.IDX) AS TOTAL_AMT
-             , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+             , FORMAT(((SELECT IFNULL(SUM(AMOUNT), 0)
 				  		 FROM PAYMENT_TB 
                         WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS PERCENT
 			 , START
@@ -32,6 +32,7 @@
 		 WHERE 1=1
 		 <if test='! GB.equals("") and GB != null'>
 		 	  <if test='GB.equals("POP")'>
+		 	  AND STATUS IN ('PJT01', 'FD00', 'FD01')
 		 	  AND CURDATE() >= START
 		 	  ORDER BY STATUS DESC, PERCENT DESC
 			  </if>

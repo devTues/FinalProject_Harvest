@@ -4,14 +4,11 @@ public class AddressDTO {
 
 	private int idx;
 	private String id;
-	private String addressNm1;
-	private String addressNm2;
-	private String addressNm3;
+	private String addressNm;
 	private String name;
 	private String phone;
 	private String address;
 	private String zipCode;
-	
 	
 	public int getIdx() {
 		return idx;
@@ -25,23 +22,12 @@ public class AddressDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getAddressNm1() {
-		return addressNm1;
+	
+	public String getAddressNm() {
+		return addressNm;
 	}
-	public void setAddressNm1(String addressNm1) {
-		this.addressNm1 = addressNm1;
-	}
-	public String getAddressNm2() {
-		return addressNm2;
-	}
-	public void setAddressNm2(String addressNm2) {
-		this.addressNm2 = addressNm2;
-	}
-	public String getAddressNm3() {
-		return addressNm3;
-	}
-	public void setAddressNm3(String addressNm3) {
-		this.addressNm3 = addressNm3;
+	public void setAddressNm(String addressNm) {
+		this.addressNm = addressNm;
 	}
 	public String getName() {
 		return name;
@@ -67,6 +53,13 @@ public class AddressDTO {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+
 	
 	
 	

@@ -27,9 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.AddressDTO;
 import com.itwillbs.domain.CommunityDTO;
 import com.itwillbs.domain.PaymentDTO;
 import com.itwillbs.domain.UserDTO;
+import com.itwillbs.service.AddressService;
 import com.itwillbs.service.CommunityService;
 import com.itwillbs.service.PaymentService;
 import com.itwillbs.service.ProjectInfoService;
@@ -42,10 +44,12 @@ public class AjaxController {
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
-	private MailSendService mailService;
+	private MailSendService mailService;	// 나경
 	
 	@Inject
 	private PaymentService paymentService;
+	@Inject
+	private AddressService addressService;
 	@Inject
 	private ProjectInfoService projectInfoService;
 	@Inject
@@ -74,8 +78,7 @@ public class AjaxController {
 	@RequestMapping(value = "/project/alramPro" , method = RequestMethod. POST)
 	@ResponseBody
 	public String alram(@RequestParam(value = "PJ_IDX") String pjIdx,
-						@RequestParam(value = "USER_ID") String userId
-						) throws Exception {
+						@RequestParam(value = "USER_ID") String userId) {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
@@ -85,71 +88,84 @@ public class AjaxController {
 	}
 	
 	
-	// User 페이지
-	// '${pageContext.request.contextPath }/user/idCheck' 가상주소
-		// 주소 매핑 처리 => 처리결과 출력
-		@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
-		public ResponseEntity<String> idCheck(HttpServletRequest request) {
-			String result = "";
-			
-			// data:{'id':$('.id').val()},
-			String id = request.getParameter("id");
-			
-			// UserDTO dto = getUser() 메서드 호출
-			UserDTO dto = userService.getUser(id);
-			if(dto != null) {
-				// 아이디 있음 => 아이디 중복
-				result = "아이디 중복";
-			}else {
-				// 아이디 없음 => 아이디 사용가능
-				result = "아이디 사용가능";
-			}
-			
-			// ResponseEntity에 출력 결과를 담아서 리턴
-			ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
-			return entity;	//결과 리턴
-			
+	// User 페이지	(나경)
+	@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+	public ResponseEntity<String> idCheck(HttpServletRequest request) {
+		String result = "";
+		
+		String id = request.getParameter("id");
+		
+		UserDTO dto = userService.getUser(id);
+		if(dto != null) {
+			result = "아이디 중복";
+		}else {
+			result = "아이디 사용가능";
 		}
 		
-		
+		ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		return entity;	
+	}
+	
 
-//		[이메일 인증]
-		@GetMapping("/user/mailCheck")
-		@ResponseBody
-		public String mailCheck(String email) {
-			return mailService.joinEmail(email);
-		}
+//	[이메일 인증]
+	@GetMapping("/user/mailCheck")
+	@ResponseBody
+	public String mailCheck(String email) {
+		System.out.println("이메일 인증 요청이 들어옴!");
+		return mailService.joinEmail(email);
+			
+	}
+	
+//	[비밀번호 찾기 이메일 인증]
+	@GetMapping("/user/findPassCheck")
+	@ResponseBody
+	public String findPassCheck(String email) {
+		System.out.println("비번찾기 이메일 인증 요청이 들어옴!");
+		System.out.println("비번찾기 이메일 인증 이메일 : " + email);
+		return mailService.findEmail(email);
+			
+	}
+	
+	// 민영
+	@RequestMapping(value="/payment/paySuccessPro", method = RequestMethod.GET)
+	public  ResponseEntity<String> paySuccess(Model model, HttpServletRequest request) throws Exception { 
+		String result = "성공";
+		PaymentDTO dto = new PaymentDTO();
+		int pjIdx = Integer.parseInt(request.getParameter("pjIdx")); 
+		String id = request.getParameter("id");
+		int amount = Integer.parseInt(request.getParameter("amount"));
+		String address = request.getParameter("address");
+		String phone = request.getParameter("phone");
+		String payDate = request.getParameter("payDate");
+		String status = request.getParameter("status");
+		int userDona = Integer.parseInt(request.getParameter("userDona"));
 		
-		// 민영
-		@RequestMapping(value="/payment/paySuccessPro", method = RequestMethod.GET)
-		public  ResponseEntity<String>  paySuccess(Model model, HttpServletRequest request) throws Exception { 
-			String result = "성공";
-			PaymentDTO dto = new PaymentDTO();
-			int pjIdx = Integer.parseInt(request.getParameter("pjIdx")); 
-			String id = request.getParameter("id");
-			int amount = Integer.parseInt(request.getParameter("amount"));
-			String address = request.getParameter("address");
-			String phone = request.getParameter("phone");
-			String payDate = request.getParameter("payDate");
-			String status = request.getParameter("status");
-			
-			dto.setPjIdx(pjIdx);
-			dto.setId(id);
-			dto.setAmount(amount);
-			dto.setAddress(address);
-			dto.setPhone(phone);
-			dto.setDate((new Timestamp(System.currentTimeMillis())));
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//			System.out.println(payDate);
-//			LocalDate payDate1 = LocalDate.parse(payDate);
-			Date payDate1 = format.parse(payDate);
-			dto.setPayDate(payDate1);
-			
-			dto.setStatus(status);
-			System.out.println(dto.toString());
-			
-			paymentService.insertPayment(dto);
+		dto.setUserDona(userDona);
+		dto.setPjIdx(pjIdx);
+		dto.setId(id);
+		dto.setAmount(amount);
+		dto.setAddress(address);
+		dto.setPhone(phone);
+		dto.setDate((new Timestamp(System.currentTimeMillis())));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date payDate1 = format.parse(payDate);
+		dto.setPayDate(payDate1);
+		dto.setStatus(status);
+		System.out.println(dto.toString());
 		
+		paymentService.insertPayment(dto);
+	
+		 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
+         return entity;
+	}
+	
+		
+		@RequestMapping(value="/payment/addressPro", method = RequestMethod.GET)
+		public ResponseEntity<String> addressPro(AddressDTO addressDTO, HttpServletRequest request) { //주소 db 저장하는 메서드..
+			 addressService.insertAddress(addressDTO);
+			 String result = "성공";
+			 System.out.println(result);
+			 
 			 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
 	         return entity;
 		}
@@ -219,16 +235,7 @@ public class AjaxController {
 			return entity; // 이동 주소가 아니라 결과 값을 담아서 리턴
 
 		}
-		
-//		@RequestMapping(value = "/project/CommunityListAjax", method = RequestMethod.POST)	
-//		public ResponseEntity<List<CommunityDTO>> communityList(HttpServletRequest request, CommunityDTO communityDTO) {
-//
-//			System.out.println(request.getParameter("idx"));
-//			List<CommunityDTO> communityList =communityService.getComm1List(communityDTO);
-//
-//			ResponseEntity<List<CommunityDTO>> entity = new ResponseEntity<List<CommunityDTO>>(communityList,HttpStatus.OK);
-//			return entity;
-//		}
+
 	
 						
 }

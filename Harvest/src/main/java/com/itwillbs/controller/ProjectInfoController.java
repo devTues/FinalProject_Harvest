@@ -1,6 +1,7 @@
 package com.itwillbs.controller;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +40,7 @@ import com.itwillbs.service.ProjectInfoService;
 public class ProjectInfoController {
 	
 	@Inject
-	private ProjectInfoService projectService;
+	private ProjectInfoService ProjectInfoService;
 	
 //	@Inject
 //	private CommunityService communityService;
@@ -52,14 +54,13 @@ public class ProjectInfoController {
 		
 	@RequestMapping(value = "/main/mainList", method = RequestMethod.GET)
 	public String mainList(HttpServletRequest request, Model model) {
-		List<ProjectDTO> projectList = projectService.getProjectList();
+		List<ProjectDTO> projectList = ProjectInfoService.getProjectList();
 		model.addAttribute("projectList", projectList);
 		return "main/list";
 	}
 	
 	@RequestMapping(value = "/project/projectInfo", method = RequestMethod.GET)
-	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session, CommunityDTO communityDTO, ProductUpdateDTO productUpdateDTO) {
-		
+	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session, CommunityDTO communityDTO, ProductUpdateDTO productUpdateDTO) throws ParseException {
 		Map<String, String> param = new HashMap<String, String>();
 		String sessionId = (String)session.getAttribute("id");
 		if(sessionId != null) {
@@ -67,10 +68,8 @@ public class ProjectInfoController {
 		}
 		param.put("IDX", idx + "");
 		
-		ProjectDTO projectDTO = projectService.getProjectInfo(param);
+		ProjectDTO projectDTO = ProjectInfoService.getProjectInfo(param);
 		
-//		String endDate = String.valueOf();
-//		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = projectDTO.getEnd();
 		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -165,7 +164,7 @@ public class ProjectInfoController {
 		}
 		param.put("IDX", idx + "");
 		
-		param = projectService.getOpenPjInfo(param);
+		param = ProjectInfoService.getOpenPjInfo(param);
 		
 		model.addAttribute("OpenParam", param);
 		return "projectInfo/projectOpenPage";

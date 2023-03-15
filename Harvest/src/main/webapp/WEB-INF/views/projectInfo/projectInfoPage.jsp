@@ -872,7 +872,7 @@ function commSubmit(){
 				</span>
 				<div>원하는 후원 방법을 선택해주세요.</div>
 				<div class="funding_wrap">
-					<form action="${pageContext.request.contextPath}/payment/payment?idx=${projectDTO.idx}" id="fundingForm" method="post">
+					<form action="${pageContext.request.contextPath}/payment/payment" id="fundingForm" method="post">
 						<div>
 							<input type="hidden" name="idx" value="${projectDTO.idx}">
 							<label>

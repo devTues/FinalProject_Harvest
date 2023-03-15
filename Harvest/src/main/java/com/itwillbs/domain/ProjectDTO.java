@@ -152,6 +152,14 @@ public class ProjectDTO {
 	public void setCodeNm(String codeNm) {
 		this.codeNm = codeNm;
 	}
+	@Override
+	public String toString() {
+		return "ProjectDTO [idx=" + idx + ", id=" + id + ", creNm=" + creNm + ", crePro=" + crePro + ", creIntro="
+				+ creIntro + ", category=" + category + ", title=" + title + ", productNm=" + productNm + ", img1="
+				+ img1 + ", intro=" + intro + ", budget=" + budget + ", schedule=" + schedule + ", minDona=" + minDona
+				+ ", targetAmt=" + targetAmt + ", start=" + start + ", end=" + end + ", status=" + status
+				+ ", sumMoney=" + sumMoney + ", sumUser=" + sumUser + ", heart=" + heart + ", codeNm=" + codeNm + "]";
+	}
 
 	
 

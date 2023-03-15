@@ -15,8 +15,11 @@ public class UserDTO {
 	private String unregist; //탈퇴여부
 	private Timestamp unregDate; //탈퇴신청날짜
 	private String eventAlr;
+	
 	private String codeNm;
 	private String code;
+	
+	private String address;
 	
 	public int getIdx() {
 		return idx;
@@ -97,8 +100,12 @@ public class UserDTO {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 
 }

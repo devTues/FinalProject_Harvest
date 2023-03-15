@@ -25,6 +25,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -312,11 +313,17 @@ public class AdminController {
 		return "admin/projectStatus";
 	}
 	
+
+//	@GetMapping("/index")
+//	public String iframeHome(){
+//	    return "/index";
+//	}
 	
 	@RequestMapping(value = "/admin/judgeDetail", method = RequestMethod.GET)
 	public String judgeDetail(HttpServletRequest request, Model model) {
-		String proIDX = request.getParameter("proIDX");
-		model.addAttribute("proIDX", proIDX);
+		String PJ_IDX = request.getParameter("PJ_IDX");
+		
+		model.addAttribute("PJ_IDX", PJ_IDX);
 		return "admin/judgeDetail";
 	}
 

@@ -13,8 +13,10 @@ public class PaymentDTO {
 	private Date date;
 	private Date payDate;
 	private String status;
+	
     private String codeNm;
-    
+	private int userDona;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -74,6 +76,12 @@ public class PaymentDTO {
 	}
 	public void setCodeNm(String codeNm) {
 		this.codeNm = codeNm;
+	}
+	public int getUserDona() {
+		return userDona;
+	}
+	public void setUserDona(int userDona) {
+		this.userDona = userDona;
 	}
 	@Override
 	public String toString() {

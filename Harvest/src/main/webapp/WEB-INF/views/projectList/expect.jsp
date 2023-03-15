@@ -44,7 +44,7 @@
 								</a>
 								</div>
 							</div>
-							<div class="card-body px-0">
+							<div class="card-body px-0 new">
 								<input type="hidden" id="pjIdx_${getExpectList.IDX }" value="${getExpectList.IDX }">
 								<input type="hidden" id="title" value="${getExpectList.TITLE }">
 								<input type="hidden" id="start" value="${getExpectList.START }">
@@ -92,27 +92,24 @@
 	
 	function alram() {
 		let pjIdx = this.id.split('_')[1];
-// 		var title = $('#title').val();
-// 		var start = $('#start').val();
 		if(${empty sessionScope.id}){
 			alert('로그인 후 이용해주세요');
 			return;
 		}
-		
+		  
 		$.ajax({
-			  url	: "${pageContext.request.contextPath}/project/alramPro", // 요청이 전송될 URL 주소
-			  type	: "POST", // http 요청 방식 (default: ‘GET’)
+			  url	: "${pageContext.request.contextPath}/project/alramPro", 
+			  type	: "POST",
 			   data  : {'PJ_IDX' : pjIdx,
 				       'USER_ID' : '${sessionScope.id}'},
-// 				       'TITLE' : title
-// 				       'START' : start
-// 				       },
-			  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
 			  success : function(data) {
-				  alert('성공');
+				  location.reload(true);
 				  var src = $('#alramBtn_' + pjIdx).attr('src');
+
 				  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
 				  $('#alramBtn_' + pjIdx).attr('src', src);
+// 				  debugger;
+// 				  $('#new').load(location.href+' #new');
 			  }
 			});
 	}

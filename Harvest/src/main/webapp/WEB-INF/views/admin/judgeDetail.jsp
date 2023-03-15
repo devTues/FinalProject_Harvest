@@ -15,7 +15,7 @@
 <form action="${pageContext.request.contextPath}/admin/projectUpdate?PJ_IDX=${PJ_IDX}" method="POST">
 <jsp:include page="sidebar.jsp"></jsp:include>
 	<div id="projWrapper">
-		<iframe src="${pageContext.request.contextPath}/admin/#" width="1000px" height="600px"></iframe>
+		<iframe src="${pageContext.request.contextPath }/project/projectInfo?idx=${PJ_IDX }"  width="1000px" height="600px"></iframe>
 		
 		<div class="project_submit">
 			<div>

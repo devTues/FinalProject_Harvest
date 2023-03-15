@@ -12,16 +12,13 @@ public class AddressDAOImpl implements AddressDAO  {
 	
 	@Inject
 	private SqlSession sqlSession;
-	private static final String namespace = "com.itwillbs.mappers.addressMapper";
+	private static final String namespace = "com.itwillbs.mappers.AddressMapper";
 	
 	@Override
 	public void insertAddress(AddressDTO addressDTO) {
 		sqlSession.insert(namespace+".insertAddress", addressDTO);
 		
 	}
-	
-	
-	
 	
 	
 	

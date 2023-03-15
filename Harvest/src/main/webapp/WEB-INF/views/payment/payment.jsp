@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- 시스템 시간 -->
@@ -10,12 +9,12 @@
 <meta charset="UTF-8">
 <title>결제</title>
 <link href="${pageContext.request.contextPath}/resources/harVest_css/payment.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/jquery-3.6.3.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 // 	let addrCnt = 0; 
-	
+
 	// 금액 변경창 열기
 	$(".pay_change").click(modalOpen)
 	// 금액 변경창 닫기
@@ -37,7 +36,7 @@ $(document).ready(function() {
 	$("#addBtn").click(changeAdd)
 	
 	$('input[type^=radio]').click(function() { 
-		alert("동작"); 
+// 		alert("동작"); 
 	});
 })
 
@@ -112,15 +111,38 @@ function changePay() {
 
 function changeAdd(){
 	
-	if($("#name").val() == ''){
+	if($(".name").val() == ''){
 		alert("이름을 입력해주세요");
 		return false;
 	} 
 	
-	if($("#phone").val() == ''){
+	if($(".phone").val() == ''){
 		alert("전화번호를 입력해주세요");
 		return false;
 	}
+}
+
+/* 전화번호 제어 */
+function phoneCheck(){
+	
+	var phone = $("#phone").value;
+	var phoneElem = $("#phone");
+	var phoneRegex = /^(010|011|016|017|018|019)[0-9]{3,4}[0-9]{4}$/;
+	var span = $("#checkPhone");
+
+	phoneElem.value = phone.replaceAll('-', '');		
+	
+	if(phoneRegex.exec(phone)){
+		checkPhoneResult = true;
+		
+		span.innerHTML = '';
+		
+	} else {
+		span.innerHTML = '전화번호를 제대로 입력해주세요.';
+		span.style.color = 'RED';
+		checkPhoneResult = false;
+	}
+
 }
 
 function keyDown(e) {
@@ -144,14 +166,29 @@ function address(){
 						addrCnt++; 
 						// input 생성 
 	                	var addr = ''; // 주소 변수
-						var input = '<div class="selAdd">';
-						input += '<input type="radio" name="radd" value="' + addrCnt + '" checked id="radd' + addrCnt + '"> '; 
-						input += '이름 : <input type="text" class="name1" id="name" name="name"><br>'; 
-						input += '주소'+ addrCnt	+ ' : <input type="text" class="addressNm1" id="address' + addrCnt + '" name="addressNm' + addrCnt + '" readonly="" value="' + data.address + '"><br> ';
-						input += '상세주소 : <input type="text" class="detail1" id="detail' + addrCnt + '" name="detail"><br> '; 
-						input += '전화번호 : <input type="text" class="phone1" id="phone'+addrCnt+'" name="phone"><br>'; 
-						input += '</div></br> '; 
-						$('#addr').append(input); 
+						var input = '<div class="selAdd"><table>';
+						    input += '<tr><td rowspan="6"><input type="radio" name="radd" value="' + addrCnt + '" checked id="radd' + addrCnt + '"></td></tr>';
+						    input += '<tr><td>우편주소: </td><td><input type="text" class="zipCode" name="zipCode" id="zipCode" value="'+data.zonecode+'"></td></tr>';
+					   	    input += '<tr><td>받는사람 : </td><td><input type="text" class="addressNm" id="addressNm" name="addressNm" ></td></tr>';
+					   	    input += '<tr><td>주소: </td><td><input type="text" class="address1" id="address' + addrCnt + '" name="address' + addrCnt + '" readonly="" value="' + data.address + '"></td></tr>';
+					   	    input += '<tr><td>상세주소: </td><td><input type="text" class="detail1" id="detail' + addrCnt + '" name="detail"></td></tr>';
+					   	    input += '<tr><td>전화번호: </td><td><input type="text" class="phone1" id="phone'+addrCnt+'" name="phone" maxlength="13"></td></tr>'; 
+					   	    input += '</table></div>';
+					   	    input += '<input type="hidden" class="name1" id="name1" name="name1" value="${dto.name}">';
+							$('#addr').append(input); 
+							
+// 							var input = '<div class="selAdd">';
+//	 						input += '<input type="radio" name="radd" value="' + addrCnt + '" checked id="radd' + addrCnt + '"><br> '; 
+//	 						input += '우편번호 : <input type="text" class="zipCode" name="zipCode" id="zipCode" value="'+data.zonecode+'"><br>';
+//	 						input += '받는 사람 : <input type="text" class="name1" id="name1" name="name1"><br>'; 
+//	 						input += '주소 : <input type="text" class="address1" id="address' + addrCnt + '" name="address' + addrCnt + '" readonly="" value="' + data.address + '"><br> ';
+//  						input += '주소지 이름 : <input type="text" class="addressNm" id="address' + addrCnt + '" name="addressNm' + addrCnt + '" readonly="" value="' + data.address + '"><br> ';
+//	 						input += '상세주소 : <input type="text" class="detail1" id="detail' + addrCnt + '" name="detail"><br> '; 
+//	 						input += '전화번호 : <input type="text" class="phone1" id="phone'+addrCnt+'" name="phone" maxlength="13"><br>'; 
+//	 						input += '</div></br> '; 
+//	 						$('#addr').append(input); 	
+						
+						
 					} 
 		}).open(); 
 	});
@@ -166,11 +203,6 @@ function address(){
 <script type="text/javascript">
 		IMP.init("imp22281850");
 		function requestPay() {
-// 			let name = $('.name1').val();
-// 			let addressNm1 = $('.addressNm1').val();
-// 			let detail = $('.detail1').val();
-// 			let phone = $('.phone1').val();
-			
 			IMP.request_pay(
 					{
 					pg : "kakaopay", //KG이니시스 코드값
@@ -178,9 +210,6 @@ function address(){
 					merchant_uid : 'merchant_'
 							+ new Date().getTime(),
 					name : "${pdto.creNm}",
-// 					schedule_at :  ,
-// 					currency : "KRW" ,
-// 					amount : "${paydto.userDona}" ,
 					customer_uid : "${dto.name}" + new Date().getTime(),
 					buyer_email : "${dto.id}", //주문자 이메일
 					buyer_name : "${dto.name}", //주문자 이름
@@ -199,11 +228,13 @@ function address(){
 										    'id' : $('.id').val(),
 										'amount' : ${paydto.userDona},
 									   'address' : $('#rAddress').val(),
+// 									   'address' : $('#rAddress').val(),
 										 'phone' : $('#rPhone').val(),
 										  'date' : $('.date').val(),
-									  'payDate' : $('.payDate').val(),
+									   'payDate' : $('.payDate').val(),
 										'status' : $('.status').val(),
-										'userDona' : $('.userDona').val()
+									  'userDona' : $('.userDona').val(),
+// 									   'zipCode' : $('#zipCode').val()
 									}, 
 									success : function(data) { 
 										location.href = "${pageContext.request.contextPath}/payment/paySuccess"; 
@@ -218,25 +249,33 @@ function address(){
 		
 		$(document).on("click", "#addBtn", function() {
 			let name = $('.name1').val();
-			let addressNm1 = $('.addressNm1').val();
+			let addressNm = $('.addressNm').val();
+			let address = $('.address1').val();
 			let detail = $('.detail1').val();
 			let phone = $('.phone1').val();
-			
+			let zipCode = $('.zipCode').val();
+// 			let detail = $('.detail1').val();
+
 	   		$.ajax({
 				url : "${pageContext.request.contextPath}/payment/addressPro", // 결제저장경로
 				data : {
 			        	'id' : $('.id').val(),
 			     	   'idx' : $('.idx').val(),
-					 'name' : name,
-				  'addressNm1' : addressNm1,
+			       	 'name' : name,
+		    	 'addressNm' : addressNm,
+			      'address' : address,
 				   'detail' : detail,
-				    'phone' : phone
+				    'phone' : phone,
+				  'zipCode' : zipCode
 				}, 
+				
 				success : function(data) { 
-// 					debugger;
 					$('#rName').val(name);
 					$('#rPhone').val(phone);
-					$('#rAddress').val(addressNm1);
+					$('#rAddressNm').val(addressNm);
+					$('#rAddress').val(address);
+					$('#rZipCode').val(zipCode);
+					$('#rDetail').val(detail);
 					modaladdClose();
 					// rName, rPhone, rAddress
 // 					location.href = "${pageContext.request.contextPath}/payment/payment"; 
@@ -322,7 +361,7 @@ function address(){
 															<input type="text" id="rName" name="name" onclick="address()">
 														</c:if>
 														<c:if test="${! empty dto.address}">
-															<input type="text" id="rName" name="name" value="${dto.name}" readonly>
+															<input type="text" id="rName" name="name" value="${dto.name}">
 <!-- 															<input type="button" value="변경" id="address" -->
 <%-- 																onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');"> --%>
 <%-- 															<button type="button" class="postBtn" onclick="window.open('${pageContext.request.contextPath }/payment/address','배송지','width=445, height=400, left=500, top=100');">변경</button>	 --%>
@@ -341,8 +380,10 @@ function address(){
 																	<button type="button" class="postBtn" onclick="address()">변경</button>
 														</c:if>
 														<c:if test="${! empty dto.address}">
-																<input type="text" name="address" id="rAddress" value="${dto.address}" readonly>
-															<button type="button" class="postBtn" onclick="address()">변경</button>	
+																<input type="text" name="zipCode" id="rZipCode" value="${dto.zipCode}" readonly>
+																<button type="button" class="postBtn" onclick="address()">변경</button><br>
+																<input type="text" name="address" id="rAddress" value="${dto.address}" readonly><br>
+																<input type="text" name="detail" id="rDetail">
 														</c:if>
 														<c:if test="${! empty dto.address}">
 														<p>전화번호</p>
@@ -352,13 +393,15 @@ function address(){
 												<!-- 우편 모달창 -->
 												<div class="modal_add">
 													<div class="m_add_cont">
-													 <span class="close_modal">닫기</span>
+													 <span class="close_modal">X</span>
 <%-- 													  <form action="${pageContext.request.contextPath}/payment/addressPro" id="addressForm" method="post"> --%>
-														 <input type="button" name="address" id="addAddress" value="배송지 추가하기" onclick="address()">
+														 <div>
+														 <input type="button"  class="postBtn" name="address" id="addAddress" value="배송지 추가하기" onclick="address()">
+													 	 <input type="button"  class="postBtn" id="addBtn" value="저장" onclick='changeAdd()'>
+														 </div>
 														 <input type="hidden" name="idx" value="${pdto.idx}">
 														 <input type="hidden" name="userDona" value="${paydto.userDona}">
 														 <input type="hidden" name="id" value="${dto.id}">
-													 	 <input type="button" id="addBtn" value="저장">
 														 <div id="addr">
 													 	</div>
 <!-- 													 </form> -->
@@ -375,12 +418,8 @@ function address(){
 								<div class="payinfo_cont">
 									<label>
 										<input type="radio" name="payment" id="cardPay" checked>
-										<span>카드결제</span>
+										<span>카카오페이</span>
 									</label>
-<!-- 									<label> -->
-<!-- 										<input type="radio" name="payment" id="naverPay"> -->
-<!-- 										<span>네이버페이</span> -->
-<!-- 									</label> -->
 								</div>
 							</div>
 						</div>

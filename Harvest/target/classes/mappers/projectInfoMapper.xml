@@ -11,35 +11,35 @@
 	<select id="getProjectInfo" resultType="com.itwillbs.domain.ProjectDTO">
 	SELECT p.*
           , case when (SELECT COUNT(*) AS HEARTFILL
-                        FROM LIKE_TB
-                       WHERE PJ_IDX = P.IDX
-                      AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
+                         FROM LIKE_TB
+                        WHERE PJ_IDX = P.IDX
+                          AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
                                                  ELSE 'heart.svg' END AS HEART
           , COUNT(PAY.ID) AS sumUser
           , SUM(PAY.AMOUNT) AS sumMoney
-          FROM PROJECT_TB P
-          JOIN PAYMENT_TB PAY
+     FROM PROJECT_TB P
+     LEFT OUTER JOIN PAYMENT_TB PAY
           ON P.IDX = PAY.pj_IDX
         WHERE P.IDX = #{IDX};
 	</select>
 	
 	<select id="getOpenPjInfo" resultType="HashMap">
 	SELECT p.*
-          , COUNT(PAY.ID) AS sumUser
-          , SUM(PAY.AMOUNT) AS sumMoney
-          , CASE WHEN (SELECT COUNT(*)
+         , COUNT(PAY.ID) AS sumUser
+         , SUM(PAY.AMOUNT) AS sumMoney
+         , CASE WHEN (SELECT COUNT(*)
 					      FROM alram_tb
 					     WHERE PJ_IDX = P.IDX
 						  AND USER_ID = #{SESSIONID}) = 1 THEN 'alram_fill.svg'
 			   											  ELSE 'alram.svg'
 			   											  END AS ALRAM
-		  , CASE WHEN (SELECT COUNT(*)
-		       		       FROM alram_tb
-					      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
-													        FROM alram_tb
-													       WHERE PJ_IDX = P.IDX)
-			   										ELSE 0
-			   										END AS COUNT  	
+		, CASE WHEN (SELECT COUNT(*)
+				       FROM alram_tb
+				      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
+												        FROM alram_tb
+												       WHERE PJ_IDX = P.IDX)
+			   									ELSE 0
+			   								     END AS COUNT  	
           FROM PROJECT_TB P
           JOIN PAYMENT_TB PAY
           ON P.IDX = PAY.pj_IDX

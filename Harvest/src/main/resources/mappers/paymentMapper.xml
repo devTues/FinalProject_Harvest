@@ -7,38 +7,29 @@
 <mapper namespace="com.itwillbs.mappers.PaymentMapper">
 
   <select id="getUser" resultType="com.itwillbs.domain.UserDTO">
-     select id
-     	  , name
-     	  , address
-     	  , phone
-       from user_tb
-      where id=#{id}
+	 SELECT u.ID
+     	  , u.NAME
+     	  , a.ADDRESS
+          , a.ZIP_CODE
+     	  , u.PHONE
+       FROM USER_TB u JOIN ADDRESS_TB a
+       ON u.ID = a.ID
+      WHERE u.ID=#{id}
   </select>	
   
    <select id="getProject" resultType="com.itwillbs.domain.ProjectDTO">
-     select cre_nm
-          , title
-          , intro
-          , min_dona
-          , img1
-          , end
-       from project_tb
-      where idx=#{idx}
+     SELECT CRE_NM
+          , TITLE
+          , INTRO
+          , MIN_DONA
+          , IMG1
+          , END
+       FROM PROJECT_TB
+      WHERE IDX=#{idx}
   </select>	
   
    <insert id="insertPayment">
   	INSERT INTO PAYMENT_TB
-<!--   	(  -->
-<!--   			   ,IDX -->
-<!--   			   ,PJ_IDX -->
-<!--   			   ,ID -->
-<!--   			   ,AMOUNT -->
-<!--   			   ,ADDRESS -->
-<!--   			   ,PHONE -->
-<!--   			   ,DATE -->
-<!--   			   ,PAY_DATE -->
-<!--   			   ,STATUS -->
-<!--   			   ) -->
   	 	  VALUE (
   	 	      (SELECT IDX
                     FROM (
@@ -53,6 +44,7 @@
   	 	      ,#{date}
   	 	      ,#{payDate}
   	 	      ,#{status}
+  	 	      ,#{userDona}
   	 	      )
  	</insert>
 
