@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/payStatus.css"rel="stylesheet" type="text/css" >
+<link href="${pageContext.request.contextPath}/resources/harVest_css/payStatus.css"rel="stylesheet" type="text/css" >
 <title>userView.jsp</title>
 </head>
 <body>
@@ -31,11 +31,11 @@
 			        </tr>
 					<c:forEach var="proDTO" items="${projectING}">
 			        <tr class="KOTRA-fontsize-80">
-			        	<td>${proDTO.IDX}</td>
-			        	<td>${proDTO.TITLE}</td>
-			        	<td>${proDTO.ID}</td>
-			        	<td>${proDTO.PROEND}</td>
-			        	<td>${proDTO.PROSTATUS}</td>
+			        	<td>${proDTO.idx}</td>
+			        	<td>${proDTO.title}</td>
+			        	<td>${proDTO.id}</td>
+			        	<td>${proDTO.end}</td>
+			        	<td>${proDTO.codeNm}</td>
 				    </tr>
 		        	</c:forEach>
 		        </tbody>
@@ -70,11 +70,11 @@
 			        </tr>
 					<c:forEach var="proDTO2" items="${projectFinish}">
 			        <tr class="KOTRA-fontsize-80">
-			        	<td>${proDTO2.IDX}</td>
-			        	<td>${proDTO2.TITLE}</td>
-			        	<td>${proDTO2.ID}</td>
-			        	<td>${proDTO2.PROEND}</td>
-			        	<td>${proDTO2.FUNDSTATUS}</td>
+			        	<td>${proDTO2.idx}</td>
+			        	<td>${proDTO2.title}</td>
+			        	<td>${proDTO2.id}</td>
+			        	<td>${proDTO2.end}</td>
+			        	<td>${proDTO2.codeNm}</td>
 				    </tr>
 		        	</c:forEach>
 		        </tbody>

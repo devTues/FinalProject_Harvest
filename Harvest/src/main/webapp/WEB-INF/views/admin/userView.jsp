@@ -1,98 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/admin.css"rel="stylesheet" type="text/css" >
+<link href="${pageContext.request.contextPath}/resources/harVest_css/admin.css"rel="stylesheet" type="text/css" >
 <title>userView.jsp</title>
 </head>
 <body>
 <jsp:include page="sidebar.jsp"></jsp:include>
    <div class="list_bar">
-   		<h3 class="page-name">È¸¿ø»ó¼¼Á¤º¸</h3>
+   		<h3 class="page-name">íšŒì›ìƒì„¸ì •ë³´</h3>
    </div>
    <div class=value>
-	   <h5>È¸¿ø»ó¼¼Á¤º¸</h5>
-	   <a href="${pageContext.request.contextPath}/admin/userList"><input id="ulist" type="button" value="¸ñ·Ï"></a>
+	   <h5>íšŒì›ìƒì„¸ì •ë³´</h5>
+	   <a href="${pageContext.request.contextPath}/admin/userList"><input id="ulist" type="button" value="ëª©ë¡"></a>
    </div>>
    <table  class="rwd-table">
    		<tbody>
 	        <tr class="color_menu">
-	            <th>È¸¿ø¾ÆÀÌµð</th>
-	            <th>ÀÌ¸§</th>
-	            <th>°¡ÀÔÀÏ</th>
-	            <th>È¸¿ø»óÅÂ</th>
+	            <th>íšŒì›ì•„ì´ë””</th>
+	            <th>ì´ë¦„</th>
+	            <th>íšŒì›ë²ˆí˜¸</th>
+	            <th>íšŒì›ìƒíƒœ</th>
 	        </tr>
-			
-
 	        <tr class="KOTRA-fontsize-80">
-	        	<td>${userDTO.userId}</td>
-	        	<td>${userDTO.userName}</td>
-	        	<td>${userDTO.userDate}</td>
-	        	<td>${userDTO.UNREGISTDETAIL}</td>
-<!-- 	        	<td> -->
-<%-- 		        	<input type="hidden" name="userId" value="${userDTO.userId}" > --%>
-<!-- 		        	<input type="submit" value="°èÁ¤»óÅÂº¯°æ"> -->
-<!-- 		        </td> -->
+	        	<td>${userDTO.ID}</td>
+	        	<td>${userDTO.NAME}</td>
+	        	<td>${userDTO.IDX}</td>
+	        	<td>${userDTO.code_Nm}</td>
 	        </tr>
-	        
 	        <tr class="color_menu">
-	            <th>¹è¼ÛÁö</th>
-	            <th>¿¬¶ôÃ³</th>
-	            <th>ÀÌ¸ÞÀÏ</th>
-	            <th>ÃëÇâ</th>
+	            <th>ë¹„ë°€ë²ˆí˜¸</th>
+	            <th>ì—°ë½ì²˜</th>
+	            <th>ì·¨í–¥</th>
+	            <th>ì´ë²¤íŠ¸ì•ŒëžŒì—¬ë¶€</th>
 	        </tr>
 	        
 	        <tr class="KOTRA-fontsize-80">
-	        	<td>${userDTO.userAddress}</td>
-	        	<td>${userDTO.userPhone}</td>
-	        	<td>${userDTO.userEmail}</td>
-	        	<td>${userDTO.userLike}</td>
+	        	<td>${userDTO.PASS}</td>
+	        	<td>${userDTO.PHONE}</td>
+	        	<td>${userDTO.PREFER}</td>
+	        	<td>${userDTO.EVENT_ALR}</td>
 	        </tr>
         </tbody>
     </table>
-    
    <hr>
-   
-   <h5>ÁøÇàÇÑ ÇÁ·ÎÁ§Æ® ¸ñ·Ï</h5>
+   <h5>ì§„í–‰í•œ í”„ë¡œì íŠ¸ ëª©ë¡</h5>
    <table  class="rwd-table">
    		<tbody>
 	        <tr class="color_menu">
-	            <th>ÇÁ·ÎÁ§Æ®¹øÈ£</th>
-	            <th>ÇÁ·ÎÁ§Æ®Á¦¸ñ</th>
-	            <th>ÆÝµù½ÃÀÛÀÏ</th>
-	            <th>ÆÝµù¸¶°¨ÀÏ</th>
-	            <th>ÆÝµùÁøÇà»óÅÂ</th>
+	            <th>í”„ë¡œì íŠ¸ ë²ˆí˜¸</th>
+	            <th>ì°½ìž‘ìž ID</th>
+	            <th>í”„ë¡œì íŠ¸ ì œëª©</th>
+	            <th>ëª©í‘œê¸ˆì•¡</th>
+	            <th>í”„ë¡œì íŠ¸ ì‹œìž‘ì¼</th>
+	            <th>í”„ë¡œì íŠ¸ ë§ˆê°ì¼</th>
+	            <th>í”„ë¡œì íŠ¸ ê²€í† ìƒíƒœ</th>
 	        </tr>
+		    
 			<c:forEach var="proDTO" items="${proList}">
 		        <tr class="KOTRA-fontsize-80">
-		        	<td><a href="${pageContext.request.contextPath}/admin/userDetail">${proDTO.IDX}</a></td>
+		        	<td><a href="${pageContext.request.contextPath}/admin/userDetail">${proDTO.PJ_IDX}</a></td>
+		        	<td>${proDTO.ID}</td>
 		        	<td>${proDTO.TITLE}</td>
-		        	<td>${proDTO.PROSTART}</td>
-		        	<td>${proDTO.PROEND}</td>
-		        	<td>${proDTO.FUNDSTATUS}</td>
+		        	<td>${proDTO.TARGET_AMT}</td>
+		        	<td>${proDTO.START}</td>
+		        	<td>${proDTO.END}</td>
+		        	<td>${proDTO.code_Nm}</td>
 		        </tr>
 		    </c:forEach>
+		    
         </tbody>
     </table>
+    
     <hr>
-    <h5>ÈÄ¿øÇÑ ÇÁ·ÎÁ§Æ® ¸ñ·Ï</h5>
+    <h5>í›„ì›í•œ í”„ë¡œì íŠ¸ ëª©ë¡</h5>
     <table  class="rwd-table">
    		<tbody>
 	        <tr class="color_menu">
-	            <th>ÇÁ·ÎÁ§Æ®Á¦¸ñ</th>
-	            <th>ÈÄ¿ø±Ý¾×</th>
-	            <th>ÆÝµùÁøÇà»óÅÂ</th>
-	            <th>°áÁ¦»óÅÂ</th>
+	            <th>í”„ë¡œì íŠ¸ë²ˆí˜¸</th>
+	            <th>ê²°ì œ ìƒíƒœ</th>
+	            <th>ê²°ì œ ê¸ˆì•¡</th>
+	            <th>í›„ì› ë‚ ì§œ</th>
 	        </tr>
-			<c:forEach var="payDTO" items="${payList}">
+			<c:forEach var="PaymentDTO" items="${payList}">
 		        <tr class="KOTRA-fontsize-80">
-		        	<td>${payDTO.PTITLE}</td>
-		        	<td>${payDTO.AMOUNT}</td>
-		        	<td>${payDTO.FUNDSTATUS}</td>
-		        	<td>${payDTO.PSTATUS}</td>
+		        	<td>${PaymentDTO.PJ_IDX}</td>
+		        	<td>${PaymentDTO.code_Nm}</td>
+		        	<td>${PaymentDTO.AMOUNT}</td>
+		        	<td>${PaymentDTO.DATE}</td>
 		        </tr>
 		    </c:forEach>
         </tbody>

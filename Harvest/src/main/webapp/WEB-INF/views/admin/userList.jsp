@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/admin.css"rel="stylesheet" type="text/css" >
+<link href="${pageContext.request.contextPath}/resources/harVest_css/admin.css"rel="stylesheet" type="text/css" >
 <title>userList</title>
 </head>
 <body>
@@ -13,40 +13,27 @@
 <form action="${pageContext.request.contextPath}/admin/updatePro" method="POST">
    <div class="list_bar">
    		<h3 class="page-name">회원전체목록</h3>
-        <ul>
-            <li>
-            	<select id ="select_value">
-            		<option value="id">아이디</option>
-            		<option value="name">이름</option>
-            	</select>
-            	
-            	<input type="search" name="SEARCH" placeholder="SEARCH"> 
-<%--             	<a href="${pageContext.request.contextPath}/admin/listPageSearch"> --%>
-            	<a href="${pageContext.request.contextPath}/admin/listPageSearch"><input type="button" value="검색" name="search"></a>
-            	
-            </li>
-        </ul>
    </div>
    <table  class="rwd-table">
    		<tbody>
 	        <tr class="color_menu">
+	        	<th>회원번호</th>
 	            <th>회원아이디</th>
 	            <th>이름</th>
-	            <th>가입일</th>
 	            <th>회원상태</th>
 	            <th>회원상태변경</th>
 	        </tr>
 <%-- <a href="${pageContext.request.contextPath}/admin/userView?userId=${dto.userId}">${dto.userId}</a --%>
 			<c:forEach var="dto" items="${userList}">
-				<c:if test="${dto.userId != 'admin'}">
+				<c:if test="${dto.id != 'admin@harvest.com'}">
 			        <tr class="KOTRA-fontsize-80">
-			        	<td><a href="${pageContext.request.contextPath}/admin/userView?userId=${dto.userId}">${dto.userId}</a></td>
-			        	<td>${dto.userName}</td>
-			        	<td>${dto.userDate}</td>
-			        	<td>${dto.UNREGISTDETAIL}</td>
+			        	<td>${dto.idx}</td> 
+			        	<td><a href="${pageContext.request.contextPath}/admin/userView?ID=${dto.id}">${dto.id}</a></td>
+			        	<td>${dto.name}</td>
+			        	<td>${dto.codeNm}</td>
 			        	<td>
-				        	<input type="hidden" name="userId" value="${dto.userId}">
-				        	<input type="button" value="계정상태변경" onClick="location.href='${pageContext.request.contextPath}/admin/updatePro?userId=${dto.userId}'">
+				        	<input type="hidden" name="ID" value="${dto.id}">
+				        	<input type="button" class="btn btn-dark" value="계정상태변경" onClick="location.href='${pageContext.request.contextPath}/admin/updatePro?ID=${dto.id}'">
 		        		</td>
 			        </tr>
 		    	</c:if>

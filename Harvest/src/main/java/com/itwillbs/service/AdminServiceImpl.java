@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.domain.PageDTO;
 import com.itwillbs.domain.ProjectDTO;
 import com.itwillbs.domain.UserDTO;
+import com.itwillbs.domain.CategoryDTO;
 import com.itwillbs.domain.NoticeDTO;
 import com.itwillbs.domain.PaymentDTO;
 import com.itwillbs.dao.AdminDAO;
@@ -22,34 +23,33 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<UserDTO> getUserList(PageDTO dto) {
 		
-		// startRow 
 		int startRow=(dto.getCurrentPage()-1)*dto.getPageSize()+1;
-		// endRow 
 		int endRow=startRow+dto.getPageSize()-1;
 		
 		dto.setStartRow(startRow-1);
 		dto.setEndRow(endRow);
-		
+
 		return adminDAO.getUserList(dto);
 	}
 
+	public void updateUserBlack(String ID) {
+		adminDAO.updateUserBlack(ID);
+	}
+	
+	@Override
+	public void updateUserNomal(String ID) {
+		adminDAO.updateUserNomal(ID);
+	}
+	
+	@Override
+	public String goBlack(String ID) {
+		return adminDAO.goBlack(ID);
+	}
+	
+	//�쉶�썝�젙蹂댁긽�꽭蹂닿린
 	@Override
 	public UserDTO userView(String userId) {
 		return adminDAO.userView(userId);
-	}
-
-	public void updateUserBlack(String userId) {
-		adminDAO.updateUserBlack(userId);
-	}
-	
-	@Override
-	public void updateUserNomal(String userId) {
-		adminDAO.updateUserNomal(userId);
-	}
-	
-	@Override
-	public String goBlack(String userId) {
-		return adminDAO.goBlack(userId);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<PaymentDTO> getPayment(String userId) {
-		return adminDAO.getPayment(userId);
+	public List<PaymentDTO> getPayment(String ID) {
+		return adminDAO.getPayment(ID);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class AdminServiceImpl implements AdminService {
 	public void approvalPro(String proIDX) {
 		adminDAO.approvalPro(proIDX);
 	}
-
+	
 	@Override
 	public void refusePro(String proIDX) {
 		adminDAO.refusePro(proIDX);
@@ -162,6 +162,7 @@ public class AdminServiceImpl implements AdminService {
 	public int getFinishCount() {
 		return adminDAO.getFinishCount();
 	}
+	
 	//진행중인 펀딩 개수 구해오기
 	@Override
 	public int getProIngCount() {
@@ -177,7 +178,59 @@ public class AdminServiceImpl implements AdminService {
 	public int getNoticeCount() {
 		return adminDAO.getNoticeCount();
 	}
+	
+	// 카테고리
+	@Override
+	public List<CategoryDTO> categoryList() {
+		return adminDAO.categoryList();
+	}
 
+	@Override
+	public void categoryRegisterPRO(CategoryDTO categoryDTO) {
+		adminDAO.categoryRegisterPRO(categoryDTO);
+	}
+
+	@Override
+	public int categoryMaxIDX() {
+		return adminDAO.categoryMaxIDX();
+	}
+
+	@Override
+	public void categoryDelete(int IDX) {
+		adminDAO.categoryDelete(IDX);
+	}
+
+	@Override
+	public CategoryDTO categoryView(int IDX) {
+		return adminDAO.categoryView(IDX);
+	}
+
+	@Override
+	public void categoryUpdate(CategoryDTO categoryDTO) {
+		adminDAO.categoryUpdate(categoryDTO);
+	}
+
+	@Override
+	public List<NoticeDTO> getNomalNotice(PageDTO dto) {
+		return adminDAO.getNomalNotice(dto);
+	}
+
+	@Override
+	public List<NoticeDTO> getEventNotice(PageDTO dto) {
+		return adminDAO.getEventNotice(dto);
+	}
+
+	@Override
+	public void noticeDelete(int IDX) {
+		adminDAO.noticeDelete(IDX);
+	}
+
+	@Override
+	public NoticeDTO getNoticeDetail(int idx) {
+		return adminDAO.getNoticeDetail(idx);
+	}
+	
+	// 관리자 메일보내기
 	@Override
 	public List<UserDTO> getEventUserList(UserDTO userDto) {
 		return adminDAO.getEventUserList(userDto);

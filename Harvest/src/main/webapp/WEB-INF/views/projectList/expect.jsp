@@ -35,6 +35,7 @@
 				<c:forEach var="getExpectList" items="${getExpectList }">
 					<div class="col-md-3 col-sm-6">
 						<div class="card text-left">
+							<c:if test="${getExpectList.STATUS == 'PJT01'}">
 							<div class="card-header p-0">
 								<!-- 찜버튼 -->
 								<div class="blog-media">
@@ -64,6 +65,7 @@
 								</button>
 								</p>
 							</div>
+							</c:if>
 						</div>
 					</div>
 				</c:forEach>

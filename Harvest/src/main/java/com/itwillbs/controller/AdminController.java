@@ -39,6 +39,7 @@ import com.itwillbs.dao.AdminDAO;
 import com.itwillbs.domain.PageDTO;
 import com.itwillbs.domain.ProjectDTO;
 import com.itwillbs.domain.UserDTO;
+import com.itwillbs.domain.CategoryDTO;
 import com.itwillbs.domain.NoticeDTO;
 import com.itwillbs.domain.PaymentDTO;
 import com.itwillbs.service.AdminService;
@@ -63,7 +64,6 @@ public class AdminController {
 //	관리자 회원관리페이지
 	@RequestMapping(value = "/admin/userList", method = RequestMethod.GET)	
 	public String userList(Model model, HttpServletRequest request) {
-		//페이징처리
 		int pageSize = 10;
 		String pageNum = request.getParameter("pageNum");
 		
@@ -109,23 +109,19 @@ public class AdminController {
 		return "admin/listPageSearch";
 	}
 	
-//	관리자 회원상세페이지
+	//	관리자 회원상세페이지
 	@RequestMapping(value = "/admin/userView", method = RequestMethod.GET)
-	public String userView(String userId, Model model) {
-		// DB에서 userDTO 가져오기
-		model.addAttribute("userDTO", adminService.userView(userId));  
+	public String userView(String ID, Model model) {
+		model.addAttribute("userDTO", adminService.userView(ID));  
 		
-		// DB에서 proDTO 가져오기
-		List<ProjectDTO> proList = adminService.getProject(userId);
+		List<ProjectDTO> proList = adminService.getProject(ID);
 		if(proList != null) {
-			model.addAttribute("proList", proList); //proDTO
+			model.addAttribute("proList", proList); 
 		}
 		
-		// DB에서 payDTO 가져오기 
-		List<PaymentDTO> payList = adminService.getPayment(userId);
+		List<PaymentDTO> payList = adminService.getPayment(ID);
 		if(payList != null) {
-			System.out.println(payList);
-			model.addAttribute("payList", payList); //proDTO
+			model.addAttribute("payList", payList);
 		}
 		return "admin/userView";
 	}
@@ -133,20 +129,20 @@ public class AdminController {
 	
 //	관리자 회원상태제어(계정정지기능)
 	@RequestMapping(value = "/admin/updatePro", method = RequestMethod.GET)	
-	public String updatePro(HttpServletRequest request, String userId) {
+	public String updatePro(HttpServletRequest request, String ID) {
 		
-		request.setAttribute("userId", userId);
-		String result = adminService.goBlack(userId);
+		request.setAttribute("ID", ID);
+		String result = adminService.goBlack(ID);
 		
 		// 활동계정이면(USR00) -> 정지계정(USR02)으로
 		if(result.equals("USR00")) { 
-			adminService.updateUserBlack(userId);
+			adminService.updateUserBlack(ID);
 		} else if (result.equals("USR02")){ 
 		// 정지계정이면
-			adminService.updateUserNomal(userId);
+			adminService.updateUserNomal(ID);
 		}
 		
-		return "redirect:/admin/userView?userId="+userId;
+		return "redirect:/admin/userView?ID="+ID;
 	}
 	
 //	프로젝트 심사페이지 목록 불러오기 (심사중 / 심사완료)
@@ -272,10 +268,6 @@ public class AdminController {
 		dto.setEndPage(endPage);
 		dto.setPageCount(pageCount);
 		
-		System.out.println("startPage : " + startPage);
-		System.out.println("endPage : " + endPage);
-		
-		
 		model.addAttribute("projectING", projectING);
 		model.addAttribute("pageDto", dto);
 
@@ -315,10 +307,6 @@ public class AdminController {
 		dto2.setEndPage(endPage2);
 		dto2.setPageCount(pageCount2);
 		
-		System.out.println("startPage2 : " + startPage2);
-		System.out.println("endPage2 : " + endPage2);
-		
-		
 		model.addAttribute("projectFinish", projectFinish);
 		model.addAttribute("pageDto2", dto2);
 		return "admin/projectStatus";
@@ -336,21 +324,21 @@ public class AdminController {
 	@RequestMapping(value = "/admin/projectUpdate", method = RequestMethod.POST)
 	public String projectUpdate(HttpServletRequest request) {
 		// 이전페이지에서 proIDX값 받아오기 
-		String proIDX = request.getParameter("proIDX");
+		String PJ_IDX = request.getParameter("PJ_IDX");
 		
 		// judgeDetail 페이지에서 버튼값 받아오기 
 		String value = request.getParameter("judge");
 		
 		// 해당 프로젝트의 현재 프로젝트 상태값가져오기
-		String nowProStatus = adminService.getProStatus(proIDX);
+		String nowProStatus = adminService.getProStatus(PJ_IDX);
 		// 조건에 따라 상태값이 다르게 변경됨
 		if(nowProStatus.equals("PJT02") && value.equals("승인")) {
 			//플젝현황이 심사중(0)이면서 '승인'버튼을 눌렀으면 
-			adminService.approvalPro(proIDX);
+			adminService.approvalPro(PJ_IDX);
 			
 		} else if(nowProStatus.equals("PJT02") && value.equals("반려")) {
 			//플젝현황이 심사중(0)이면서 '반려'버튼을 눌렀으면
-			adminService.refusePro(proIDX);
+			adminService.refusePro(PJ_IDX);
 			
 		} else {
 			return "redirect:/admin/projectJudge";
@@ -358,23 +346,51 @@ public class AdminController {
 		
 		return "redirect:/admin/projectJudge";
 	}
+	
+	
 //	카테고리 등록 페이지 
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)	
-	public String categoryInsert(HttpServletRequest request) {
+	public String categoryInsert(HttpServletRequest request, Model model) {
+		
+		List<CategoryDTO> categoryList = adminService.categoryList();
+		model.addAttribute("categoryList",categoryList);
+		
 		return "admin/category";
+	}
+	@RequestMapping(value = "/admin/categoryRegister", method = RequestMethod.GET)	
+	public String categoryRegister(HttpServletRequest request) {
+		return "admin/categoryRegister";
+	}
+    
+	@RequestMapping(value = "/admin/categoryRegisterPRO", method = RequestMethod.POST)	
+	public String categoryRegisterPRO(CategoryDTO categoryDTO, String CATEGORY) {
+		int maxIDX= adminService.categoryMaxIDX() + 1;
+		categoryDTO.setIdx(maxIDX);
+		adminService.categoryRegisterPRO(categoryDTO);
+		
+		return "redirect:/admin/category";
 	}
 	
 	@RequestMapping(value = "/admin/categoryUpdate", method = RequestMethod.GET)	
-	public String categoryUpdate(HttpServletRequest request) {
-		String cate_register = request.getParameter("cate_register");
+	public String categoryUpdate(HttpServletRequest request, Model model) {
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		CategoryDTO cateDTO = adminService.categoryView(IDX);
 		
-		if(cate_register.equals("수정")) {
-			System.out.println("수정하자");
-		} else if(cate_register.equals("삭제")) {
-			System.out.println("삭제하자");
-		} else { //등록
-			System.out.println("등록하자");
-		}
+		model.addAttribute("cateDTO", cateDTO);
+		
+		return "/admin/categoryUpdate";
+	}
+	
+	@RequestMapping(value = "/admin/categoryUpdatePro", method = RequestMethod.POST)	
+	public String categoryUpdatePro(CategoryDTO categoryDTO) {
+		adminService.categoryUpdate(categoryDTO);
+		return "redirect:/admin/category";
+	}
+	
+	@RequestMapping(value = "/admin/categoryDelete", method = RequestMethod.GET)	
+	public String categoryDelete(HttpServletRequest request) {
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		adminService.categoryDelete(IDX);
 		return "redirect:/admin/category";
 	}
 	
@@ -444,17 +460,10 @@ public class AdminController {
 	@RequestMapping(value = "/admin/writePro", method = RequestMethod.POST)	
 	public String writePro(NoticeDTO noticeDTO) {
 		
-		System.out.println(noticeDTO.getIDX());
-		System.out.println(noticeDTO.getTITLE());
-		System.out.println(noticeDTO.getCONTENT());
-		
-		// maxIDX에서 +1을 해준 상태 = newIDX
 		int IDX = adminService.maxIDX();
 		
-		//form에서 전달받은 값을 저장해줌
 		noticeDTO.setIDX(IDX);
-		System.out.println(IDX + "컨트롤러");
-		//새로 저장된 데이터가 담긴 DTO를 insert해줌
+		
 		adminService.insertBoard(noticeDTO);
 		
 		return "redirect:/admin/notice";
@@ -463,9 +472,9 @@ public class AdminController {
 	//공지사항 상세보기
 	@RequestMapping(value = "/admin/boardDetail", method = RequestMethod.GET)	
 	public String boardDetail(@RequestParam (value="IDX") int IDX, Model model) {
-		//db에서 IDX를 기준으로 공지글 정보 가져오기 
+		
 		NoticeDTO noticeDTO = adminService.getBoard(IDX);
-		//View로 DTO보내기
+		
 		model.addAttribute("noticeDTO", noticeDTO);
 		
 		return "admin/boardDetail";
@@ -490,7 +499,6 @@ public class AdminController {
 					String content = request.getParameter("content");
 			        String from = "omama69@gmail.com";
 			        String to = dto.getId();
-//			        System.out.println(subject +","+content+","+from+","+to);
 			        
 			        try {
 			            MimeMessage mail = mailSender.createMimeMessage();
@@ -502,11 +510,9 @@ public class AdminController {
 			            mailHelper.setText(content);
 			            
 			            mailSender.send(mail);
-			            System.out.println("success");
 			            
 			        } catch(Exception e) {
 			            e.printStackTrace();
-			            System.out.println("fail");
 			            break;
 			        }
 				}

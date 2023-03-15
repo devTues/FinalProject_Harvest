@@ -38,17 +38,16 @@
 				<c:forEach var="getAllList" items="${getAllList }">
 					<div class="col-md-3 col-sm-6">
 						<div class="card text-left">
+							<c:if test="${getAllList.STATUS == 'PJT01'}">
 							<div class="card-header p-0">
 								<!-- 찜버튼 -->
 								<div class="blog-media">
 									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
 										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
 									</a>
-<!-- 									<label class="like_btn badge"> -->
                                    		<c:if test="${empty sesssionScope.id}">
 										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getAllList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getAllList.HEART}">
 										</c:if>
-<!--                                    	</label>	 -->
 								</div>
 							</div>
 							<div class="card-body px-0">
@@ -74,6 +73,63 @@
 									</div>
 								</div>
 							</div>
+							</c:if>
+							
+							<c:if test="${getAllList.STATUS == 'FD00'}">
+							<div class="card-header p-0">
+								<!-- 찜버튼 -->
+								<div class="blog-media">
+									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+										<img style="filter:grayscale(1);" src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
+									</a>
+                                   		<c:if test="${empty sesssionScope.id}">
+										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getAllList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getAllList.HEART}">
+										</c:if>
+								</div>
+							</div>
+							
+							<div class="card-body px-0">
+								<p class="my-2">${getAllList.CATEGORY } | ${getAllList.CRE_NM }</p>
+								<input type="hidden" id="pjIdx_${getAllList.IDX }" value="${getAllList.IDX }">
+								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+									<h5 class="card-title mb-2">${getAllList.TITLE }</h5>
+								</a>	
+								<span class="text-secondary">${getAllList.PERCENT}%</span> <small><fmt:formatNumber value="${getAllList.TOTAL_AMT}" pattern="#,###"/>원</small>
+								<div class="progress mt-2 mb-3">
+									<div class="progress-bar bg-dark" role="progressbar" style="width: ${getAllList.PERCENT}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+										<span>펀딩 실패</span>
+									</div>
+								</div>
+							</div>
+							</c:if>
+							
+							<c:if test="${getAllList.STATUS == 'FD01'}">
+							<div class="card-header p-0">
+								<!-- 찜버튼 -->
+								<div class="blog-media">
+									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+										<img style="filter:grayscale(1);" src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
+									</a>
+                                   		<c:if test="${empty sesssionScope.id}">
+										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getAllList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getAllList.HEART}">
+										</c:if>
+								</div>
+							</div>
+							
+							<div class="card-body px-0">
+								<p class="my-2">${getAllList.CATEGORY } | ${getAllList.CRE_NM }</p>
+								<input type="hidden" id="pjIdx_${getAllList.IDX }" value="${getAllList.IDX }">
+								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
+									<h5 class="card-title mb-2">${getAllList.TITLE }</h5>
+								</a>	
+								<span class="text-secondary">${getAllList.PERCENT}%</span> <small><fmt:formatNumber value="${getAllList.TOTAL_AMT}" pattern="#,###"/>원</small>
+								<div class="progress mt-2 mb-3">
+									<div class="progress-bar bg-dark" role="progressbar" style="width: ${getAllList.PERCENT}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+										<span>펀딩 성공</span>
+									</div>
+								</div>
+							</div>
+							</c:if>
 						</div>
 					</div>
 				</c:forEach>

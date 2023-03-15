@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.btn{
+    margin-top: 15px;
+    width: 120px;
+    height: 35px;
+    font-size: 17px;
+}
+#wrap{
+	margin-left: 300px;
+}
+
+.board_view {
+	margin-left: 300px;
+	border : 1px solid black;
+}
+tr, td, th {
+	border : 1px solid black;
+}
+
+.submin_btn{
+	margin-left: 300px;
+    width: 120px;
+    height: 35px;
+    font-size: 17px;
+}
+

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/admin.css"rel="stylesheet" type="text/css" >
+<link href="${pageContext.request.contextPath}/resources/harVest_css/admin.css"rel="stylesheet" type="text/css" >
 </head>
 <body>
 <jsp:include page="sidebar.jsp"></jsp:include>
@@ -24,17 +24,19 @@
 			        <tr class="color_menu">
 			            <th>프로젝트번호</th>
 			            <th>프로젝트명</th>
-			            <th>창작자ID</th>
+			            <th>창작자 ID</th>
+			            <th>창작자 이름</th>
 			            <th>프로젝트마감일</th>
 			            <th>심사현황</th>
 			        </tr>
 					<c:forEach var="proDTO" items="${judgeList}">
 			        <tr class="KOTRA-fontsize-80">
-			        	<td><a href="${pageContext.request.contextPath}/admin/judgeDetail?proIDX=${proDTO.IDX}">${proDTO.IDX}</a></td>
-			        	<td>${proDTO.TITLE}</td>
-			        	<td>${proDTO.ID}</td>
-			        	<td>${proDTO.PROEND}</td>
-			        	<td>${proDTO.PROSTATUSDETAIL}</td>
+			        	<td><a href="${pageContext.request.contextPath}/admin/judgeDetail?PJ_IDX=${proDTO.idx}">${proDTO.idx}</a></td>
+			        	<td>${proDTO.title}</td>
+			        	<td>${proDTO.id}</td>
+			        	<td>${proDTO.creNm}</td>
+			        	<td>${proDTO.end}</td>
+			        	<td>${proDTO.codeNm}</td>
 				    </tr>
 		        	</c:forEach>
 		        </tbody>
@@ -70,11 +72,11 @@
 			        </tr>
 					<c:forEach var="proDto2" items="${judgeFinish}">
 			        <tr class="KOTRA-fontsize-80">
-			        	<td>${proDto2.IDX}</td>
-			        	<td>${proDto2.TITLE}</td>
-			        	<td>${proDto2.ID}</td>
-			        	<td>${proDto2.PROEND}</td>
-			        	<td>${proDto2.PROSTATUSDETAIL}</td>
+			        	<td>${proDto2.idx}</td>
+			        	<td>${proDto2.title}</td>
+			        	<td>${proDto2.id}</td>
+			        	<td>${proDto2.end}</td>
+			        	<td>${proDto2.codeNm}</td>
 				    </tr>
 		        	</c:forEach>
 		        </tbody>

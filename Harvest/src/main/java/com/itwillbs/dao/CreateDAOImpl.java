@@ -24,7 +24,6 @@ public class CreateDAOImpl implements CreateDAO {
 		int startRow = Integer.parseInt(projectMap.get("startRow"));
 		int pageSize = Integer.parseInt( projectMap.get("pageSize"));
 		RowBounds row = new RowBounds(startRow, pageSize);
-		System.out.println(startRow + ", " + pageSize);
 		return sqlSession.selectList(namespace + ".getProjectList", projectMap, row);
 	}
 	

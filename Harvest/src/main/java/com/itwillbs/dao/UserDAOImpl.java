@@ -21,7 +21,6 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public void insertUser(UserDTO userDto) {
-		System.out.println("UserDAOImpl insertUser()");
 		
 		sqlSession.insert(namespace + ".insertUser", userDto); 
 	}
@@ -29,7 +28,6 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public UserDTO userCheck(UserDTO userDto) {
-		System.out.println("UserDAOImpl userCheck()");
 		
 		return sqlSession.selectOne(namespace + ".userCheck", userDto);
 	}
@@ -49,23 +47,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 
-
 	
-//	@Override
-//	public UserDTO mailCheck(UserDTO dto) {
-//
-//		return sqlSession.selectOne(namespace + ".mailCheck", dto);
-//	}
-
-	
-//	@Override
-//	public void updatePass(UserDTO dto) {
-//		
-//		sqlSession.update(namespace + ".updateMember", dto);
-//	}
-
-
-
 	
 	
 

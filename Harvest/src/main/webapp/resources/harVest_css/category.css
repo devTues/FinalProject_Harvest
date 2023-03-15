@@ -1,38 +1,22 @@
 @charset "UTF-8";
-.content{
-	max-width: 800px;
-	margin: 0 auto;
+.register {
+	margin-left: 1300px;
 }
 
-.flexbox {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	gap: 1em;
+.cateUpdate {
+	margin-left: 500px;
+	margin-top: 200px;
 }
 
-.item {
-	min-height: 200px;
-	flex-basis: 150px;
-	flex-grow: 1;
-	border: 1px solid rgba(0, 0, 0, 0.07)
+.catewriteForm {
+	margin-left: 500px;
+	margin-top: 200px;
 }
 
-p {
-	width: auto;
-    height: 150px;
-    text-align: center;
-}
-.img {
-	width: 100px;
-	height: 100px;
-/* 	margin-left: 40px;  */
-	margin-top: 40px;
+.CATEGORY {
+	margin-left: 100px;
 }
 
-.btn {
-	text-align: center;
-}
-
-.regist {
-	margin: auto;
+.categoty_btn {
+	margin-left: 100px;
 }

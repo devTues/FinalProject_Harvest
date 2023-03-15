@@ -68,47 +68,19 @@ public class AjaxController {
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
 		String result = projectInfoService.setLike(param);
-		System.out.println("아이디" + userId);
 		return result;
 	}
 	
 	@RequestMapping(value = "/project/alramPro" , method = RequestMethod. POST)
 	@ResponseBody
 	public String alram(@RequestParam(value = "PJ_IDX") String pjIdx,
-						@RequestParam(value = "USER_ID") String userId,
-						@RequestParam(value = "TITLE") String title
-//						@RequestParam(value = "START") String start
+						@RequestParam(value = "USER_ID") String userId
 						) throws Exception {
-		System.out.println("@@@ 호출됨");
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("PJ_IDX", pjIdx);
 		param.put("USER_ID", userId);
-//		param.put("TITLE", title);
 		String result = projectInfoService.setAlram(param);
-		String content = "프로젝트펀딩이 시작되었습니다. https://tumblbug.com/";
-        String from = "ki6532@naver.com";
 		
-		try {
-        	// 
-            MimeMessage mail = mailSender.createMimeMessage();
-            MimeMessageHelper mailHelper = new MimeMessageHelper(mail,"UTF-8");
-            
-            mailHelper.setFrom(from);
-            mailHelper.setTo(userId);
-            mailHelper.setSubject("["+title+"] 프로젝트 펀딩이 시작되었습니다.");
-            mailHelper.setText(content);
-            
-            mailSender.send(mail);
-            
-            System.out.println("성공");
-            
-        } catch(Exception e) {
-            e.printStackTrace();
-            System.out.println("실패");
-        }
-		
-		System.out.println("아이디 " + userId);
-		System.out.println("제목 " + title);
 		return result;
 	}
 	
@@ -145,11 +117,7 @@ public class AjaxController {
 		@GetMapping("/user/mailCheck")
 		@ResponseBody
 		public String mailCheck(String email) {
-			System.out.println("이메일 인증 요청이 들어옴!");
-			System.out.println("이메일 인증 이메일 : " + email);
 			return mailService.joinEmail(email);
-			
-				
 		}
 		
 		// 민영

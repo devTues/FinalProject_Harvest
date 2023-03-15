@@ -93,7 +93,7 @@
                                 <!-- 찜버튼 -->
 								<div class="blog-media">
 									<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
-										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100" height="110">
+										<img src="${pageContext.request.contextPath }/resources/upload/${fn:split(getAllList.IMG1,'&')[0]}" alt="" class="w-100">
 									</a>
                                    		<c:if test="${empty sesssionScope.id}">
 										<img style="position:absolute; top:5px;right:5px;z-index:10;cursor:pointer;" width="20" height="20" id="likeBtn_${getAllList.IDX }" class="heart" src="${pageContext.request.contextPath}/resources/harVest_img/${getAllList.HEART}">
@@ -214,7 +214,7 @@
 					</a>
 				</div>
               	<p class="my-2">${getExpList.CATEGORY } | ${getExpList.CRE_NM }</p>
-              	<a href="${pageContext.request.contextPath }/project/projectOpen?idx=${getExpList.IDX }">
+              	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getExpList.IDX }">
                 	<h6 class="m-0">${getExpList.TITLE }</h6>
                 </a>
                 <span class="text-muted">${getExpList.START } 공개예정</span>

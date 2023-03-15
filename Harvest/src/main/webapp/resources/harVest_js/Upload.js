@@ -1,18 +1,3 @@
-window.onload = function(){
-	const fileDOM = document.querySelector('#file');
-	const preview = document.querySelector('.image-box');
-	
-	
-	fileDOM.addEventListener('change', () => {
-		debugger;
- 		const reader = new FileReader();
-  		reader.onload = ({ target }) => {
-    	preview.src = target.result;
-  		};
-  		reader.readAsDataURL(fileDOM.files[0]);
-	});
-	
-};
 
 $(function(){
   //드래그 앤 드롭
@@ -85,8 +70,21 @@ $(function(){
 
 
 $(document).ready(function() {
-// 	$('.length').trigger('keyup');
-	// 상단바 고정
+	
+	// 프로필 미리보기
+	const fileDOM = document.querySelector('#file');
+	const preview = document.querySelector('.image-box');
+	
+	
+	fileDOM.addEventListener('change', () => {
+ 		const reader = new FileReader();
+  		reader.onload = ({ target }) => {
+    	preview.src = target.result;
+  		};
+  		reader.readAsDataURL(fileDOM.files[0]);
+	});
+	
+	// 상단탭 고정
 	$(window).scroll(function() {
 			var window = $(this).scrollTop();
 			if (window) {
@@ -95,29 +93,50 @@ $(document).ready(function() {
 			}
 			$('#header').removeClass('fixed', 1000);
 	});
+	
+	// 필수 항목 제어
+	$('.text_').on("propertychange change keyup keydown paste input", function(){
+		var value = $(this).val();
+		const amount = parseFloat(value.replace(',', ''));
+		var id = $(this).attr('id');
+		if(value == "") {
+			$('#p_' + id).html('필수 항목입니다.');
+			$('#p_' + id).css({"color": "red"});
+			$('.' + id + 'Length').css({"color": "red"});
+			$(this).closest('div').css({"border": "1px solid red"});
+	 		return;
+		}
 		
-
+		$('#p_' + id).html('');
+		return;
+	});
+	
+	$('.text_').trigger('change');
+	
 	// 글자수 제어
-	$('.creNm').keyup(function() {
+	$('.creNm').keydown(function() {
 		const inputLength = $(this).val().length;
 		$('.creNmLength').html(inputLength + '/20');
 		if(inputLength > 20) {
 			$('.creNmLength').css({"color": "red"});
 			$('.creNmWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
 			return;
 		}
 		$('.creNmLength').css({"color": "rgb(13, 13, 13)"});
 		$('.creNmWrap').css({"border": "1px solid"});
+		$('.saveBtn').prop('disabled', false);
 		return;
 		
 	});
 	
-	$('.creIntro').keyup(function() {
+	$('.creIntro').keydown(function() {
 		const inputLength = $(this).val().length;
 		$('.creIntroLength').html(inputLength + '/300');
 		if(inputLength > 300) {
 			$('.creIntroLength').css({"color": "red"});
 			$('.taWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
 			return;
 		}
 		$('.creIntroLength').css({"color": "rgb(13, 13, 13)"});
@@ -127,45 +146,104 @@ $(document).ready(function() {
 
 	$('.title').keydown(function() {
 		const inputLength = $(this).val().length;
-		$('.titleLength').html(inputLength + '/20');
-		if(inputLength > 20) {
+		$('.titleLength').html(inputLength + '/50');
+		if(inputLength > 50) {
 			$('.titleLength').css({"color": "red"});
 			$('.titleWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
 			return;
 		}
 		$('.titleLength').css({"color": "rgb(13, 13, 13)"});
 		$('.titleWrap').css({"border": "1px solid"});
+		$('.saveBtn').prop('disabled', false);
 		return;
 	});
 
-	$('.productNm').keyup(function() {
+	$('.productNm').keydown(function() {
 		const inputLength = $(this).val().length;
-		$('.proNmLength').html(inputLength + '/10');
+		$('.productNmLength').html(inputLength + '/10');
 		if(inputLength > 10) {
 			$('.productNmLength').css({"color": "red"});
 			$('.productNmWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
 			return;
 		}
-		$('.proNmLength').css({"color": "rgb(13, 13, 13)"});
+		$('.productNmLength').css({"color": "rgb(13, 13, 13)"});
 		$('.productNmWrap').css({"border": "1px solid"});
+		$('.saveBtn').prop('disabled', false);
 		return;
 		
 	});
-
+	
+	// 금액 제어
+	$('#targetAmt').on("propertychange change keyup keydown paste input", function(){
+			// debugger;
+			const value = $(this).val();
+			const amount = parseFloat(value.replace(/,/gi, ''));
+			if(amount < 500000) {
+				$('#p_targetAmt').html('50만원 이상의 금액을 입력해주세요.');
+	 			$('#p_targetAmt').css({"color": "red"});
+				$('.targetAmtWrap').css({"border": "1px solid red"});
+				$('.saveBtn').prop('disabled', true);
+				return;
+			}
+			
+			if(amount >= 500000 && amount <= 9999999999) {
+				$('#p_targetAmt').html('');
+				$('.targetAmtWrap').css({"border": "1px solid"});
+				$('.saveBtn').prop('disabled', false);
+				return;
+			}
+			
+			if(amount > 9999999999) {
+	 			$('#p_targetAmt').html('9,999,999,999원 이하인 금액을 입력해주세요.');
+	 			$('#p_targetAmt').css({"color": "red"});
+				$('.targetAmtWrap').css({"border": "1px solid red"});
+				$('.saveBtn').prop('disabled', true);
+				return;
+			}
+		
+	});
+	$('#minDona').on("propertychange change keyup keydown paste input", function(){
+		const value = $(this).val();
+		const amount = parseFloat(value.replace(/,/gi, ''));
+		if(amount < 1000) {
+			$('#p_minDona').html('천원 이상의 금액을 입력해주세요.');
+ 			$('#p_minDona').css({"color": "red"});
+			$('.minDonaWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
+			return;
+		}
+		if(amount >= 1000 && amount <= 9999999999) {
+			$('#p_minDona').html('');
+			$('.minDonaWrap').css({"border": "1px solid"});
+			$('.saveBtn').prop('disabled', false);
+			return;
+		}
+		if(amount > 9999999999) {
+			$('#p_minDona').html('9,999,999,999원 이하인 금액을 입력해주세요.');
+			$('#p_minDona').css({"color": "red"});
+			$('.minDonaWrap').css({"border": "1px solid red"});
+			$('.saveBtn').prop('disabled', true);
+			return;
+		}
+		
+	});
 	
 	// 수수료, 총 금액 계산
-	$('#targetAmt').on('keyup', function() {
+	$('#targetAmt').on("input", function() {
 		var target = $('#targetAmt').val().replaceAll(/\D/g, '');
-		var fee = target * 0.05;
+		var fee = Math.round(target * 0.05);
 		var total = target - fee;
 		
-		$('input[name=totalAmt]').attr('value', total.toLocaleString('ko-KR') + '원');
-		$('input[name=fee]').attr('value', fee.toLocaleString('ko-KR') + '원');
+		$('input[name=totalAmt]').attr('value', total.toLocaleString('ko-KR').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,') + '원');
+		$('input[name=fee]').attr('value', fee.toLocaleString('ko-KR').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,') + '원');
 	
 	}); 
 	
 });
-	
+
+// 에디터
 $(function() {
 			var plugins = [ "advlist", "autolink", "lists", "link", "image",
 					"charmap", "print", "preview", "anchor", "searchreplace",
@@ -179,8 +257,7 @@ $(function() {
 					+ ' bullist numlist |' + ' table tabledelete |'
 					+ ' link image';
 
-			tinyMCE
-					.init({
+			tinyMCE.init({
 
 						forced_root_block : false,
 						force_br_newlines : true,

@@ -14,7 +14,8 @@
             <c:if test="${! empty sessionScope.id}">
            		<a href="${pageContext.request.contextPath }/creator/start">프로젝트 올리기</a>
                 <a href="${pageContext.request.contextPath }/user/logout">로그아웃</a>
-                <img src="${pageContext.request.contextPath }/resources/assets/imgs/avatar-1.jpg" class="thumb-sm img-thumbnail rounded-circle" alt="...">
+                
+                <img src="${pageContext.request.contextPath }/resources/upload/${sessionScope.profile}" style="width:40px; height:40px;" class="thumb-sm img-thumbnail rounded-circle" alt="...">
             </c:if>
             </div>
         </div>
@@ -39,6 +40,8 @@
                           <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=game"><img src="${pageContext.request.contextPath }/resources/assets/imgs/nintendo-switch.svg"/> 게임</a>
                           <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=media"><img src="${pageContext.request.contextPath }/resources/assets/imgs/music-note-list.svg"/> 음악</a>
                           <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=design"><img src="${pageContext.request.contextPath }/resources/assets/imgs/easel2.svg"/> 디자인</a>
+                          <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=acc"><img src="${pageContext.request.contextPath }/resources/assets/imgs/handbag.svg"/> 잡화</a>
+                          <a class="dropdown-item" href="${pageContext.request.contextPath }/projectList/category?category=sports"><img src="${pageContext.request.contextPath }/resources/assets/imgs/bicycle.svg"/> 스포츠</a>
                       </div>
                     </li>
                     <li class="nav-item">

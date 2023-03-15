@@ -27,28 +27,35 @@
 							 AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
 			   											 	 ELSE 'heart.svg'
 			   											 	  END AS HEART  
-			   											 	  
+			 , STATUS  											 	  
 		  FROM PROJECT_TB P
 		 WHERE 1=1
 		 <if test='! GB.equals("") and GB != null'>
 		 	  <if test='GB.equals("POP")'>
-		 	  AND END > CURDATE()
-		 	  ORDER BY PERCENT DESC
+		 	  AND CURDATE() >= START
+		 	  ORDER BY STATUS DESC, PERCENT DESC
 			  </if>
-			  <if test='GB.equals("NEW")'>  
-		   	  AND START > DATE_SUB(CURDATE(),INTERVAL 7 day) and END > CURDATE()
+			  <if test='GB.equals("NEW")'>
+			  AND STATUS = 'PJT01'
+			  AND END > CURDATE()
+			  AND CURDATE() >= START
+		   	  ORDER BY START DESC
 			  </if>
-		  	  <if test='GB.equals("DEAD")'>  
+		  	  <if test='GB.equals("DEAD")'>
+		  	  AND STATUS = 'PJT01'  
 		   	  AND CURDATE() > DATE_SUB(END,INTERVAL 7 day) and END > CURDATE()
 			  </if>
-			  <if test='GB.equals("EXP")'>  
+			  <if test='GB.equals("EXP")'>
+			  AND STATUS = 'PJT01'  
 		   	  AND START > CURDATE()
 			  </if>
 		 </if>
-		 <if test='! SEARCH.equals("") and SEARCH != null'>  
+		 <if test='! SEARCH.equals("") and SEARCH != null'>
+		 AND STATUS = 'PJT01'
 	   	 AND title like CONCAT('%', #{SEARCH}, '%') AND END > CURDATE()
 		 </if>
-		 <if test='! CATEGORY.equals("") and CATEGORY != null'>  
+		 <if test='! CATEGORY.equals("") and CATEGORY != null'>
+		 AND STATUS = 'PJT01'  
 	   	 AND category=#{CATEGORY} and END > CURDATE()
 		 </if>
 	</select>
@@ -72,11 +79,13 @@
 													        FROM alram_tb
 													       WHERE PJ_IDX = P.IDX)
 			   										ELSE 0
-			   										END AS COUNT  											 
+			   										END AS COUNT 
+			 , STATUS  										 											 
 		  FROM PROJECT_TB P
 		 WHERE 1=1
 		 <if test='! GB.equals("") and GB != null'>
-			  <if test='GB.equals("EXP")'>  
+			  <if test='GB.equals("EXP")'>
+			  AND STATUS = 'PJT01'
 		   	  AND START > CURDATE()
 			  </if>
 		 </if>
@@ -90,30 +99,27 @@
 		  	  <if test='GB.equals("DEAD")'>  
 		   	  AND CURDATE() > DATE_SUB(END,INTERVAL 7 day) AND END > CURDATE()
 			  </if>
-			  <if test='GB.equals("EXP")'>  
+			  <if test='GB.equals("EXP")'>
+			  AND STATUS = 'PJT01'  
 		   	  AND START > CURDATE()
 			  </if>
 			  <if test='GB.equals("POP")'>  
-		   	  AND END > CURDATE()
+		   	  AND CURDATE() >= START
 			  </if>
-			  <if test='GB.equals("NEW")'>  
-		   	  AND START > DATE_SUB(CURDATE(),INTERVAL 7 day) and END > CURDATE()
+			  <if test='GB.equals("NEW")'>
+			  AND STATUS = 'PJT01' 
+		   	  AND END > CURDATE()
+			  AND CURDATE() >= START
 			  </if>
 		 </if>
-		 <if test='! SEARCH.equals("") and SEARCH != null'>  
+		 <if test='! SEARCH.equals("") and SEARCH != null'>
+		 AND STATUS = 'PJT01'  
 	   	 AND title like CONCAT('%', #{SEARCH}, '%') AND END > CURDATE()
 		 </if>
-		 <if test='! CATEGORY.equals("") and CATEGORY != null'>  
+		 <if test='! CATEGORY.equals("") and CATEGORY != null'>
+		 AND STATUS = 'PJT01'  
 	   	 AND category=#{CATEGORY} and END > CURDATE()
 		 </if>
-	</select>
-	
-		<!-- 프로젝트에 대한 총 좋아요 수 -->
-	<select id="getLikeList" resultType="HashMap" parameterType="HashMap">
-		SELECT COUNT(*)  AS CNT
-	      FROM LIKE_TB
-	     WHERE PJ_IDX = #{PJ_IDX}
-<!-- 	       AND USER_ID = #{USER_ID} -->
 	</select>
 	
 </mapper>  

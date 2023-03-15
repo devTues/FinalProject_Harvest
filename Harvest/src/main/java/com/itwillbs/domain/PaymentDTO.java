@@ -13,7 +13,8 @@ public class PaymentDTO {
 	private Date date;
 	private Date payDate;
 	private String status;
-	
+    private String codeNm;
+    
 	public int getIdx() {
 		return idx;
 	}
@@ -68,8 +69,12 @@ public class PaymentDTO {
 	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
-	
-	
+	public String getCodeNm() {
+		return codeNm;
+	}
+	public void setCodeNm(String codeNm) {
+		this.codeNm = codeNm;
+	}
 	@Override
 	public String toString() {
 		return "PaymentDTO [idx=" + idx + ", pjIdx=" + pjIdx + ", id=" + id + ", amount=" + amount + ", address="

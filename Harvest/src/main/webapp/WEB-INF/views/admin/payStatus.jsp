@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/payStatus.css" rel="stylesheet" type="text/css" >
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.6.3.min.js"></script>
+<link href="${pageContext.request.contextPath}/resources/harVest_css/payStatus.css" rel="stylesheet" type="text/css" >
+<script src="${pageContext.request.contextPath}/resources/harVest_js/jquery-3.6.3.min.js"></script>
 <script>
 			    $(function () {
 			        $(".left_sub_menu").hide();
@@ -93,16 +93,16 @@
 			   		<tbody>
 				        <tr class="color_menu">
 				            <th>후원자ID</th>
-				            <th>프로젝트명</th>
+				            <th>프로젝트번호</th>
 				            <th>후원금액</th>
 				            <th>결제상태</th>
 				        </tr>
-						<c:forEach var="payDTO" items="${payStandby}">
+						<c:forEach var="PaymentDTO" items="${payStandby}">
 				        <tr class="KOTRA-fontsize-80">
-				        	<td>${payDTO.PID}</td>
-				        	<td>${payDTO.PTITLE}</td>
-				        	<td>${payDTO.AMOUNT}</td>
-				        	<td>${payDTO.PSTATUS}</td>
+				        	<td>${PaymentDTO.id}</td>
+				        	<td>${PaymentDTO.pjIdx}</td>
+				        	<td>${PaymentDTO.amount}</td>
+				        	<td>${PaymentDTO.codeNm}</td>
 					    </tr>
 			        	</c:forEach>
 			        </tbody>
@@ -117,16 +117,16 @@
 				<tbody>
 					<tr class="color_menu">
 				            <th>후원자ID</th>
-				            <th>프로젝트명</th>
+				            <th>프로젝트번호</th>
 				            <th>후원금액</th>
 				            <th>결제상태</th>
 				    </tr>
-					<c:forEach var="payDTO" items="${paySuccess}">
+					<c:forEach var="PaymentDTO" items="${paySuccess}">
 				    <tr class="KOTRA-fontsize-80">
-				        	<td>${payDTO.PID}</td>
-				        	<td>${payDTO.PTITLE}</td>
-				        	<td>${payDTO.AMOUNT}</td>
-				        	<td>${payDTO.PSTATUS}</td>
+				        	<td>${PaymentDTO.id}</td>
+				        	<td>${PaymentDTO.pjIdx}</td>
+				        	<td>${PaymentDTO.amount}</td>
+				        	<td>${PaymentDTO.codeNm}</td>
 					</tr>
 			        </c:forEach>
 			    </tbody>
@@ -141,16 +141,16 @@
 				<tbody>
 					<tr class="color_menu">
 				            <th>후원자ID</th>
-				            <th>프로젝트명</th>
+				            <th>프로젝트번호</th>
 				            <th>후원금액</th>
 				            <th>결제상태</th>
 				    </tr>
-					<c:forEach var="payDTO" items="${payFinish}">
+					<c:forEach var="PaymentDTO" items="${payFinish}">
 				    <tr class="KOTRA-fontsize-80">
-				        	<td>${payDTO.PID}</td>
-				        	<td>${payDTO.PTITLE}</td>
-				        	<td>${payDTO.AMOUNT}</td>
-				        	<td>${payDTO.PSTATUS}</td>
+				        	<td>${PaymentDTO.id}</td>
+				        	<td>${PaymentDTO.pjIdx}</td>
+				        	<td>${PaymentDTO.amount}</td>
+				        	<td>${PaymentDTO.codeNm}</td>
 					</tr>
 			        </c:forEach>
 			    </tbody>

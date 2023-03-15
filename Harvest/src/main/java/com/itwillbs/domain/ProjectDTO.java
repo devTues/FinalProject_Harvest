@@ -21,9 +21,10 @@ public class ProjectDTO {
 	private Date end;
 	private String status;
 	
-   private int sumMoney;
-   private int sumUser;
-   private String heart;
+    private int sumMoney;
+    private int sumUser;
+    private String heart;
+    private String codeNm;
 	
 	public int getIdx() {
 		return idx;
@@ -144,6 +145,12 @@ public class ProjectDTO {
 	}
 	public void setHeart(String heart) {
 		this.heart = heart;
+	}
+	public String getCodeNm() {
+		return codeNm;
+	}
+	public void setCodeNm(String codeNm) {
+		this.codeNm = codeNm;
 	}
 
 	

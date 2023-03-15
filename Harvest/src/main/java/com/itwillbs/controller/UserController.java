@@ -22,20 +22,6 @@ public class UserController {
 	@Inject
 	private UserService userService;
 	
-//	// 1. 생성자를 통해서 전달 (객체 생성한 것을 받아서 사용)
-//	@Inject
-//	private MemberController(MemberService memberService) {
-//		this.memberService = memberService;
-//	}
-//	
-//	// 2. set() 메서드 전달 (객체 생성한 것을 받아서 사용)
-//	@Inject
-//	public void setMemberService(MemberService memberService) {
-//		this.memberService = memberService;
-//	}
-	
-	// ==============================================================
-	
 //	[회원가입]
 	@RequestMapping(value="/user/insert", method=RequestMethod.GET)
 	public String insert() {
@@ -54,30 +40,15 @@ public class UserController {
 		
 		return "redirect:/user/login";
 	}
-
-//	============================================================================
-    
-    
-//	[로그인]
-//	@RequestMapping(value = "/user/login", method = RequestMethod.GET)
-//	public String login() {
-//		
-//		
-//		// 기본 이동방식 : 주소변경 없이 이동
-//		return "user/loginForm";
-//	}
 	
 	@RequestMapping(value = "/user/loginPro", method = RequestMethod.POST)
 	public String loginPro(UserDTO userDto, HttpSession session) {
-		System.out.println(userDto.getId() + "설마설마");
 		
 		UserDTO userDTO2=userService.userCheck(userDto);
 		String id = userDTO2.getId();
-		
+		String profile = userDTO2.getProfile();
 
 		if(id == null) {
-			// 아이디 비밀번호 틀림 => userDTO null 넘어옴 => "정보틀림" 뒤로 이동 
-			// member/msg.jsp 이동
 			return "user/msg";
 		}
 		
@@ -85,42 +56,25 @@ public class UserController {
 			return "redirect:/admin/userMain";
 		}
 		
-		// 아이디 비밀번호 일치 => userDTO 주소담아서 옴 => 세션값 생성, main 이동
 		session.setAttribute("id", id);
-
-		return "redirect:/projectList/main";
+		session.setAttribute("profile", profile);
 		
+		return "redirect:/projectList/main";
 	}
-	
-	
-
-
-	
-
-// ==========================================================================
 	
 	
 //	[로그아웃]
 	@RequestMapping(value = "/user/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
-		// 세션값 전체 삭제
 		session.invalidate();
 		
-		// 기본 이동방식 : 주소변경 하면서 메인으로 이동(세션값 안보이니까!)
 		return "redirect:/projectList/main";
 	}
-	
-	
-	
-// ==========================================================================	
-	
 	
 	
 //	[비밀번호 찾기 폼 보여주기]
 	@RequestMapping(value = "/finding/findPass", method = RequestMethod.GET)
 	public String findPass() {
-		
-		// 기본 이동방식 : 주소변경 하면서 메인으로 이동
 		return "user/findPass";
 	}
 	
@@ -128,7 +82,6 @@ public class UserController {
 //	[이메일 입력하고 userCheck]
 	@RequestMapping(value = "/finding/findpassPro", method = RequestMethod.POST)
 	public String findpassPro(UserDTO userDto, HttpSession session) {
-		// DB에서 userCheck(userDTO)
 		UserDTO dto2 = userService.passCheck(userDto);
 		if(dto2 != null) {
 			session.setAttribute("id", dto2.getId());
@@ -137,7 +90,6 @@ public class UserController {
 			return "user/mainPage";	
 		}
 	}
-	
 	
 //	[비밀번호 보여주기]
 	@RequestMapping(value = "/finding/showPass", method = RequestMethod.GET)

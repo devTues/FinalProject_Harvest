@@ -5,192 +5,345 @@
   
 <mapper namespace="com.itwillbs.mappers.adminMapper">
 	
+	<!-- 회원전체목록 -->
 	<select id="getUserList" resultType="com.itwillbs.domain.UserDTO">
-		select *
-		from user_tb
-		order by userNum desc limit #{startRow}, #{pageSize}
+		select	u.IDX
+			  , u.ID
+			  , u.NAME
+			  , u.Phone
+			  , u.UNREGIST
+			  , c.code_nm
+		from 	user_tb u join code_tb c
+		on 		u.UNREGIST = c.CODE
+		order by IDX desc limit #{startRow}, #{pageSize}
 	</select>
 	
-	<select id="userView" resultType="com.itwillbs.domain.UserDTO">
-		select *
-		from user_tb
-		where userId = #{userId}
-	</select>
-		
+	<!--  회원상태변경 -->
 	<update id="userUpdateBlack">
-		update user_tb 
-		set UNREGIST = 'USR02'
-		, UNREGISTDETAIL = '정지계정'
-		where userId = #{userId}
+		update	USER_TB 
+		set		UNREGIST = 'USR02'
+		where 	ID = #{ID}
 	</update>
 	
 	<update id="userUpdateNomal">
-		update user_tb 
-		set UNREGIST = 'USR00'
-		, UNREGISTDETAIL = '활동계정'
-		where userId = #{userId}
+		update	USER_TB 
+		set		UNREGIST = 'USR00'
+		where	ID = #{ID}
 	</update>
 	
 	<select id="goBlack" resultType="String">
-		select UNREGIST
-		from user_tb
-		where userId = #{userId}
+		select	UNREGIST
+		from	USER_TB
+		where	ID = #{ID}
+	</select>
+	
+	
+	<!-- 회원정보상세보기 -->
+	<select id="userView" resultType="com.itwillbs.domain.UserDTO">
+		select	u.IDX
+				, u.NAME
+				, u.ID
+				, u.PASS
+				, u.PROFILE
+				, u.PHONE
+				, u.PREFER
+				, u.EVENT_ALR
+				, c.code
+				, c.code_Nm
+		from 	user_tb u join code_tb c
+		on 		u.UNREGIST = c.CODE
+		where 	ID = #{ID}
 	</select>
 	
 	<select id="getProject" resultType="com.itwillbs.domain.ProjectDTO">
-		select *
-		from project_tb
-		where ID = #{ID}
+		select 	p.TITLE
+				,p.START
+				,p.END
+				,p.STATUS
+				,p.ID
+				,p.CRE_NM
+				,p.PRESENT
+				,p.TARGET_AMT
+				,p.BUDGET
+				,c.code_Nm
+		from 	PROJECT_TB p join CODE_TB c
+		on 		p.status = c.code
+		where 	ID = #{ID}
 	</select>
 	
 	<select id="getPayment" resultType="com.itwillbs.domain.PaymentDTO">
-		select p.IDX, p.STATUS, pa.PTITLE, pa.AMOUNT, pa.STATUS
-		from project_tb p join payment_tb pa 
-		on p.ID = pa.PID
-		where ID = #{ID};
+		select p.TITLE
+			  ,p.IDX
+		      ,pay.STATUS
+		      ,pay.AMOUNT
+		      ,pay.DATE
+		      ,c.Code_Nm
+		from   project_tb p
+			   left join payment_tb pay
+			   on   	 p.IDX = pay.PJ_IDX 
+		       left join code_tb c 
+		       on   	 pay.STATUS = c.code
+		where pay.id =  #{ID}
 	</select>
 	
-	
+	<!-- 심사중인 목록 가져오기 -->
 	<select id="projectJudge" resultType="com.itwillbs.domain.ProjectDTO">
-		select *
-		from project_tb
-		where STATUS='PJT02'
+		select 	p.IDX
+				, p.TITLE
+				, p.ID
+				, p.CRE_NM
+				, p.END
+				, c.CODE_NM 
+		from 	project_tb p join code_tb c
+		on		p.status = c.code
+		where 	status ='PJT02'
 		order by IDX desc limit #{startRow}, #{pageSize}
 	</select>
 	
 	<select id="judgeFinish" resultType="com.itwillbs.domain.ProjectDTO">
-		select *
-		from project_tb 
-		where STATUS='PJT00' or STATUS='PJT01'
+		select	p.IDX
+				, p.TITLE
+				, p.ID
+				, p.CRE_NM
+				, p.END
+				, c.code_Nm
+		from 	project_tb p join code_tb c
+		on		p.STATUS = c.code
+		where 	STATUS='PJT00' or STATUS='PJT01'
 	</select>
 	
-<!-- 	현재 프로젝트의 상태불러오기 -->
+	<!-- 현재 프로젝트의 상태불러오기 -->
 	<select id="getProStatus" resultType="String">
-		select STATUS
-		from project_tb
-		where IDX = #{IDX}
+		select	STATUS
+		from	PROJECT_TB
+		where	IDX = #{PJ_IDX}
 	</select>
 	
-<!-- 	프로젝트 상태 변경 -->
+	<!-- 프로젝트 상태 변경 -->
 	<update id="approvalPro">
-		update project_tb  
-		set STATUS = 'PJT01'
-<!-- 		, STATUSDETAIL = '승인' -->
-		where IDX = #{IDX}
+		update	PROJECT_TB  
+		set		STATUS = 'PJT01'
+		where	IDX = #{PJ_IDX}
 	</update>
 	
 	<update id="refusePro">
-		update project_tb
-		set STATUS = 'PJT00'
-<!-- 		, PROSTATUSDETAIL = '반려' -->
-		where IDX = #{IDX}
+		update	PROJECT_TB
+		set		STATUS = 'PJT00'
+		where	IDX = #{PJ_IDX}
 	</update>
 	
-<!-- 	프로젝트 현황 목록 불러오기 -->
-	<!-- 	프로젝트 승인(펀딩진행중인) 목록 -->
+	<!-- 프로젝트 현황 목록 불러오기 -->
+	<!-- 프로젝트 승인(펀딩진행중인) 목록 -->
 	<select id="projectING" resultType="com.itwillbs.domain.ProjectDTO">
-		select *
-		from project_tb
-		where STATUS = 'PJT01'
-		order by IDX desc limit #{startRow}, #{pageSize}
+		select	p.idx, p.title, p.id, p.end, c.code_Nm
+		from	project_tb p join code_tb c
+		on		p.status = c.code
+		where	p.status='PJT01'
+		order by IDX desc limit #{startRow}, #{pageSize};
 	</select>
 	
 	<!-- 프로젝트 완료(펀딩실패/펀딩성공) 목록 -->
 	<select id="projectFinish" resultType="com.itwillbs.domain.ProjectDTO">
-		select *
-		from project_tb 
-		where STATUS = 'PJT01' AND ( STATUS = 'FD01' or STATUS = 'FD00')
-		order by IDX desc limit #{startRow}, #{pageSize}
+		select	p.IDX
+				, p.TITLE
+				, p.CRE_NM
+				, p.END
+				, p.ID
+				, c.code_Nm
+		from	project_tb p join code_tb c
+        on		p.status = c.code
+		where	p.STATUS = 'FD01' or p.STATUS = 'FD00'
+		order by IDX desc limit #{startRow}, #{pageSize};
 	</select>
 	
-<!-- 	결제현황목록 -->
+	<!-- 결제현황목록 -->
 	<select id="payStandby" resultType="com.itwillbs.domain.PaymentDTO">
-		select * 
-		from payment_tb
-		where STATUS = 'PAY00';
+		select 	pay.ID
+				,pay.PJ_IDX
+				,pay.AMOUNT
+				,pay.STATUS
+				,c.code_Nm
+		from	payment_tb pay join code_tb c
+		on		pay.status = c.code
+		where	STATUS = 'PAY00';
 	</select>
 	
 	<select id="paySuccess" resultType="com.itwillbs.domain.PaymentDTO">
-		select *
-		from payment_tb
-		where STATUS = 'PAY01';
+		select 	pay.ID
+				,pay.PJ_IDX
+				,pay.AMOUNT
+				,pay.STATUS
+				,c.code_Nm
+		from	payment_tb pay join code_tb c
+		on		pay.status = c.code
+		where	STATUS = 'PAY01';
 	</select>
 	
 	<select id="payFinish" resultType="com.itwillbs.domain.PaymentDTO">
-		select *
-		from payment_tb
-		where STATUS = 'PAY02';
+		select 	pay.ID
+				,pay.PJ_IDX
+				,pay.AMOUNT
+				,pay.STATUS
+				,c.code_Nm
+		from	payment_tb pay join code_tb c
+		on		pay.status = c.code
+		where	STATUS = 'PAY02';
 	</select>
 	
-<!-- 	공지사항 목록 -->
+	
+	<!-- 공지사항 목록 -->
 	<select id="getNoticeList" resultType="com.itwillbs.domain.NoticeDTO">
-		select * 
-		from notice_tb
-		order by IDX desc limit #{startRow}, #{pageSize}
+		select	* 
+		from	NOTICE_TB
+	</select>
+	<!-- order by IDX desc limit #{startRow}, #{pageSize} -->
+	<select id="getNomalNotice" resultType="com.itwillbs.domain.NoticeDTO">
+		select	*
+		from	NOTICE_TB
+		where	CATEGORY = '공지사항';
+	</select>
+
+	<select id="getEventNotice" resultType="com.itwillbs.domain.NoticeDTO">
+		select	*
+		from	NOTICE_TB
+		where	CATEGORY = '이벤트ㆍ알람';
 	</select>
 	
-<!-- 	공지사항 글쓰기 maxIDX 값 가져오기  -->
+	<!-- 공지사항 글쓰기 maxIDX 값 가져오기  -->
 	<select id="maxIDX" resultType="java.lang.Integer">
-		select max(IDX)+1
-		from notice_tb
+		select	max(IDX)+1
+		from NOTICE_TB
 	</select>
   	
 	<insert id="insertBoard">
-		insert into notice_tb(IDX, ID, TITLE, CONTENT) 
-		value( #{IDX}, #{ID}, #{TITLE}, #{CONTENT} )
+		insert into NOTICE_TB(IDX, ID, TITLE, CONTENT, CATEGORY) 
+		value( #{IDX}, #{ID}, #{TITLE}, #{CONTENT}, #{CATEGORY})
 	</insert>
 	
-<!-- 	공지사항 글 상세보기 -->
+	<!-- 공지사항 글 상세보기 -->
 	<select id="getBoard" resultType="com.itwillbs.domain.NoticeDTO">
 		select *
-		from notice_tb
-		where IDX = #{IDX}
+		from	NOTICE_TB
+		where	IDX = #{IDX}
 	</select>
 	
-<!-- 	총 회원수 가져오기 -->
+	<!-- 총 회원수 가져오기 -->
 	<select id="getBoardCount" resultType="java.lang.Integer">
-		select count(*) total
-		from user_tb
+		select	count(*) total
+		from	USER_TB
 	</select>
 	
-<!-- 	심사중인 프로젝트 총 개수 가져오기 -->
+	<!-- 심사중인 프로젝트 총 개수 가져오기 -->
 	<select id="getJudgeCount" resultType="java.lang.Integer">
-		select count(*)
-		from project_tb
-		where STATUS='PJT02'
+		select	count(*)
+		from	project_tb
+		where	STATUS='PJT02'
 	</select>
-<!-- 	심사완료된 프로젝트 총 개수 가져오기 -->
-
+	
+	<!-- 심사완료된 프로젝트 총 개수 가져오기 -->
 	<select id="getFinishCount" resultType="java.lang.Integer">
-		select count(*)
-		from project_tb
-		where STATUS='PJT00' or STATUS='PJT01'
+		select	count(*)
+		from	project_tb
+		where 	STATUS='PJT00' or STATUS='PJT01'
 	</select>	
 	
-<!-- 	잔행중인 펀딩 목록 총 개수 가져오기 -->
+	<!-- 진행중인 펀딩 목록 총 개수 가져오기 -->
 	<select id="getProIngCount" resultType="java.lang.Integer">
-		select count(*)
-		from project_tb
-		where STATUS='PJT01'
+		select	count(*)
+		from	project_tb 
+		where	STATUS='PJT01'
 	</select>
-<!-- 	완료한 펀딩 목록 총 개수 가져오기 -->
+	<!-- 완료한 펀딩 목록 총 개수 가져오기 -->
 	<select id="getProFinishCount" resultType="java.lang.Integer">
-		select count(*)
-		from project_tb
-		where STATUS='FD00' or STATUS='FD01'
+		select	count(*)
+		from	project_tb
+		where	STATUS='FD00' or STATUS='FD01'
 	</select>
-<!-- 	공지사항 글 개수 가져오기  -->
+	<!-- 공지사항 글 개수 가져오기  -->
 	<select id="getNoticeCount" resultType="java.lang.Integer">
-		select count(*)
-		from notice_tb
+		select	count(*)
+		from	NOTICE_TB
 	</select>
 	
+	<!-- 카테고리 리스트 불러오기 -->
+	<select id="categoryList" resultType="com.itwillbs.domain.CategoryDTO">
+		select	*
+		from	CATEGORY_TB
+	</select>
+	
+	<!-- 카테고리 insert -->
+	<insert id="categoryRegisterPRO">
+		insert into CATEGORY_TB(IDX, CODE, CATEGORY_Nm) 
+		value(#{IDX}, #{CODE}, #{CATEGORY_Nm})
+	</insert>
+	
+	<!-- 카테고리 maxIDX -->
+	<select id="categoryMaxIDX" resultType="java.lang.Integer">
+		select 	max(IDX)
+		from	CATEGORY_TB
+	</select>
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="categoryDelete">
+		delete	from CATEGORY_TB
+		where	IDX = #{IDX} 
+	</delete>
+	
+	<!-- 카테고리 상세정보 -->
+	<select id="categoryView" resultType="com.itwillbs.domain.CategoryDTO">
+		select	*
+		from 	CATEGORY_TB
+		where	IDX = #{IDX}
+	</select>
+	
+	<!-- 카데고리 업데이트 -->
+	<update id="categoryUpdate">
+		update	CATEGORY_TB  
+		set		CODE = #{CODE} , CATEGORY_Nm = #{CATEGORY_Nm}
+		where	IDX = #{IDX}
+	</update>
+	
+	<!-- 공지사항 ajax 삭제 -->
+	<delete id="noticeDelete">
+		delete from NOTICE_TB
+		WHERE IDX = #{IDX}
+	</delete>
+	
+	<!-- 공지사항 상세보기 -->
+	<select id="getNoticeDetail" resultType="com.itwillbs.domain.NoticeDTO">
+		select *
+		from   NOTICE_TB
+		where	IDX = #{IDX}
+	</select>
+	
+	
+	
+	<!-- 정화언니 -->
 	<select id="getEventUserList" resultType="com.itwillbs.domain.UserDTO">
 		SELECT ID, EVENT_ALR
 		  FROM USER_TB
 		 WHERE EVENT_ALR = 'Y';
 	</select>
 	
+	<update id="statusFail">
+		UPDATE PROJECT_TB PJ
+		   SET PJ.STATUS = 'FD00'
+		 WHERE PJ.TARGET_AMT > (
+			  SELECT COALESCE(SUM(PAY.AMOUNT), 0)
+			    FROM PAYMENT_TB PAY
+			   WHERE PAY.PJ_IDX = PJ.IDX
+			  )
+		   AND CURDATE() > PJ.END;
+	</update>
+	
+	<update id="statusSuccess">
+		UPDATE PROJECT_TB PJ
+		   SET PJ.STATUS = 'FD01'
+		 WHERE (SELECT COALESCE(SUM(PAY.AMOUNT), 0)
+		          FROM PAYMENT_TB PAY
+		         WHERE PAY.PJ_IDX = PJ.IDX) > PJ.TARGET_AMT
+		   AND CURDATE() > PJ.END;
+	</update>
 	
 </mapper>
 

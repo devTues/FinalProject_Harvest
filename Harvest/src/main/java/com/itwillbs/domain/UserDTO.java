@@ -1,5 +1,7 @@
 package com.itwillbs.domain;
 
+import java.sql.Timestamp;
+
 public class UserDTO {
 	
 	// 멤버변수
@@ -7,19 +9,23 @@ public class UserDTO {
 	private String name;
 	private String id;
 	private String pass;
+	private String profile;
 	private String phone;
-	private String prefer;		//유저취향
-	private String eventAlr;		//이벤트알람
-//	private String authKey;		//이메일 인증키
-//	private String authSt;		//이메일 인증상태(default 0 / 인증완료 시 1)
-//	private String getEmail;	//이메일 인증
+	private String prefer;
+	private String unregist; //탈퇴여부
+	private Timestamp unregDate; //탈퇴신청날짜
+	private String eventAlr;
+	private String codeNm;
+	private String code;
 	
-	
-	// 멤버함수(메서드)
-	// set() : 멤버변수에 외부의 데이터를 저장
-	// get() : 외부에서 멤버변수 데이터를 가져다 사용
 	public int getIdx() {
 		return idx;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 	public void setIdx(int idx) {
 		this.idx = idx;
@@ -67,33 +73,31 @@ public class UserDTO {
 	public void setEventAlr(String eventAlr) {
 		this.eventAlr = eventAlr;
 	}
-//	public String getAuthKey() {
-//		return authKey;
-//	}
-//	public void setAuthKey(String authKey) {
-//		this.authKey = authKey;
-//	}
-//	
-//	public String getAuthSt() {
-//		return authSt;
-//	}
-//	public void setAuthSt(String authSt) {
-//		this.authSt = authSt;
-//	}
-	
-	// 테스트
-//	@Override
-//	public String toString() {
-//		return "UserDTO [idx=" + idx + ", name=" + name + ", id=" + id + ", pass=" + pass + ", phone=" + phone
-//				+ ", prefer=" + prefer + ", eventAlr=" + eventAlr + ", authKey=" + authKey + ", authSt=" + authSt + "]";
-//	}
-	
-//	public String getGetEmail() {
-//		return getEmail;
-//	}
-//	public void setGetEmail(String getEmail) {
-//		this.getEmail = getEmail;
-//	}
+	public String getUnregist() {
+		return unregist;
+	}
+	public void setUnregist(String unregist) {
+		this.unregist = unregist;
+	}
+	public Timestamp getUnregDate() {
+		return unregDate;
+	}
+	public void setUnregDate(Timestamp unregDate) {
+		this.unregDate = unregDate;
+	}
+	public String getCodeNm() {
+		return codeNm;
+	}
+	public void setCodeNm(String codeNm) {
+		this.codeNm = codeNm;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 
 
 

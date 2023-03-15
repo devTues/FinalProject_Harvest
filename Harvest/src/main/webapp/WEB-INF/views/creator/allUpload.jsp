@@ -13,6 +13,8 @@
 	crossorigin="anonymous">
 <link href="${pageContext.request.contextPath }/resources/harVest_css/projectUpload.css" rel="stylesheet">
 <!-- 기타 -->
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery.validate.js"></script> --%>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery.validate.min.js"></script> --%>
 <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
 <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script> -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
@@ -35,29 +37,28 @@ $(document).ready(dateCheck);
 $(document).ready(function(){
 	// 달력   
 	$('.datepicker').daterangepicker();
+	function strNullCheck(str){
+		if(str == "") {
+			return false;
+		}
+		return true;
+	}
+	$("input").blur(function(){
+// 		debugger;
+		if(
+			strNullCheck($('#creNm').val()) 		&&
+			strNullCheck($('#creIntro').val())  	&&
+			strNullCheck($('#title').val())  		&&
+			strNullCheck($('#productNm').val()) 	&&
+			strNullCheck($('#targetAmt').val()) 	&&
+			strNullCheck($('#minDona').val()) 		&&
+			strNullCheck($('#start').val()) 		
+		) {
+			$('.top_right span').text('심사요청')
+			$('#status').val('PJT02')
+		}
+	});
 	
-// 	$('#accountCheck').on("click", function() {
-		
-// 		$.ajax({
-// 			  url	: "https://testapi.openbanking.or.kr/oauth/2.0/authorize", // 요청이 전송될 URL 주소
-// 			  type	: "GET", // http 요청 방식 (default: ‘GET’)
-// 			  dateType : "jsonp",
-// 			  data  : {
-// 				  	   'response_type' : 'code',
-// 			  		   'client_id' : 'd074c396-c90b-460c-a607-ca735cf4cdf3',
-// 			           'redirect_uri': 'http://localhost:8080/DsWeb/callback',
-// 			           'scope': 'login inquiry', 
-// 			           'grant_type' : '0'
-// 			           },
-// 			  success : function(data) {
-// 				  alert('성공');
-// 				  alert(data);
-// 			  },
-// 			  error : function(error) {
-// 				 alert(error); 
-// 			  }
-// 		});
-// 	});
 });
 
 function dateCheck() {
@@ -112,10 +113,10 @@ function dateCheck() {
 		<c:redirect url="/user/login"></c:redirect>
 	</c:if>
 	<!-- form 시작 -->
-	<form action="${pageContext.request.contextPath}/creator/createPro" name="project" method="post" enctype="multipart/form-data">
+	<form action="${pageContext.request.contextPath}/creator/createPro" id="project" name="project" method="post" enctype="multipart/form-data">
 		<input type="text" name="idx" id="idx" value="${param.idx}"> 
 		<input type="hidden" name="id" value="${sessionScope.id}"> 
-		<input type="hidden" name="status" value="PJT03">
+		<input type="hidden" name="status" id="status" value="PJT03">
 		<div id="layout"></div>
 		<div id="projectContent">
 			<!-- 상단 -->
@@ -171,7 +172,8 @@ function dateCheck() {
 							<div class="arti_cont">
 								<div class="con_width">
 									<div class="wrap creNmWrap">
-										<span class="input_wrap guide"> <input type="text" class="textInput creNm text_" id="creNm" name="creNm" value="${projectMap.CRE_NM}">
+										<span class="input_wrap guide"> 
+										<input type="text" class="textInput creNm text_" id="creNm" name="creNm" value="${projectMap.CRE_NM}">
 										</span>
 									</div>
 									<div class="notiArea">
@@ -227,7 +229,8 @@ function dateCheck() {
 								<div class="con_width">
 									<div>
 										<div class="wrap taWrap">
-											<span class="ta taInput"> <textarea class="taStyle creIntro text_" id="creIntro" name="creIntro">${projectMap.CRE_INTRO}</textarea>
+											<span class="ta taInput"> 
+											<textarea class="taStyle creIntro text_" id="creIntro" name="creIntro">${projectMap.CRE_INTRO}</textarea>
 											</span>
 										</div>
 										<div class="notiArea">
@@ -276,12 +279,13 @@ function dateCheck() {
 							<div class="arti_cont">
 								<div class="con_width">
 									<div class="wrap titleWrap">
-										<span class="input_wrap guide"> <input type="text" class="textInput title text_" id="title" name="title" value="${projectMap.TITLE }">
+										<span class="input_wrap guide"> 
+										<input type="text" class="textInput title text_" id="title" name="title" value="${projectMap.TITLE }">
 										</span>
 									</div>
 									<div class="notiArea">
 										<p id="p_title"></p>
-										<span class="titleLength length">${fn:length(projectMap.TITLE)}/20</span>
+										<span class="titleLength length">${fn:length(projectMap.TITLE)}/50</span>
 									</div>
 								</div>
 							</div>
@@ -294,7 +298,8 @@ function dateCheck() {
 							<div class="arti_cont">
 								<div class="con_width">
 									<div class="wrap productNmWrap">
-										<span class="input_wrap guide"> <input type="text" class="textInput productNm text_" id="productNm" name="productNm" value="${projectMap.PRODUCT_NM }">
+										<span class="input_wrap guide"> 
+										<input type="text" class="textInput productNm text_" id="productNm" name="productNm" value="${projectMap.PRODUCT_NM }">
 										</span>
 									</div>
 									<div class="notiArea">
@@ -522,8 +527,9 @@ function dateCheck() {
 									<p class="sub_tit">최소 후원 금액</p>
 									<div>
 										<div class="wrap">
-											<span class="input_wrap2 guide"> <fmt:parseNumber value="${projectMap.MIN_DONA }" pattern="###,###" var="minDona" /> <input type="text" class="textInput minDona text_"
-												name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
+											<span class="input_wrap2 guide"> 
+											<fmt:parseNumber value="${projectMap.MIN_DONA }" pattern="###,###" var="minDona" /> 
+											<input type="text" class="textInput minDona text_" name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
 												원
 											</span>
 										</div>
@@ -685,41 +691,58 @@ function dateCheck() {
 							</div>
 						</div>
 						<div class="article_proj">
-							<div class="arti_tit">계좌 / 본인인증</div>
-							<div class="arti_cont">
-								<div class="con_width">
-									<ul class="accountWrap">
-										<li class="halfContents">
-											<div><p class="itemName"><b>거래은행</b></p>
-											<div class="AWrap">
-												<div class="wrap">
-												<span class="dvfxOp bXlLWE">
-												<input type="text" class="accInput" value="" placeholder="은행명" readonly>
-											</span>
+							<dl class="sub_article">
+								<dt class="arti_tit">입금 계좌</dt>
+									<dd class="defi">후원금을 전달받을 계좌를 등록해주세요.</dd>
+									<div class="notice">
+										<div class="noti_tit">
+											<div class="topb">
+												<svg viewBox="0 0 48 48">
+											<path d="M21.5 23.1C21.5 23.0448 21.5448 23 21.6 23H26.4C26.4552 23 26.5 23.0448 26.5 23.1V33.9C26.5 33.9552 26.4552 34 26.4 34H21.6C21.5448 34 21.5 33.9552 21.5 33.9V23.1Z"></path>
+											<path d="M21 17C21 15.3431 22.3431 14 24 14C25.6569 14 27 15.3431 27 17C27 18.6569 25.6569 20 24 20C22.3431 20 21 18.6569 21 17Z"></path>
+											<path fill-rule="evenodd" clip-rule="evenodd"
+														d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>
 											</div>
-											</div>
-											</div>
-											<div><p class="itemName"><b>예금주명</b></p>
-											<div class="AWrap">
-												<div class="wrap">
-												<span class="dvfxOp bXlLWE">
-													<input type="text" class="accInput" value=""  placeholder="예금주명"  readonly>
-												</span>
-												</div>
-											</div>
-											</div>
-										</li>
-										<li><p class="itemName"><b>계좌 번호</b></p>
-										<div class="wrap">
-										<span class="input_wrap guide">
-										<input type="text" class="none" value="" placeholder="인증을 진행하셔서 입력하세요." readonly>
+											계좌번호를 변경하려면 인증을 다시 진행해주세요.
+										</div>
+									</div>
+								</dl>
+						<div class="arti_cont">
+							<div class="con_width">
+								<ul class="accountWrap">
+									<li class="halfContents">
+										<div><p class="itemName"><b>거래은행</b></p>
+										<div class="AWrap">
+											<div class="wrap">
+											<span class="dvfxOp bXlLWE">
+											<input type="text" class="none" id="bankNm" value="" placeholder="은행명" readonly>
 										</span>
 										</div>
-										</li>
-									</ul>
-								<button type="button" id="accountCheck">인증하기</button>
-								</div>
+										</div>
+										</div>
+										<div><p class="itemName"><b>예금주명</b></p>
+										<div class="AWrap">
+											<div class="wrap">
+											<span class="dvfxOp bXlLWE">
+												<input type="text" class="none" id="accHolderNm" value=""  placeholder="예금주명"  readonly>
+											</span>
+											</div>
+										</div>
+										</div>
+									</li>
+									<li><p class="itemName"><b>계좌 번호</b></p>
+									<div class="wrap">
+									<span class="input_wrap guide">
+									<input type="text" class="none" id="accountNum" value="" placeholder="인증을 진행하시면 입력됩니다." readonly>
+									</span>
+									</div>
+									</li>
+									<div class="buttonWrap">
+										<button type="button" id="accountCheck" class="accountCheck btn-l"><b>인증하기</b></button>
+									</div>
+								</ul>
 							</div>
+						</div>
 						</div>
 					</div>
 				</div>
@@ -729,17 +752,34 @@ function dateCheck() {
 	
 	<script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<script type="text/javascript">
+	function openPopup(){
+		  var url = "url?arg1="+arg1+"&arg2="+arg2;		// arg1, arg2 변수를 get방식으로 전송
+		  var title = "popup";
+		  var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=260, height=120, top=0,left=0"; 
+		  
+		  window.open(url,title,status); 			// 팝업 open
+		  }
 		// 계좌 인증
 		$('#accountCheck').on("click", function() {
 // 				TODO: 창조절하기 , 인증하기 버튼 조절, validate 체크
-	            var tmpWindow = window.open('about:blank', 'top=100px, left=100px, height=800px, width=1000px')
+	            var tmpWindow = window.open('about:blank', 'resizable=yes,status=no,menubar=no,width=800, height=600, top=50,left=250')
 	            tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
 	            "response_type=code&"+
 	            "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
 	            "redirect_uri=http://localhost:8080/DsWeb/callback&"+
 	            "scope=login inquiry&"+
 	            "state=12345678901234567890123456789012&"+
-	            "auth_type=0"
+	            "auth_type=0";
+// 	            var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
+// 	            "response_type=code&"+
+// 	            "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
+// 	            "redirect_uri=http://localhost:8080/DsWeb/callback&"+
+// 	            "scope=login inquiry&"+
+// 	            "state=12345678123456781234567812345678&"+
+// 	            "auth_type=0"
+// 	            var title = "popup";
+// 	            var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=800, height=600, top=50,left=250";
+// 	            window.open(url,title,status); 			// 팝업 open
 	     });
 
 		

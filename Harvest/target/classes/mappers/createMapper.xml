@@ -28,20 +28,20 @@
            INSERT INTO PROJECT_TB (
                       IDX   
                     , ID 
-                    <if test='!creNm.equals("")'>      
+                    <if test='!"".equals(creNm)'>      
                     , CRE_NM
                     </if>
                     <if test='!"".equals(crePro) and crePro != null'>     
                     , CRE_PRO
                     </if>
-                    <if test='!creIntro.equals("") '>     
+                    <if test='!"".equals(creIntro) '>     
                     , CRE_INTRO 
                     </if>
                     , CATEGORY 
-                    <if test='!title.equals("")'>   
+                    <if test='!"".equals(title)'>   
                     , TITLE 
                     </if>
-                    <if test='!productNm.equals("")'>      
+                    <if test='!"".equals(productNm)'>      
                     , PRODUCT_NM
                     </if>
                     <if test='!"".equals(img1) and img1 != null'>  
@@ -56,16 +56,16 @@
                     <if test='!schedule.equals("")'>      
                     , SCHEDULE  
                     </if>
-                    <if test='!minDona.equals("")'>    
+                    <if test='!"".equals(minDona)'>    
                     , MIN_DONA    
                     </if>
-                    <if test='!targetAmt.equals(",")'>  
+                    <if test='!"".equals(targetAmt) and !",".equals(targetAmt)'>  
                     , TARGET_AMT  
                     </if>
-                    <if test='!start.equals("")'>
+                    <if test='!"".equals(start)'>
                     , START
                     </if> 
-                    <if test='!end.equals("")'>  
+                    <if test='!"".equals(end)'> 
                     , END  
                     </if>       
                     , STATUS
@@ -82,23 +82,23 @@
    				 			  		  FROM PROJECT_TB) B )
             		  )
                  	  , #{id}
-                 	  <if test='!creNm.equals("")'>
+                 	  <if test='!"".equals(creNm)'> 
                      , #{creNm}  
                      </if>
                      <if test='!"".equals(crePro) and crePro != null'>    
                      , #{crePro}
                      </if>
-                     <if test='!creIntro.equals("")'> 
+                     <if test='!"".equals(creIntro) '> 
                      , #{creIntro}
                      </if>
                      , (SELECT CATEGORY_CD
                      	   FROM (SELECT CATEGORY_CD
  								   FROM CATEGORY_TB
                                  WHERE CATEGORY_NM = #{category}) CATEGORY)
-                     <if test='!title.equals("")'> 
+                     <if test='!"".equals(title)'> 
                      , #{title}
                      </if>
-                     <if test='!productNm.equals("")'>  
+                     <if test='!"".equals(productNm)'> 
                      , #{productNm}
                      </if>
                      <if test='!"".equals(img1) and img1 != null'>
@@ -113,42 +113,42 @@
                      <if test='!schedule.equals("")'>  
                      , #{schedule}
                      </if>
-                      <if test='!minDona.equals("")'>  
+                      <if test='!"".equals(minDona)'>    
                      , REPLACE(#{minDona}, ',', '')
                      </if>
-                     <if test='!targetAmt.equals(",")'>  
+                     <if test='!"".equals(targetAmt) and !",".equals(targetAmt)'>  
                      , REPLACE(#{targetAmt}, ',', '')
                      </if>
-                     <if test='!start.equals("")'>  
+                     <if test='!"".equals(start)'>  
                      , #{start}
                      </if>
-                     <if test='!end.equals("")'>
+                     <if test='!"".equals(end)'>
                      , #{end}
                      </if>
                      , #{status}
                      )
              ON DUPLICATE KEY
 		  UPDATE ID = #{id}
-                  <if test='!creNm.equals("")'>   
+                <if test='!"".equals(creNm)'>   
 		  	   , CRE_NM 	 = #{creNm}
 		  	   </if>
-		  	   <if test='!"".equals(crePro)'>
+		  	   <if test='!"".equals(crePro) and crePro != null'>  
 			   , CRE_PRO     = #{crePro}
 			   </if>
-                  <if test='!creIntro.equals("")'>  
+               <if test='!"".equals(creIntro) '>   
 			   , CRE_INTRO   = #{creIntro}
 			   </if>
 			   , CATEGORY    = (SELECT CATEGORY_CD
                      	  			  FROM (SELECT CATEGORY_CD
  								              FROM CATEGORY_TB
                                             WHERE CATEGORY_NM = #{category}) CATEGORY)
-			   <if test='!title.equals("")'> 
+		       <if test='!"".equals(title)'>  
 		       , TITLE       = #{title}
 		       </if>
-		        <if test='!productNm.equals("")'> 
+		       <if test='!"".equals(productNm)'>  
 			   , PRODUCT_NM  = #{productNm}
 			   </if>
-			   <if test='"".equals(img1)'>
+			    <if test='!"".equals(img1) and img1 != null'>  
 			   , IMG1        = #{img1} 
 			   </if>
 			   <if test='!intro.equals("")'> 
@@ -160,16 +160,16 @@
 			   <if test='!schedule.equals("")'> 
 			   , SCHEDULE    = #{schedule}
 			   </if>
-			    <if test='!minDona.equals("")'>  
+			   <if test='!"".equals(minDona) and !",".equals(minDona)'>  
 			   , MIN_DONA    = REPLACE(#{minDona}, ',' , '')
 			   </if> 
-			    <if test='!targetAmt.equals(",")'>  
+			   <if test='!"".equals(targetAmt) and !",".equals(targetAmt)'>  
 			   , TARGET_AMT  = REPLACE(#{targetAmt}, ',' , '')
 			   </if>
-			   <if test='!start.equals("")'>
+			   <if test='!"".equals(start)'>
 			   , START        = #{start}
 			   </if>
-			   <if test='!end.equals("")'>
+			   <if test='!"".equals(end)'> 
 			   , END         = #{end}
 			   </if>
 			   , STATUS		 = #{status}
