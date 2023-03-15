@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.CommunityDTO;
+import com.itwillbs.domain.PaymentDTO;
 
 public interface CommunityService {
 
@@ -15,8 +16,9 @@ public interface CommunityService {
 
 	public void insertBoard(CommunityDTO communityDTO);
 	
-	public void deleteBoard(int num);
+	public void deleteBoard(int idx);
 
-
+	public PaymentDTO getPaymentInfo(PaymentDTO paymentDTO);
+	
 
 }

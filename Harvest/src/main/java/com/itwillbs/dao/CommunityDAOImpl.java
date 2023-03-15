@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CommunityDTO;
+import com.itwillbs.domain.PaymentDTO;
 
 @Repository
 public class CommunityDAOImpl implements CommunityDAO{
@@ -25,30 +26,36 @@ public class CommunityDAOImpl implements CommunityDAO{
 	}
 
 //	@Override
-//	public List<CommunityDTO> getComm2List(CommunityDTO dto) {
-//		return sqlSession.selectList(namespace + ".getComm2List", dto);
+//	public List<CommunityDTO> getComm2List(CommunityDTO communityDTO) {
+//		return sqlSession.selectList(namespace + ".getComm2List", communityDTO);
 //	}
 //
 //	@Override
-//	public List<CommunityDTO> getComm3List(CommunityDTO dto) {
-//		return sqlSession.selectList(namespace + ".getComm3List", dto);
+//	public List<CommunityDTO> getComm3List(CommunityDTO communityDTO) {
+//		return sqlSession.selectList(namespace + ".getComm3List", communityDTO);
 //	}
 
 	@Override
 	public void insertBoard(CommunityDTO communityDTO) {
 		sqlSession.insert(namespace + ".insertBoard", communityDTO);
-		
 	}
 
 	@Override
-	public Integer getMaxNum(CommunityDTO communityDTO) {
-		return sqlSession.selectOne(namespace + ".getMaxNum1", communityDTO);
+	public Integer getMaxNum() {
+		return sqlSession.selectOne(namespace + ".getMaxNum1");
 	}
 
 	@Override
-	public void deleteBoard(int num) {
-		sqlSession.delete(namespace + ".deleteBoard", num);
+	public void deleteBoard(int idx) {
+		sqlSession.delete(namespace + ".deleteBoard", idx);
 	}
+
+	@Override
+	public PaymentDTO getPaymentInfo(PaymentDTO paymentDTO) {
+		return sqlSession.selectOne(namespace + ".getPaymentInfo", paymentDTO);
+	}
+	
+	
 	
 	
 	

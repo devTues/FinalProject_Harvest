@@ -25,7 +25,7 @@
           , IMG1
           , END
        FROM PROJECT_TB
-      WHERE IDX=#{idx}
+      WHERE IDX=#{pj_idx}
   </select>	
   
    <insert id="insertPayment">

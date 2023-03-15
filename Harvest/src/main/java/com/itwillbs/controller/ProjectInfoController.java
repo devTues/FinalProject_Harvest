@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -51,16 +52,32 @@ public class ProjectInfoController {
 	// xml 업로드 경로(자원이름) => 변수 저장
 //	@Resource(name = "uploadPath") // servlet-context.xml에 있는 id
 //	private String uploadPath;
-		
-	@RequestMapping(value = "/main/mainList", method = RequestMethod.GET)
-	public String mainList(HttpServletRequest request, Model model) {
-		List<ProjectDTO> projectList = ProjectInfoService.getProjectList();
-		model.addAttribute("projectList", projectList);
-		return "main/list";
-	}
 	
+	// 연서
+	// 공개예정 페이지
+	@RequestMapping(value = "/project/projectOpen", method = RequestMethod.GET)
+	public String projectOpen(@RequestParam("idx")int idx, Model model, HttpSession session) {
+		Map<String, String> param = new HashMap<String, String>();
+		
+		String sessionId = (String)session.getAttribute("id");
+		
+		if(sessionId != null) {
+			param.put("SESSIONID", sessionId);
+		}
+		param.put("IDX", idx + "");
+		
+		param = ProjectInfoService.getOpenPjInfo(param);
+		
+		model.addAttribute("OpenParam", param);
+		return "projectInfo/projectOpenPage";
+	}
+	// 연 & 쑥
 	@RequestMapping(value = "/project/projectInfo", method = RequestMethod.GET)
-	public String projectInfo(@RequestParam("idx")int idx, Model model, HttpSession session, CommunityDTO communityDTO, ProductUpdateDTO productUpdateDTO) throws ParseException {
+	public String projectInfo( @RequestParam("idx")int idx
+							 , Model model, HttpSession session
+							 , CommunityDTO communityDTO
+							 , ProductUpdateDTO productUpdateDTO
+							 , HttpServletRequest request) throws ParseException {
 		Map<String, String> param = new HashMap<String, String>();
 		String sessionId = (String)session.getAttribute("id");
 		if(sessionId != null) {
@@ -88,88 +105,51 @@ public class ProjectInfoController {
 		
 		model.addAttribute("productUpdateList", productUpdateList);
 		
-		model.addAttribute("productUpdateDTO", productUpdateDTO);
-		model.addAttribute("communityDTO", communityDTO);
+		productUpdateDTO.setPjIdx(Integer.parseInt(request.getParameter("idx")));
+//		model.addAttribute("productUpdateDTO", productUpdateDTO);
+//		model.addAttribute("communityDTO", communityDTO);
 		
 		return "projectInfo/projectInfoPage";
 	}
 
 	// 숙인
-//	@RequestMapping(value = "/project/productStory", method = RequestMethod.GET)
-//	public String productStory(HttpServletRequest request, Model model, CommunityDTO communityDTO, ProductUpdateDTO productUpdateDTO) {
-//		
-//		List<ProductUpdateDTO> productUpdateList = productUpdateService.getUpdateList(productUpdateDTO);
-//		model.addAttribute("productUpdateList", productUpdateList);
-//		
-//		model.addAttribute("productUpdateDTO", productUpdateDTO);
-//		model.addAttribute("communityDTO", communityDTO);
-//		
-//		// 기본 이동방식 : 주소변경 없이 이동
-//		return "project/productStory"; 	// 실제 이동 주소
-//	}
-	
+	// 창작자 공지 인서트,업데이트 동시에 하기
 	@RequestMapping(value = "/project/productUpdateWritePro", method = RequestMethod.POST)
-	public String productUpdateWritePro(RedirectAttributes redirect, HttpServletRequest request, MultipartFile file, Model model) throws Exception {
+	public String productUpdateWritePro( ProductUpdateDTO productUpdateDTO 
+									   , RedirectAttributes redirect 
+									   , HttpServletRequest request
+									   , Model model
+									   , HttpServletResponse response
+									   , @RequestParam("text")int idx ) {
 		
-		// 업로드 파일명 : 랜덤문자_파일이름 (파일 이름이 중복이 안되도록 하기위함)
-		UUID uuid = UUID.randomUUID();// UUID : 자바에서 랜덤으로 뽑아오기 위함
-		String filename = uuid.toString() + "_" + file.getOriginalFilename();
-		
-		// 원본파일을 복사해서 upload폴더에 붙여넣기
-//		FileCopyUtils.copy(원본, 복사해서 새롭게 파일 만든 거);
-//		FileCopyUtils.copy(file.getBytes(), new File(경로, 파일이름)); //.getBytes() : 원본파일,
-//		FileCopyUtils.copy(file.getBytes(), new File(uploadPath, filename));
-		
-		// BoardDTO 객체 생성 <= 저장
-		ProductUpdateDTO productUpdateDTO = new ProductUpdateDTO();
-		productUpdateDTO.setId(request.getParameter("id"));
-		productUpdateDTO.setContent(request.getParameter("content"));
-//		productUpdateDTO.setIdx(Integer.parseInt(request.getParameter("idx")));
-		productUpdateDTO.setPjIdx(Integer.parseInt(request.getParameter("pjIdx")));
-		productUpdateDTO.setFile(filename);
-		
+		productUpdateDTO.setIdx(idx);
 		productUpdateService.insertBoard(productUpdateDTO);
-		redirect.addAttribute("pjIdx", request.getParameter("pjIdx"));
+		
+		redirect.addAttribute("idx", request.getParameter("pjIdx"));
 		
 		// 기본 이동방식 : 주소변경 없이 이동
-		return "redirect:/projectInfo/projectInfoPage";
+		return "redirect:/project/projectInfo";
 	}
 	
+	
+	// 창작자 공지글 삭제하기
 	@RequestMapping(value = "/project/delete", method = RequestMethod.GET)	
-	public String delete(HttpServletRequest request, RedirectAttributes redirect) {
-		
-		int num = Integer.parseInt(request.getParameter("num"));
-		productUpdateService.deleteBoard(num);
-		
-		ProductUpdateDTO productUpdateDTO = new ProductUpdateDTO();
-		productUpdateDTO.setPjIdx(Integer.parseInt(request.getParameter("pjIdx")));
-		System.out.println(Integer.parseInt(request.getParameter("pjIdx")));
+	public String delete( ProductUpdateDTO productUpdateDTO
+					    , HttpServletRequest request
+					    , RedirectAttributes redirect) {
 
-		redirect.addAttribute("pjIdx", request.getParameter("pjIdx"));
-
+		int idx = Integer.parseInt(request.getParameter("idx")); // 프로젝트 번호
+		int num = Integer.parseInt(request.getParameter("num")); // 프로젝트의 인덱스번호
 		
-		return "redirect:/projectInfo/projectInfoPage"; 
+		productUpdateDTO.setIdx(num);
+		productUpdateDTO.setPjIdx(idx);
+		productUpdateService.deleteBoard(productUpdateDTO);
+		
+		redirect.addAttribute("idx", idx);
+		
+		
+		return "redirect:/project/projectInfo"; 
 	}
-	
-	
-	// 공개예정 페이지
-	@RequestMapping(value = "/project/projectOpen", method = RequestMethod.GET)
-	public String projectOpen(@RequestParam("idx")int idx, Model model, HttpSession session) {
-		Map<String, String> param = new HashMap<String, String>();
-		
-		String sessionId = (String)session.getAttribute("id");
-		
-		if(sessionId != null) {
-			param.put("SESSIONID", sessionId);
-		}
-		param.put("IDX", idx + "");
-		
-		param = ProjectInfoService.getOpenPjInfo(param);
-		
-		model.addAttribute("OpenParam", param);
-		return "projectInfo/projectOpenPage";
-	}
-	
 	
 
 }

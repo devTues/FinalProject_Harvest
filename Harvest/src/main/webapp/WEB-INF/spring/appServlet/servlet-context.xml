@@ -29,7 +29,9 @@
 	<context:component-scan base-package="com.itwillbs.dao" />
 	
 	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
-	<beans:bean id="naverLoginBO" class="com.itwillbs.naver.NaverLoginBO" />
+	<beans:bean id="naverLoginBO" class="com.itwillbs.login.NaverLoginBO" />
+	<!-- KakaoLoginBO class에 대한 Bean설정 추가 -->
+	<beans:bean id="kakaoLoginBO" class="com.itwillbs.login.KakaoLoginBO" />
 	
 	<!-- file Upload -->
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

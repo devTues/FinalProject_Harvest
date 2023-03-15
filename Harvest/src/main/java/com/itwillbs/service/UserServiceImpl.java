@@ -30,11 +30,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	
-// [배송지 입력]
+	// [배송지 입력]
 	@Override
 	public void insertAddress(AddressDTO addressDto) {
-		
-//		userDAO.insertAddress(addressDto);
+		userDAO.insertAddress(addressDto);
 	}
 	
 	
@@ -50,7 +49,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDTO userCheck(UserDTO userDto) {
-		// 객체 생성
 		return userDAO.userCheck(userDto);
 	}
 	
@@ -69,8 +67,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 
-
-
 //	[이메일 인증]
 	@Component
 	public class MailSendService {
@@ -81,7 +77,6 @@ public class UserServiceImpl implements UserService {
 		public void makeRandomNumber() {
 			Random r = new Random();
 			int checkNum = r.nextInt(888888) + 111111;
-			System.out.println("인증번호 : " + checkNum);
 			authNumber = checkNum;
 		}
 			

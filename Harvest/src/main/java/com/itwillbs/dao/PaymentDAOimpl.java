@@ -22,8 +22,8 @@ public class PaymentDAOimpl implements PaymentDAO {
 	}
 
 	@Override
-	public ProjectDTO getProject(String idx) {
-		return sqlSession.selectOne(namespace+".getProject", idx);
+	public ProjectDTO getProject(String pj_idx) {
+		return sqlSession.selectOne(namespace+".getProject", pj_idx);
 	}
 
 	@Override

@@ -105,7 +105,7 @@
                             	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
                                 	<h6 class="m-0">${getAllList.TITLE }</h6>
                                 </a>
-                                <span class="text-danger">${getAllList.PERCENT}%</span>
+                                <span class="text-danger"> <fmt:formatNumber type="number" maxFractionDigits="0"  value="${getAllList.PERCENT }" />%</span>
                                 <small class="small text-danger"> 달성</small>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
             	<h6 class="sidebar-title section-title">인기프로젝트</h6>
             	<c:forEach var="getPopList" items="${getPopList }" begin="1" end="8">
 	                <div class="media text-left">
-	                    <a href="#" class="overlay-link"></a>
+	                    <a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getPopList.IDX }" class="overlay-link"></a>
 	                    <div>
 	                    <a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getPopList.IDX }">
 	                    	<img class="mr-3" src="${pageContext.request.contextPath }/resources/upload/${fn:split(getPopList.IMG1,'&')[0]}" width="100px" alt="">
@@ -135,7 +135,7 @@
 	                    	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getPopList.IDX }">
 	                        	<h6 class="m-0">${getPopList.TITLE }</h6>
 	                        </a>
-	                        <p class="small text-danger">${getPopList.PERCENT}% 달성</p>
+	                        <p class="small text-danger"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${getPopList.PERCENT }" />% 달성</p>
 	                    </div>
 	                </div>
 				</c:forEach>
@@ -174,7 +174,7 @@
               	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getNewList.IDX }">
                 	<h6 class="m-0">${getNewList.TITLE }</h6>
                 </a>
-                <span class="text-danger">${getNewList.PERCENT}%</span>
+                <span class="text-danger"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${getNewList.PERCENT }" />%</span>
                 <small class="small text-danger"> 달성</small>
 			</div>
 		</c:forEach>
@@ -197,7 +197,7 @@
               	<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getDeadList.IDX }">
                 	<h6 class="m-0">${getDeadList.TITLE }</h6>
                 </a>
-                <span class="text-danger">${getDeadList.PERCENT }%</span>
+                <span class="text-danger"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${getDeadList.PERCENT }" />%</span>
                 <small class="small text-danger"> 달성</small>
 			</div>
 		</c:forEach>

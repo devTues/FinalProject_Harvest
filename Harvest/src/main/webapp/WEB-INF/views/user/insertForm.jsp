@@ -33,7 +33,7 @@
 	
 	
 	
-	
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
 	<script type="text/javascript">
 	
@@ -124,7 +124,6 @@
 			$('#codeCheck').focus();
 			vericode = false;
 		}
-		
 	}
 	
 	
@@ -148,7 +147,7 @@
 		if(lengthRegex.exec(pass1)){
 			checkResult = true;
 			
-			span.innerHTML = '사용 가능한 패스워드 입니다.';
+			span.innerHTML = '사용 가능한 패스워드 입니다.'; 
 			span.style.color = 'GREEN';
 		
 		}else {
@@ -158,6 +157,23 @@
 		}
 		checkRetypePass();
 	}
+	
+	// TODO 이거 해야됨
+	//	비밀번호 표시/숨기기 눈모양 토글
+	//	활성화된 눈모양을 다시 클릭하면 토글로 인해 active 클래스가 사라지므로 다시 처음과 같이 원상복구 시킨다. 
+// 	$(document).ready(function(){
+// 	  $('.input form-group i').on('click', function(){
+// 		$('input').toggleClass('active');   
+// 		if($('input').hassClass('active')){	// 비밀번호 입력 input이 active 클래스를 가지고 있으면
+// 			$(this).attr('class', "fa fa-eye-slash fa-lg")
+// 			.prev('input').attr('type', "text");
+// 		}else{
+// 			$(this).attr('class', "fa fa-eye fa-lg")
+// 			.prev('input').attr('type', 'password');
+// 		}
+// 	  });
+// 	});
+	
 	
 	
 	// 비밀번호 재확인 입력 제어
@@ -207,12 +223,17 @@
 		   } 
 	}
 	
+	// 주소 + 상세주소 작업
+	function addrChange() {
+		$('#address').val( $('#address1').val() + ' / ' + $('#address2').val() );
+	}
 	
 	
 // =========================================================================
 	
 	// 입력 제어
 	function checkSubmit() {
+	
 		// name 제어
 		if($('#name').val() == ""){
 			alert("이름을 입력하세요.");
@@ -260,6 +281,7 @@
 			
 			return false;
 		}
+		
 // 	}
 	
 // =========================================================================
@@ -300,11 +322,43 @@
 			$('#phone').focus();
 			return false;
 		}
+
 		
+// 		// [프로필 사진 등록]
+// 		$("#upload-image").on('change',function(e){
+	 
+// 	    e.preventDefault();
+// 	    var val = $("#upload-image").val();
+// 	    if (val=="") {
+// 	        alert("이미지 파일을 선택하여 주십시오.");
+// 	        return false;
+// 	    }
+	 	
+// 	    var fd = new FormData($("#join")[0]); 
+// 	    fd.append("file",$("input[name=file]")[0].files[0]);
+	 
+// 	        $.ajax({
+// 	            type: "post",
+// 	            url: "${pageContext.request.contextPath }/user/uploadProfile?profile=",
+// 	            data: fd,
+// 	            processData: false,
+// 	            contentType: false,
+// 	            success: function(data,status,xhr) {
+// 	                alert("사진이 정상적으로 변경되었습니다.");
+// 	                window.location.reload(true);
+// 	    //            alert(data);
+// 	            },
+// 	            error: function(xhr,status,error) {
+// 	                alert("사진 업로드시 에러 발생");
+// 	                return false;
+// 	            }
+// 	        });
+ 
+// 		});
 		
-		alert("회원가입이 완료되었습니다.");
 		
 		form.submit();
+		alert("회원가입이 완료되었습니다.");
 		
 	}	
 	
@@ -312,7 +366,6 @@
 // 	[체크박스 전체선택, 해제]	
 	$(document).ready(function() {
 		$("#chk_all").click(function() {
-			debugger;
 			
 			if($("#chk_all").is(":checked"))	$("input[name=agreement]").prop("checked", true),$("input[name=eventAlr]").prop("checked", true)	//name이 agreement인 애들 checked 되어있으면 전체선택 true
 			else 								$("input[name=agreement]").prop("checked", false),$("input[name=eventAlr]").prop("checked", false)	//name이 agreement인 애들 checked 안되어있으면 전체선택 false
@@ -328,19 +381,87 @@
 	});
 	
 	
+//	[이용약관 필수항목 필수체크값]
+	$(document).ready(function() {
+		$("#joinBtn").click(function() {
+			
+			if($("#chk1").is(":checked") == false){
+				return false;
+			} 
+			
+			if($("#chk2").is(":checked") == false){
+				return false;
+			}
+// 			alert("회원가입이 완료되었습니다.");
+			
+		});
+	});
 	
-//	[이용약관 더보기]
-// 	$(document).ready(function() {
-// 		$("#more").slic(0, 1).show();			// 초기갯수
-// 		$("#load").click(function(e) {			// 클릭 시 more
-// 			e.preventDefault();					// 클릭 시 more 갯수 지정
-// 			$("more:hidden").slice(0, 1).show();// 컨텐츠 남아있는지 확인
-// 			if($("more:hidden").length == 0){	// 컨텐츠 없을 시 alert 창 띄우기
-// 				alert("이용약관 끝입니다.");
-// 			}
-// 		});
-// 	});
+	
+// ==================================================================
+	
+	// [우편번호]
+	function execPostCode() {
+         new daum.Postcode({
+             oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+ 
+                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+ 
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+                // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                if(fullRoadAddr !== ''){
+                    fullRoadAddr += extraRoadAddr;
+                }
+ 
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                console.log(data.zonecode);
+                console.log(fullRoadAddr);
+                
+                $("[name=zipCode]").val(data.zonecode);
+                $("[name=address1]").val(fullRoadAddr);
+                
+                /* document.getElementById('signUpUserPostNo').value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById('signUpUserCompanyAddress').value = fullRoadAddr;
+                document.getElementById('signUpUserCompanyAddressDetail').value = data.jibunAddress; */
+            }
+         }).open();
+     }
+     
+     
+// ==================================================================
+// [프로필 사진 미리보기]
+	
+	function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('preview').src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    document.getElementById('preview').src = "";
+  }
+}
 
+	
+	
+	
 	</script>	
 	
 
@@ -352,7 +473,7 @@
 	<div class="harvestLogo"></div>
 	<div id="harvest_logo">
 	<a href="${pageContext.request.contextPath }/user/mainPage">
-	<img src="${pageContext.request.contextPath}/resources/harVest_img/harvest_logo.png" width="200" height="100"></div>
+	<img src="${pageContext.request.contextPath }/resources/harVest_img/harvest_logo.png" width="200" height="100"></div>
  	</a>
  	<hr>
 	
@@ -364,14 +485,28 @@
 		<div class="col-md-12 text-center">
              <div class="col-md-12 text-left">
                <h4 class="mb-4">회원가입</h4>
-              	  <form action="${pageContext.request.contextPath }/user/insertPro" method="post" name="join">
+              	  <form action="${pageContext.request.contextPath }/user/insertPro" method="post" id="join" name="join" enctype="multipart/form-data">
+              	 
+              	 
+	              	 <div class="form-group">
+	<!-- 			        파일을 입력 받을 input 태그 -->
+	<!-- 			        jpg, png 형식만 accept 로 지정해 해당 확장명의 파일 선택을 유도 -->
+	<!-- 					기본 프로필 이미지를 src에 넣어둠! -->
+						<label for="InputProfile">프로필 사진</label>
+					    <img style="width: 100px;" id="preview" src="${pageContext.request.contextPath }/resources/harVest_img/mypage.png">
+					    <input type="file" id="upload-image" name="file" accept=".jpg,.png" style="position: absolute; top:181px; left: 63px; font-size: large;" onchange="readURL(this);">
+					</div>
+              	 	<br><br>
+              	 
 					 <div class="form-group">
-                         <label for="exampleInputName">이름</label>
+                         <label for="InputName">이름</label>
                          <input type="text"  name="name" class="form-control form-control-sm" id="name" placeholder="이름을 입력해주세요" onkeyup="nameCheck()">
 						  <span id="checkName" class="live-validation"></span>
 					</div>
+					
+					
 					 <div class="form-group">
-		                  <label for="exampleInputEmail">이메일 계정</label>
+		                  <label for="InputEmail">이메일 계정</label>
 	                      <div class="input-group">
 							   <input type="email" name="id" class="form-control form-control-sm" id="email" placeholder="이메일 계정을 입력해주세요" onkeyup="emailCheck()">
 							   <button type="button" class="email_auth_btn" id="email_auth_btn" onclick="authKeyCheck()">인증하기</button>
@@ -384,25 +519,15 @@
 							   <span id="mail-check-warn"></span>
 				     </div>
 				     
-				     
+<!-- 				     	<input type="file" name="profileImage"> -->
 				     
 				     <div class="input form-group"> <!-- 비밀번호 입력 -->
-                         <label for="exampleInputPass">비밀번호</label>
+                         <label for="InputPass">비밀번호</label>
                          <input type="password" name="pass" class="form-control form-control-sm" id="pass1" placeholder="비밀번호를 입력해주세요"  onkeyup="passCheck()">
-                         <div class="eyes">
-                         	<!-- 눈 떴을 때 모양 html -->
-				  				<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-				  				<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-			  				</svg>
-			  				<!-- 눈 감았을 때 모양 html -->
-			  				<svg class="fa fa-eye fa-lg" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
-	  							<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
-	  							<path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
-	  							<path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
-							</svg>
-					  	</div>
-					  	
+						 <i class="fa fa-eye fa-lg"></i>	
 	                </div>
+	                
+	                
 	                <div class="check_pass">
 	                    <span id="checkPassResult" class="live-validation"></span>
 	<!--                          <div class='valid'>비밀번호를 입력하세요. (영문 소문자, 숫자만 입력 가능)</div> -->
@@ -410,12 +535,35 @@
 	                    <span id="checkRetypePassResult" class="live-validation"></span>
 					</div>
 					
+					
 	                <div class="form-group">
-                         <label for="exampleInputPhone">휴대폰 번호</label>
+                         <label for="InputPhone">휴대폰 번호</label>
                          <input type="text"  name="phone" class="form-control form-control-sm" id="phone" placeholder="휴대폰 번호를 입력해주세요" onkeyup="phoneCheck()">
                          <span id="checkPhone" class="live-validation"></span>
 	                </div>
+	                
+<!-- 						<input type="file" name="profileImage"> -->
+
+	                <div class="form-group">
+	                <label for="InputZipcode">우편 번호</label>
+						<input class="form-control" style="width: 40%; display: inline;" placeholder="우편번호" name="zipCode" type="text" readonly="readonly">
+							<button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>                               
+					</div>
+						<input type="hidden" name="address" id="address">
+					<div class="form-group">
+					<label for="InputAddress1">도로명 주소</label>
+					      <input class="form-control" style="top: 5px;" placeholder="도로명 주소" name="address1" id="address1" type="text" readonly="readonly" />
+					</div>
+					<div class="form-group">
+					<label for="InputAddress2">상세 주소</label>
+					      <input class="form-control" placeholder="상세주소" name="address2" id="address2" type="text" onchange="addrChange()"  />
+					</div>
+					<div class="form-group">
+					<label for="InputAddressNm">배송지명</label>
+					      <input class="form-control" placeholder="배송지명" name="addressNm" id="addressNm" type="text"  />
+					</div>
 	                <br><br><br>
+
 
                     <div class="chkbox_group">
                     <hr>
@@ -458,15 +606,18 @@
                            <input type="checkbox" class="chk" id="chk2" name="agreement" value="개인정보수집"> 개인정보수집 및 이용 동의(필수)<br>
                            <input type="checkbox" class="chk" id="chk3" name="agreement" value="정보제공동의"> 개인정보 제 3자 제공 동의(선택)<br>
                            <input type="checkbox" class="chk" id="chk4" name="eventAlr" value="Y"> 이벤트 알람 수신 동의(선택)<br>
+                           <!-- 이벤트 알람 체크했을 경우에만 디비에 Y로 넘어감 -->
 	                  </p>
 	                 </div>
 	                 
 	                 
 	                 <div class="col-md-12 text-center mb-3">
-                         <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" id="join" onclick="checkSubmit(); return false;">가입하기</button>
+                         <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" id="joinBtn" onclick="checkSubmit(); return false;">가입하기</button>
 	                 </div>
 	                 <hr>
+	                 
 	               </form>
+	               
 	             <!-- 로그인 페이지 이동 버튼 -->
 	             <p class="text-muted">이미 계정이 있으신가요? <a class="text-danger" href="${pageContext.request.contextPath }/user/login">로그인</a></p>
 			</div>

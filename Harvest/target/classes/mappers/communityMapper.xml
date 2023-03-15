@@ -7,46 +7,84 @@
 <mapper namespace="com.itwillbs.mappers.communityMapper">
 
 	<select id="getComm1List" resultType = "com.itwillbs.domain.CommunityDTO">
-			SELECT C.IDX
-				 , C.ID
-			     , UR.NAME
-			   	 , UR.PROFILE
-			     , C.CONTENT_LABEL
-			     , C.CONTENT
-			     , C.DATE
-			  FROM COMMUNITY_BOARD C
-			  JOIN USER_TB UR
-			    ON UR.ID = C.ID
-			 WHERE CONTENT_LABEL = #{contentLabel}
-			   AND PJ_IDX = #{pjIdx}
-			ORDER BY DATE DESC
+<!-- 		SELECT C.IDX -->
+<!-- 			 , C.ID -->
+<!-- 		     , UR.NAME -->
+<!-- 		   	 , UR.PROFILE -->
+<!-- 		     , C.CONTENT_LABEL -->
+<!-- 		     , C.CONTENT -->
+<!-- 		     , C.DATE -->
+<!-- 		  FROM COMMUNITY_BOARD C -->
+<!-- 		  JOIN USER_TB UR -->
+<!-- 		    ON UR.ID = C.ID -->
+<!-- 		 WHERE CONTENT_LABEL = #{contentLabel} -->
+<!-- 		   AND PJ_IDX = #{pjIdx} -->
+<!-- 	  ORDER BY DATE DESC -->
+
+		SELECT C.IDX
+			 , C.ID
+		     , UR.NAME
+		   	 , UR.PROFILE
+		     , C.CONTENT_LABEL
+		     , C.CONTENT
+		     , C.DATE
+             , CASE WHEN EXISTS(SELECT *
+								  FROM PAYMENT_TB
+								 WHERE PJ_IDX = #{pjIdx}
+				                   AND ID = #{id}
+								   AND STATUS = 'PAY01') THEN 'Y'
+														 ELSE 'N' END AS SPON
+		  FROM COMMUNITY_BOARD C
+		  JOIN USER_TB UR
+		    ON UR.ID = C.ID
+		 WHERE CONTENT_LABEL = #{contentLabel}
+		   AND PJ_IDX = #{pjIdx}
+	  ORDER BY DATE DESC
+
+	</select>
+	
+	<insert id="insertBoard">
+		INSERT INTO COMMUNITY_BOARD ( IDX
+									, PJ_IDX
+									, ID
+									, CONTENT
+									, IMGA
+									, IMGB
+									, IMGC
+									, DATE
+									, CONTENT_LABEL)
+							 VALUES ( #{idx}
+							 		, #{pjIdx}
+									, #{id}
+									, #{content}
+									, #{imgA}
+									, #{imgB}
+									, #{imgC}
+									, #{date}
+									, #{contentLabel} )
+	</insert>
+	
+	<select id="getMaxNum1" resultType="java.lang.Integer"> 
+			SELECT MAX(IDX) 
+			  FROM COMMUNITY_BOARD
+	</select>	
+	
+	<delete id="deleteBoard">
+	     DELETE B, R
+           FROM COMMUNITY_BOARD AS B
+		   JOIN COMMUNITY_REPLY AS R
+             ON B.IDX = R.COMM_IDX
+          WHERE B.IDX = #{idx}
+	</delete>
+	
+	<select id="getPaymentInfo" resultType = "com.itwillbs.domain.PaymentDTO">
+		SELECT ID
+		FROM PAYMENT_TB
+		WHERE PJ_IDX = #{pjIdx}
+		AND ID = #{id}
+		AND STATUS = 'PAY01'
 	</select>
 	
 	
-	<insert id="insertBoard">
-				INSERT INTO COMMUNITY_BOARD ( COMM_IDX
-										    , IDX
-											, ID
-											, CONTENT
-											, IMGA
-											, IMGB
-											, IMGC
-											, DATE
-											, CONTENTLABEL)
-									 VALUES ( #{commIdx}
-											, #{idx}
-											, #{id}
-											, #{content}
-											, #{imgA}
-											, #{imgB}
-											, #{imgC}
-											, #{date}
-											, #{contentLabel} )
-	</insert>
 	
-		<select id="getMaxNum1" resultType="java.lang.Integer"> 
-				SELECT COUNT(IDX) 
-				  FROM COMMUNITY_BOARD
-				 WHERE PJ_IDX = #{pjIdx}
-		</select>	
 </mapper>

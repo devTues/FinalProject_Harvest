@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mappers.myPageMapper">	<!-- 파일위치(패키지명)을 가리키는게 아니라 파일이름임 -->
+  
+	<insert id="insertUser">
+	<!--   	#{} : memberDTO에 있는 멤버변수가 자동으로 값이 삽입됨  -->
+	<!--   	insert into USER_TB(idx,name,id,pass,profile,phone,prefer,unregist,unregDate,EVENT_ALR)  DB의 컬럼명 -->
+	<!--   	values(#{idx},#{name},#{id},#{pass},#{profile},#{phone},${prefer},${unregist},${unregDate},${EVENT_ALR}) DTO의 멤버변수 이름 -->
+	</insert>
+	
+	<select id="userCheck" resultType="com.itwillbs.domain.UserDTO">
+		select * from USER_TB 
+		where id=#{id} and pass=#{pass}
+	</select>
+	
+	<select id="getUser" resultType="com.itwillbs.domain.UserDTO">
+		select * from user_tb
+		where id=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="HashMap">
+	 update user_tb
+	 <trim prefix="SET" suffixOverrides=",">
+	 
+	 	id=#{id}
+	 <if test="pass!=null">
+	    , pass = #{pass3}
+	    </if>
+	       <if test="name!=null">
+	    , name = #{name}
+	    </if>
+	       <if test="profile!=null">
+	    , profile = #{profile}
+	    </if>
+	       <if test="phone!=null">
+	    , phone = #{phone}
+	    </if>
+	       <if test="prefer!=null">
+	    , prefer = #{prefer}
+	    </if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	
+	<delete id="deleteUser">
+	 delete from USER_TB
+	 where id=#{id}
+	</delete>
+	
+	<select id="getUserList" resultType="com.itwillbs.domain.UserDTO"> <!-- MemberDAOImpl.java 파일에서 selectList안에 담길 파일형식인 MemberDTO를 resultType에 담아야함 -->
+	 select * from USER_TB;
+	
+	</select>
+  	<!-- 알람 -->
+	<select id="getMyAlarmList" parameterType="map" resultType="hashMap">
+		select a.idx as idx
+			 , a.pj_idx as pjIdx
+		     , a.user_id as userId
+		     , a.code as code
+		     , c.code_nm as codeNm
+		  from alram_tb a
+		  join code_tb c
+		    on a.code = c.code
+		 where a.user_id = #{id}
+	
+	</select>
+	<!-- 창작 -->
+	<select id="getMyCreateList" parameterType="map" resultType="hashMap">
+		 select p.idx as idx
+			  , p.id
+		      , p.cre_nm
+		      , p.cre_pro
+		      , p.cre_intro
+		      , p.category
+		      , p.title as title
+		      , p.product_nm
+		      , p.img1 as img1
+		      , p.intro
+		      , p.budget
+		      , p.schedule
+		      , p.min_dona
+		      , p.target_amt
+		      , p.start
+		      , p.end
+		      , p.status
+		      , (select code_nm
+           		   from code_tb
+		  		  where code = p.status) as codeNm
+ 		   from project_tb p join code_tb c
+   			 on p.status = c.code
+		  where p.id = #{id}
+		
+	</select>
+
+	<select id="getMyCreateCount" resultType="java.lang.Integer">
+		select count(*)
+  		  from project_tb
+         where id = #{id}
+	</select>
+	
+	<!-- 찜 -->
+	<select id="getMyFavoriteList" parameterType="map" resultType="hashMap">
+		select p.IMG1 as img1
+			 , pay.id as id
+			 , p.idx as pjIdx
+		     , P.CATEGORY as category
+		     , p.ID as creId
+		     , p.CRE_NM as creNm
+		     , p.TITLE as title
+             ,  (SELECT IFNULL(SUM(AMOUNT), 0)
+				  FROM PAYMENT_TB 
+				 WHERE PJ_IDX = p.IDX) AS totalAmt
+			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+						 FROM PAYMENT_TB 
+						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
+			 , DATEDIFF(p.END , p.START) AS expiredDate
+			   FROM project_tb p 
+			   JOIN like_tb l
+			     ON p.idx = l.PJ_IDX
+			   JOIN payment_tb pay
+			     ON p.idx = pay.pj_idx
+ 			  WHERE l.user_id= #{id}
+	</select>
+
+	<select id="getMyFavoriteCount" resultType="java.lang.Integer">
+		select count(*)
+		  from like_tb
+ 		 where user_id = #{id}
+	</select>
+	<!-- 후원 -->
+	<select id="getMySupportList" parameterType="map" resultType="hashMap">
+		SELECT p.IMG1 as img1
+			 , pay.id 
+			 , p.idx as pjIdx
+		     , P.CATEGORY
+		     , p.ID as creId
+		     , p.CRE_NM as creNm
+		     , p.TITLE
+		     , (SELECT IFNULL(SUM(AMOUNT), 0)
+				  FROM PAYMENT_TB 
+				 WHERE PJ_IDX = p.IDX) AS totalAmt
+			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+						 FROM PAYMENT_TB 
+						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
+			 , DATEDIFF(p.END , p.START) AS expiredDate
+			 , IF (isnull(l.user_id), 'N', 'Y' ) AS "찜하기" 
+		 FROM PROJECT_TB p JOIN payment_tb pay
+		   ON pay.pj_idx = p.idx
+		 LEFT OUTER JOIN (SELECT USER_ID,  pj_idx FROM like_tb where user_id = #{id}) l
+		   ON p.idx = l.pj_idx
+		WHERE pay.id = #{id}
+		
+	</select>
+
+	<select id="getMySupportCount" resultType="java.lang.Integer">
+		select count(*)
+		  from payment_tb
+ 		 where id = #{id}
+	</select>
+</mapper>

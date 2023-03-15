@@ -26,8 +26,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public ProjectDTO getProject(String idx) {
-		return paymentDAO.getProject(idx);
+	public ProjectDTO getProject(String pj_idx) {
+		return paymentDAO.getProject(pj_idx);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.itwillbs.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.ProductUpdateDTO;
+import com.itwillbs.domain.ProjectDTO;
 
 @Repository
 public class ProductUpdateDAOImpl implements ProductUpdateDAO{
@@ -18,8 +20,8 @@ public class ProductUpdateDAOImpl implements ProductUpdateDAO{
 	private static final String namespace = "com.itwillbs.mappers.productUpdateMapper";
 
 	@Override
-	public void insertBoard(ProductUpdateDTO dto) {
-		sqlSession.insert(namespace + ".insertBoard", dto);
+	public void insertBoard(ProductUpdateDTO productUpdateDTO) {
+		sqlSession.insert(namespace + ".insertBoard", productUpdateDTO);
 	}
 
 	@Override
@@ -33,11 +35,22 @@ public class ProductUpdateDAOImpl implements ProductUpdateDAO{
 	}
 
 	@Override
-	public void deleteBoard(int num) {
-		sqlSession.delete(namespace + ".deleteUpdate", num);
+	public void deleteBoard(ProductUpdateDTO productUpdateDTO) {
+		sqlSession.delete(namespace + ".deleteUpdate", productUpdateDTO);
 		
 	}
 
+	@Override
+	public void updateBoard(ProductUpdateDTO productUpdateDTO) {
+		sqlSession.update(namespace + ".updateBoard", productUpdateDTO);
+	}
+
+	@Override
+	public ProjectDTO getCreatorWrite(int idx) {
+		return sqlSession.selectOne(namespace + ".creatorWrite", idx);
+	}
+
+	
 	
 	
 	

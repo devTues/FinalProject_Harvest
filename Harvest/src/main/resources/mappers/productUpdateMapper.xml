@@ -5,48 +5,58 @@
 
 <!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
 <mapper namespace="com.itwillbs.mappers.productUpdateMapper">
-		
 		<insert id="insertBoard">
-			INSERT INTO UPDATE_BOARD( IDX
-									, PJ_IDX
-									, ID
-									, CONTENT
-									, DATE
-									)
-							  VALUES( #{idx}
-								    , #{pjIdx}
-								    , #{id}
-								    , #{content}
-								    , #{date} )
-		</insert> 
-
+		INSERT INTO UPDATE_BOARD(IDX
+							   , PJ_IDX
+							   , ID
+							   , CONTENT
+							   , DATE)
+					     VALUES (#{idx}
+						       , #{pjIdx} 
+						       , #{id} 
+						       , #{content} 
+						       , #{date})
+		 ON DUPLICATE KEY UPDATE content = values(content)
+		 						  , date = values(date)
+		</insert>
+  
 		<select id="getMaxNum" resultType="java.lang.Integer"> 
-			SELECT COUNT(IDX) 
+			SELECT MAX(IDX) 
 			  FROM UPDATE_BOARD
 		</select>
 	
 		<select id="getUpdateList" resultType="com.itwillbs.domain.ProductUpdateDTO">
 			SELECT U.IDX
-				,  P.ID
-				,  P.CRE_NM
-				,  P.CRE_PRO
-				,  U.CONTENT
-				,  U.DATE
+						,  P.ID
+						,  P.CRE_NM
+						,  P.CRE_PRO
+						,  U.CONTENT
+						,  U.DATE
 			  FROM PROJECT_TB P
 			  JOIN UPDATE_BOARD U
 			    ON P.IDX = U.PJ_IDX
 			 WHERE P.IDX = #{idx}
-			 ORDER BY DATE DESC
+			 ORDER BY IDX DESC
 		</select>
 		
 		  <update id="updateBoard">
 		  	UPDATE UPDATE_BOARD 
 		  	   SET CONTENT = #{content}
 		  	 WHERE IDX = #{idx}
+		  	   AND PJ_IDX = #{pjIdx}
 		  </update>
 		  
 		  <delete id="deleteUpdate">
 		  	DELETE FROM UPDATE_BOARD
 		  	 WHERE IDX = #{idx}
+		           AND PJ_IDX = #{pjIdx}
 		  </delete>
+		  
+		  <select id="creatorWrite" resultType="com.itwillbs.domain.ProjectDTO">
+			SELECT DISTINCT ID
+			  FROM PROJECT_TB
+			 WHERE ID = (SELECT ID
+						    FROM PROJECT_TB
+						   WHERE IDX = #{idx})
+		  </select>
 </mapper>

@@ -15,7 +15,7 @@
 			 , (SELECT IFNULL(SUM(AMOUNT), 0)
                   FROM PAYMENT_TB 
                  WHERE PJ_IDX = p.IDX) AS TOTAL_AMT
-             , FORMAT(((SELECT IFNULL(SUM(AMOUNT), 0)
+             , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
 				  		 FROM PAYMENT_TB 
                         WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS PERCENT
 			 , START
@@ -97,14 +97,16 @@
 		  FROM PROJECT_TB 
 		 WHERE 1=1
 		 <if test='! GB.equals("") and GB != null'>
-		  	  <if test='GB.equals("DEAD")'>  
+		  	  <if test='GB.equals("DEAD")'> 
+		  	  AND STATUS = 'PJT01'
 		   	  AND CURDATE() > DATE_SUB(END,INTERVAL 7 day) AND END > CURDATE()
 			  </if>
 			  <if test='GB.equals("EXP")'>
 			  AND STATUS = 'PJT01'  
 		   	  AND START > CURDATE()
 			  </if>
-			  <if test='GB.equals("POP")'>  
+			  <if test='GB.equals("POP")'> 
+			  AND STATUS IN ('PJT01', 'FD00', 'FD01') 
 		   	  AND CURDATE() >= START
 			  </if>
 			  <if test='GB.equals("NEW")'>
@@ -115,7 +117,7 @@
 		 </if>
 		 <if test='! SEARCH.equals("") and SEARCH != null'>
 		 AND STATUS = 'PJT01'  
-	   	 AND title like CONCAT('%', #{SEARCH}, '%') AND END > CURDATE()
+	   	 AND TITLE LIKE CONCAT('%', #{SEARCH}, '%') AND END > CURDATE()
 		 </if>
 		 <if test='! CATEGORY.equals("") and CATEGORY != null'>
 		 AND STATUS = 'PJT01'  

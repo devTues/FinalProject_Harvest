@@ -1,10 +1,20 @@
 package com.itwillbs.service;
 
+import java.util.List;
+
 import com.itwillbs.domain.AddressDTO;
 
 public interface AddressService {
 	
-	public void insertAddress(AddressDTO addressDTO);
+	public List<AddressDTO> getAddressList(String id);
+	
+	public void insertAddress(AddressDTO addressDto);
+	
+	public void deleteAddress(AddressDTO addressDto);
+
 	public AddressDTO getAddress(String id); 
+	
+	// 민영
+//	publicㅊ AddressDTO getAddress(String id); 
 
 }

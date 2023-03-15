@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.dao.CommunityDAO;
 import com.itwillbs.domain.CommunityDTO;
+import com.itwillbs.domain.PaymentDTO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -24,13 +25,13 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 //	@Override
-//	public List<CommunityDTO> getComm2List(CommunityDTO dto) {
-//		return communityDAO.getComm2List(dto);
+//	public List<CommunityDTO> getComm2List(CommunityDTO communityDTO) {
+//		return communityDAO.getComm2List(communityDTO);
 //	}
 //
 //	@Override
-//	public List<CommunityDTO> getComm3List(CommunityDTO dto) {
-//		return communityDAO.getComm3List(dto);
+//	public List<CommunityDTO> getComm3List(CommunityDTO communityDTO) {
+//		return communityDAO.getComm3List(communityDTO);
 //		
 //	}
 
@@ -39,11 +40,11 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		communityDTO.setDate(new Timestamp(System.currentTimeMillis()));
 		
-		if(communityDAO.getMaxNum(communityDTO) == null) {
+		if(communityDAO.getMaxNum() == null) {
 			communityDTO.setIdx(1);
 		
 		} else {
-			communityDTO.setIdx(communityDAO.getMaxNum(communityDTO) + 1);
+			communityDTO.setIdx(communityDAO.getMaxNum() + 1);
 		
 		}
 		
@@ -52,10 +53,19 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public void deleteBoard(int num) {
-		communityDAO.deleteBoard(num);
-		
+	public void deleteBoard(int idx) {
+		communityDAO.deleteBoard(idx);
 	}
+
+
+	@Override
+	public PaymentDTO getPaymentInfo(PaymentDTO paymentDTO) {
+		return communityDAO.getPaymentInfo(paymentDTO);
+	}
+	
+	
+
+	
 	
 	
 	

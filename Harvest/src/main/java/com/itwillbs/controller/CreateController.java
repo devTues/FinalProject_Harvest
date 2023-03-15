@@ -125,15 +125,6 @@ public class CreateController {
 		
 		// 절대경로
 		String Path = request.getRealPath("resources/upload");
-		//상대 경로
-//			String uploadPath = request.getSession().getServletContext().getRealPath(myPath);
-		
-//		UUID uuid = UUID.randomUUID();
-		
-//		MultipartFile prifile = mtfRequest.getFile("profile");
-//		String newFileName = uuid.toString() + "_" + prifile.getOriginalFilename();
-//		FileCopyUtils.copy(prifile.getBytes(), new File(uploadPath, newFileName));
-//		projectDto.setCrePro(newFileName);
 		
 		// 프로필 이미지 (사진 1개)
 		if(!mtfRequest.getFile("profile").isEmpty()) {
@@ -146,8 +137,6 @@ public class CreateController {
 			String multiImg = "";
 			
 			for(MultipartFile file : mtfRequest.getFiles("images")) {
-//				FileCopyUtils.copy(file.getBytes(), new File(Path, newFileName));
-//				multiImg += uuid.toString() + "_" + prifile.getOriginalFilename() + "&";
 				multiImg += UploadFile.fileUpload(file, uploadPath, Path) + "&";
 			}
 			projectDto.setImg1(multiImg);

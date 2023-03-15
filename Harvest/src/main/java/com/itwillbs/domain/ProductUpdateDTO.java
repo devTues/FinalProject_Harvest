@@ -10,9 +10,6 @@ public class ProductUpdateDTO {
 	private String creNm;
 	private String crePro;
 	private String content;
-	private String profile;
-	private String file;
-	private String name;
 	private Timestamp date;
 	
 	
@@ -52,24 +49,6 @@ public class ProductUpdateDTO {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getProfile() {
-		return profile;
-	}
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-	public String getFile() {
-		return file;
-	}
-	public void setFile(String file) {
-		this.file = file;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public Timestamp getDate() {
 		return date;

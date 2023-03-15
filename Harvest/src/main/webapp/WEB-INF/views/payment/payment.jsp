@@ -219,14 +219,14 @@ function address(){
 					function(rsp) { // callback
 						if (rsp.success) {
 							// 결제 성공 시 로직
-							var msg = "후원이 완료되었습니다! 결제는 ${pdto.end}일에 진행 됩니다.";
+							var msg = "후원이 완료되었습니다! 결제는 ${payDate}일에 진행 됩니다.";
 							alert(msg);
 					        	$.ajax({
 									url : "${pageContext.request.contextPath}/payment/paySuccessPro", // 결제저장경로
 									data : {
 										 'pjIdx' : $('.idx').val(),
 										    'id' : $('.id').val(),
-										'amount' : ${paydto.userDona},
+										'amount' : ${userDona},
 									   'address' : $('#rAddress').val(),
 // 									   'address' : $('#rAddress').val(),
 										 'phone' : $('#rPhone').val(),
@@ -299,6 +299,7 @@ function address(){
 							<img onclick="location.href='${pageContext.request.contextPath}/project/projectInfo?idx=${pdto.idx}'" src="${pageContext.request.contextPath}/resources/harVest_css/gosim.JPG" width="150">
 						</div>
 						<div>
+						<!-- TODO: onclick하면 어디로 가는 것?? -->
 							<span class="category" onclick="location.href='${pageContext.request.contextPath}/main/mainList'">${pdto.category}</span>
 							<h3 onclick="location.href='${pageContext.request.contextPath}/project/projectInfo?idx=${pdto.idx}'">${pdto.title}</h3>
 							<div>
@@ -324,7 +325,7 @@ function address(){
 									<table>
 										<tr>
 											<th>후원금액</th>
-											<td><fmt:formatNumber value="${paydto.userDona}"/>원</td>
+											<td><fmt:formatNumber value="${userDona}"/>원</td>
 										</tr>
 									</table>
 									<div class="pay_change">변경</div>
@@ -400,7 +401,7 @@ function address(){
 													 	 <input type="button"  class="postBtn" id="addBtn" value="저장" onclick='changeAdd()'>
 														 </div>
 														 <input type="hidden" name="idx" value="${pdto.idx}">
-														 <input type="hidden" name="userDona" value="${paydto.userDona}">
+														 <input type="hidden" name="userDona" value="${userDona}">
 														 <input type="hidden" name="id" value="${dto.id}">
 														 <div id="addr">
 													 	</div>
@@ -431,12 +432,12 @@ function address(){
 									<table>
 										<tr>
 											<th class="point">최종 후원 금액</th>
-											<td class="point total_money"><fmt:formatNumber value="${paydto.userDona}" />원</td>
+											<td class="point total_money"><fmt:formatNumber value="${userDona}" />원</td>
 										</tr>
 									</table>
 								</div>
 								<div class="pay_notice">
-									<p>프로젝트 성공시, 결제는 <span class="point" style="font-weight:600;">${pdto.end}</span> 에 진행됩니다. 프로젝트가 무산되거나 중단된 경우, 예약된 결제는 자동으로 취소됩니다.</p>
+									<p>프로젝트 성공시, 결제는 <span class="point" style="font-weight:600;">${payDate}</span> 에 진행됩니다. 프로젝트가 무산되거나 중단된 경우, 예약된 결제는 자동으로 취소됩니다.</p>
 									<div class="pay_checkbox">
 										<div class="allcheck_box">
 											<input type="checkbox" id="allBtn" style="display:none;">
@@ -506,10 +507,10 @@ function address(){
 	<input type="hidden" name="idx" class="idx" value="${pdto.idx}"> 
 	<input type="hidden" name="pjIdx" class="pjIdx" value="${pdto.idx}">
 	<input type="hidden" name="id" class="id" value="${dto.id}">
-	<input type="hidden" name="userDona" class="userDona" value="${paydto.userDona}">
+	<input type="hidden" name="userDona" class="userDona" value="${userDona}">
 	<input type="hidden" name="address" class="address" value="${dto.address}">
 	<input type="hidden" name="phone" class="phone" value="${dto.phone}">
-	<input type="hidden" name="payDate" class="payDate" value="${pdto.end}">
+	<input type="hidden" name="payDate" class="payDate" value="${payDate}">
 	<input type="hidden" name="status" class="status" value="Y">
 	
 <!-- footer 들어갈 부분 -->

@@ -6,74 +6,69 @@
 <mapper namespace="com.itwillbs.mappers.userMapper">
 
 	<insert id="insertUser">
-		INSERT INTO USER_TB ( IDX
-							, NAME
-						    , ID
-						    , PASS
-						    , PHONE <!-- DB 컬럼명 -->
-						    , EVENT_ALR)
+		insert into USER_TB( IDX
+					       , NAME
+					       , ID
+					       , PASS 
+					       , PROFILE
+					       , PHONE
+					       , PREFER
+					       , EVENT_ALR)
 					    
-			 	 VALUES( 
-					 	 (SELECT IDX
-		                    FROM (
-		                        SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
-		                         FROM PROJECT_TB
-		                     ) A)
-			 	 	   , #{name}
-			 	       , #{id}
-				       , #{pass}
-				       , #{phone} <!-- DTO 멤버변수, user_status랑 date는 디폴트라 넣을 필요X -->
-				       , #{eventAlr})
+				 	 values( #{idx}
+				 	       , #{name}
+					       , #{id}
+					       , #{pass} 
+					       , #{profile}
+					       , #{phone}
+					       , #{prefer}
+					       , #{eventAlr})
 	</insert>
+	
+	
+	<insert id="insertAddress">
+		insert into ADDRESS_TB( IDX
+							  , ID
+							  , ADDRESS_NM
+							  , NAME
+							  , PHONE
+							  , ADDRESS
+							  , ZIP_CODE)
+							  
+					 	values( #{idx}
+					 		  , #{id}
+					 		  , #{addressNm}
+					 		  , #{name}
+					 		  , #{phone}
+					 		  , #{address}
+					 		  , #{zipCode})		  
+	</insert>
+	
 
 
 	<select id="userCheck" resultType="com.itwillbs.domain.UserDTO">
-		SELECT * 
-		  FROM USER_TB
+		select * 
+		  from USER_TB
 		 
-		 WHERE ID=#{id}
-		   AND PASS=#{pass}
+		 where ID=#{id}
+		   and PASS=#{pass}
 	</select>
 	
 	
 	<select id="getUser" resultType="com.itwillbs.domain.UserDTO">
-		SELECT *
-		  FROM USER_TB
-		 WHERE ID=#{id}
+		select *
+		  from USER_TB
+		 where ID=#{id}
 	</select>
 	
-	
-	
-<!-- 	비밀번호 찾기 -->
+	<!-- 비밀번호 찾기 -->
 	<select id="passCheck" resultType="com.itwillbs.domain.UserDTO">
-		SELECT * 
-		  FROM USER_TB
-		 WHERE ID=#{id}
+		select * 
+		  from USER_TB
+		 where ID=#{id}
 	</select>
-	
-	
-	
-	
-	
 	
 	
 
-	
-	
-	
-<!-- 	<select id="mailCheck" resultType="com.itwillbs.domain.UserDTO"> -->
-<!-- 		select * -->
-<!-- 		  from user -->
-<!-- 		 where ID=#{id} -->
-		   
-<!-- 	</select> -->
-	
-	
-<!-- 	<update id="updatePass"> -->
-<!-- 		update user -->
-<!-- 		   set PASS=#{pass} -->
-<!-- 		 where ID=#{id} -->
-<!-- 	</update> -->
-	
 	
 </mapper>

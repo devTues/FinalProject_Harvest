@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mappers.mySupportMapper">
+
+	<select id="getMySupportList" parameterType="map" resultType="hashMap">
+		SELECT p.IMG1 as img1
+			 , pay.id 
+			 , p.idx as pjIdx
+		     , P.CATEGORY
+		     , p.ID as creId
+		     , p.CRE_NM as creNm
+		     , p.TITLE
+		     , (SELECT IFNULL(SUM(AMOUNT), 0)
+				  FROM PAYMENT_TB 
+				 WHERE PJ_IDX = p.IDX) AS totalAmt
+			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+						 FROM PAYMENT_TB 
+						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
+			 , DATEDIFF(p.END , p.START) AS expiredDate
+			 , IF (isnull(l.user_id), 'N', 'Y' ) AS "찜하기" 
+		 FROM PROJECT_TB p JOIN payment_tb pay
+		   ON pay.pj_idx = p.idx
+		 LEFT OUTER JOIN (SELECT USER_ID,  pj_idx FROM like_tb where user_id = #{id}) l
+		   ON p.idx = l.pj_idx
+		WHERE pay.id = #{id}
+		
+<!--  TODO	후원주문? 결제날짜 중에 어떤거 기준으로 해야하는지?	ORDER BY  -->
+	</select>
+
+	<select id="getMySupportCount" resultType="java.lang.Integer">
+		select count(*)
+		  from payment_tb
+ 		 where id = #{id}
+	</select>
+
+
+
+
+
+
+</mapper>

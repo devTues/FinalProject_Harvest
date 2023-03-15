@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
+<mapper namespace = "com.itwillbs.mappers.communityReplyMapper">
+
+	<insert id="insertReply">
+		INSERT INTO COMMUNITY_REPLY ( IDX
+									, PJ_IDX
+									, COMM_IDX
+									, ID
+									, CONTENT
+									, DATE
+									, CONTENT_LABEL)
+							 VALUES ( #{idx}
+							 		, #{pjIdx}
+							 		, #{commIdx}
+									, #{id}
+									, #{content}
+									, #{date}
+									, #{contentLabel} )
+	</insert>
+
+	<select id="getCommunityReplyList" resultType = "com.itwillbs.domain.CommunityReplyDTO">
+		SELECT C.IDX
+					 , C.COMM_IDX
+					 , C.PJ_IDX
+					 , C.ID
+				     , UR.NAME
+				   	 , UR.PROFILE
+				     , C.CONTENT_LABEL
+				     , C.CONTENT
+				     , C.DATE
+		  FROM COMMUNITY_REPLY C
+		  JOIN USER_TB UR
+		    ON UR.ID = C.ID
+		 WHERE CONTENT_LABEL = #{contentLabel}
+		  AND COMM_IDX = #{commIdx}
+		   AND PJ_IDX = #{pjIdx}
+		   ORDER BY DATE DESC
+	</select>
+	
+	<select id="getMaxNum2" resultType="java.lang.Integer"> 
+		SELECT MAX(IDX) 
+		  FROM COMMUNITY_REPLY
+	</select>
+	
+	
+</mapper>

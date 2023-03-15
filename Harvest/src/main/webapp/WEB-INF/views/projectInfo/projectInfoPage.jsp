@@ -49,93 +49,16 @@ $(document).ready(function(){
 	$('#secBtn3').click(pageScroll3)
 	
 	// 숙인
-	$('.cmt_btn').on('click', commSubmit);		// 클릭하면 commSubmit 실행
+	$('.cmt_btn').on('click', commSubmit );		// 클릭하면 commSubmit 실행
 	$('#onDisplay').on('click', updateDisplay );	// 클릭하면 업데이트탭의 글쓰기폼 보여주기
-	$('#onDisplay2').on('click', CommunityDisplay2 ); // 클릭하면 커뮤니티탭(리뷰) 글쓰기폼 보여주기
-	$('#contact-tab, .list li').on('click', commShowList); // 커뮤니티탭 클릭시 응원탭에 list보이게 하기
+	$('#goback').on('click', gobackUpdate );
+	$('#contact-tab').on('click', function () {
+		$('#commList1').trigger('click'); // contact-tab클릭하면 commList1을 클릭하게 됨
+	});
+	$('.list li').on('click', commShowList); // 커뮤니티탭 클릭시 응원탭에 list보이게 하기
+	$('.update_write_btn').on('click', updateUpdate);
 })
 
-function commShowList(){
-	
-	var commList = $(this).attr("id");
-	
-	$.ajax ({
-	
-	  // URL은 필수 요소이므로 반드시 구현해야 하는 Property입니다.
-	  url	: "${pageContext.request.contextPath }/project/CommunityListAjax", // 요청이 전송될 URL 주소
-	  type	: "GET", // http 요청 방식 (default: ‘GET’)
-	  data  :  { 'contentLabel' : $(this).attr("id"),
-		         'pjIdx' : ${productUpdateDTO.pjIdx} },  // 요청 시 포함될 데이터
-	  content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
-//	  processData : false,
-//	  enctype : 'multipart/form-data',// 요청 컨텐트 타입 . file은 JSON에 포함될 수 없다. 그래서 FormData 안에 file과 JSON (= data)를 append 시킨다.
-	  dataType    : "JSON", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
-	  success : function(list) { // function(data)가 성공하면 콘솔에 data찍어줘 
-		console.log(list);	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
-		
-	  	var showList = ""; 
-		
-		$.each(list,function(index,item){
-			var idx = item.idx;
-			var dt=new Date(item.date);
-	        var d=dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
-			
-			showList += '<div class="cmt_list"> '
-			showList += 	'<table id="table_COM1"> '
-			showList += 		'<div class="cmt_profile_box"> '
-			showList += 			'<div class="cmt_profile_img"> '
-			showList += 				'<a href="#"><img src="${pageContext.request.contextPath }/resources/upload/' + item.profile + '"></a> '
-			showList += 			'</div> '
-			showList += 			'<div class="cmt_profile_info"> '
-			showList += 				'<div class="cmt_info"> '
-			showList += 					'<span>' + item.name + '</span> '
-			showList += 					'<span>' + item.contentLabel + '</span> '
-			showList += 					'<p class="cmt_time">' + d + '</p> '
-			showList += 				'</div> '
-			showList += 			'</div> '
-			showList += 		'</div> '
-			showList += 		'<div class="cmt_content"> '
-			showList += 			'<span>' + item.content + '</span> '
-			showList += 			'<div class="cmt_cont_btn"> '
-			showList += 				'<button class="cmt_reply_btn">댓글쓰기</button> '
-			showList += 				'<button class="cmt_delete_btn" onclick="deleteComm(' + idx + ')">삭제</button> '
-			showList += 			'</div> '
-			showList += 		'</div> '
-			showList += 	'</table> '
-			showList += '</div>'
-		  });
-		
-		$('#table_' + commList).empty();
-		$('#table_' + commList).append(showList);
-		
-	  }
-	  
-	});
-}
-
-function deleteComm(idx){
-	
-	$.ajax ({
-		
-		  // URL은 필수 요소이므로 반드시 구현해야 하는 Property입니다.
-		  url	: "${pageContext.request.contextPath }/project/deleteAjax", // 요청이 전송될 URL 주소
-		  type	: "GET", // http 요청 방식 (default: ‘GET’)
-		  data  :  { 'idx' : idx },  // 요청 시 포함될 데이터
-// 		  content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
-//		  processData : false,
-//		  enctype : 'multipart/form-data',// 요청 컨텐트 타입 . file은 JSON에 포함될 수 없다. 그래서 FormData 안에 file과 JSON (= data)를 append 시킨다.
-		  dataType    : "JSON", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
-		  success : function(result) { // function(data)가 성공하면 콘솔에 data찍어줘 
-			console.log(list);	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
-			commShowList();
-		  },
-		  error : function(result){
-			  alert(result + "에러");
-		  }
-	});
-			
-	
-}
 
 function btnColor() {
 	if($(this).click){
@@ -169,7 +92,7 @@ function changeBtn() {
 		}).then((result) => {
 			if(result.value)	return false;
 		})
-	} else if($('#userDona').val() <= ${projectDTO.sumMoney} && $('#userPayment').is(':checked') == true) { // 최소 후원금 이하일 경우 
+	} else if($('#userDona').val() <= ${projectDTO.minDona} && $('#userPayment').is(':checked') == true) { // 최소 후원금 이하일 경우 
 		Swal.fire({
 			title: '최소금액보다 큰 금액을 입력해주세요.',
 			icon: 'warning',
@@ -203,7 +126,7 @@ function like() {
 			confirmButtonText: '로그인',
 		}).then((result) => {
 			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/main/mainList';
+				window.location = '${pageContext.request.contextPath}/user/login';
 			}
 		})
 	}
@@ -288,7 +211,7 @@ function showFunding() {
 			confirmButtonText: '로그인',
 		}).then((result) => {
 			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/projectList/main';
+				window.location = '${pageContext.request.contextPath}/user/login';
 			}
 		})
 	}
@@ -308,6 +231,7 @@ function showFunding() {
 		$(".user_donation").hide();
 	})
 	$("#userPayment").click(function(){
+		$('#userDona').val('');
 		$(".user_donation").show();
 	})
 }
@@ -322,7 +246,7 @@ function hideFunding() {
 // 후원하기 값 선택
 function minPayment() {
 	if($(this).is(':checked')== true) {
-		$('#userDona').val('');
+		$('#userDona').val($('#minPayment').val());	// 최소금액
 		$('#userDona').attr('readonly',true);
 	}
 }
@@ -333,20 +257,29 @@ function userPayment() {
 }
 
 // 숙인
-// 커뮤니티탭(리뷰) 글쓰기창 보여주기
-function CommunityDisplay2(){
-	if($("#C_write").css("display") == "none"){
-		$('#C_write').show();
-		$('#C_list').hide();
-		
-	}  else if(("C_write").css("display") != "none"){
-			$('#C_list').show();
-			$('#C_write').hide();
-			$('#updateWriteForm')[0].reset();
-	}
+// 창작자 공지 페이지 수정
+function updateUpdate(){
+	$('#U_write').show();
+	$('#U_list').hide();
+	$('#updateWriteForm')[0].reset();
+	
+	var index = this.id.split('_')[1]; // 수정버튼 id값 다 다름.  'content_1'.... split로 '_' 뒤에 숫자만 가져오기 
+	var content = $('#content_' + index).html(); // 글 내용 들어가는 div에 id도 다 다름. id에 맞는 내용 다 들고오기
+	tinymce.activeEditor.setContent(content);
+
+	$('#text').val(index);  // id값을 index에 넣어서 controller로 넘기기
+	
+	return;
 }
 
-// 업데이트탭 글쓰기창 보여주기
+// 창작자공지 글쓰기창 들어와서 '<- 창작자 공지로 돌아가기' 버튼 눌렀을 때
+function gobackUpdate(){
+	$('#U_list').show();
+	$('#U_write').hide();
+	$('#updateWriteForm')[0].reset();
+}
+
+// 창작자 공지 글쓰기창 보여주기/숨기기
 function updateDisplay(){
 	if($("#U_write").css("display") == "none"){
 		$('#U_write').show();
@@ -355,67 +288,308 @@ function updateDisplay(){
 	}  else if(("U_write").css("display") != "none"){
 			$('#U_list').show();
 			$('#U_write').hide();
-			$('.CommunityWriteForm')[0].reset();
+			$('#updateWriteForm')[0].reset();
+			$('#text').val(0);
 	}
 }
 
-// 커뮤니티탭 응원/문의/리뷰 댓글달고 리스트 띄우기
+// 커뮤니티탭 응원/문의/리뷰 댓글달고 리스트 바로 띄우기
 function commSubmit(){
+	debugger;
+    var form = $('#review_file')[0];
+    var formData = new FormData();
+    formData.append("attachedImg", form.files[0]);
+    
+	var data = { 
+							'pjIdx' : ${productUpdateDTO.pjIdx},
+				             'id' : '${sessionScope.id}', // String은 '  ' 안에 넣어줌
+			    	 	  	 'content' : $('#content_' + this.id).val(),  // 아... $()안에 든게 id=""였군....
+							 'contentLabel' : this.id,
+							 }
 	
-	var data = {  pjIdx : ${productUpdateDTO.pjIdx},
-				     id : '${sessionScope.id}', // String은 '  ' 안에 넣어줌
-			    content : $('#content_' + this.id).val(),  // 아... $()안에 든게 id=""였군....
-		   contentLabel : this.id }
-	
+	var content = $('#content_' + this.id);
+	var index = this.id.replace("COM", ""); // id COM1, COM2, COM3에 COM빼고 숫자 1, 2, 3만 index에 담기
+
+	// '작성하기'버튼 눌렀을 때 커뮤니티 글쓰기
 	$.ajax ({
 		  // URL은 필수 요소이므로 반드시 구현해야 하는 Property입니다.
 		  url	: "${pageContext.request.contextPath }/project/CommunityWriteAjax", // 요청이 전송될 URL 주소
 		  type	: "POST", // http 요청 방식 (default: ‘GET’)
-		  data  :  data,  // 요청 시 포함될 데이터. contentLabel이라는 키(변수명같은거)에 id 값을 넣기 
-		  content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
-// 		  processData : false,
-// 		  enctype : 'multipart/form-data',// 요청 컨텐트 타입 . file은 JSON에 포함될 수 없다. 그래서 FormData 안에 file과 JSON (= data)를 append 시킨다.
-//		  dataType    : "json", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
+		  data  :  {data,
+		  				formData},// 요청 시 포함될 데이터. contentLabel이라는 키(변수명같은거)에 id 값을 넣기 
+// 		  content_Type : "application/json", // 요청 컨텐트 타입 
+		  content_Type : false, // false 로 선언 시 content-type 헤더가 multipart/form-data로 전송
+		  processData : false, // false로 선언 시 formData를 string으로 변환하지 않음
+		  enctype : 'multipart/form-data',// 요청 컨텐트 타입 . file은 JSON에 포함될 수 없다. 그래서 FormData 안에 file과 JSON (= data)를 append 시킨다.
+// 		  dataType    : "json", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
 		  success : function(data) { // function(data)가 성공하면 콘솔에 data찍어줘 
-			console.log('성공')	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
-			
-// 			var showList = ""; 
-		  	
-// 			$.each(data,function(index,item){
-// 				showList += '<div class="cmt_list"> '
-// 				showList += 	'<table id="table_COM1"> '
-// 				showList += 		'<div class="cmt_profile_box"> '
-// 				showList += 			'<div class="cmt_profile_img"> '
-// 				showList += 				'<a href="#"><img src="${pageContext.request.contextPath }/resources/upload/' + item.profile + '"></a> '
-// 				showList += 			'</div> '
-// 				showList += 			'<div class="cmt_profile_info"> '
-// 				showList += 				'<div class="cmt_info"> '
-// 				showList += 					'<span>' + item.name + '</span> '
-// 				showList += 					'<span>' + item.contentLabel + '</span> '
-// 				showList += 					'<p class="cmt_time">' + item.date + '</p> '
-// 				showList += 				'</div> '
-// 				showList += 			'</div> '
-// 				showList += 		'</div> '
-// 				showList += 		'<div class="cmt_content"> '
-// 				showList += 			'<span>' + item.content + '</span> '
-// 				showList += 			'<div class="cmt_cont_btn"> '
-// 				showList += 				'<button class="cmt_reply_btn">댓글쓰기</button> '
-// 				showList += 				'<button class="cmt_delete_btn">삭제</button> '
-// 				showList += 			'</div> '
-// 				showList += 		'</div> '
-// 				showList += 	'</table> '
-// 				showList += '</div> '
-// 			  });
-			
-// 			$('#table_commList1').empty();
-// 			$('#table_commList1').append(data);
+// 			console.log('성공')	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
+				$('#commList' + index).click(); // 댓글 쓰자마자 commList1, 2, 3(탭id)이 클릭되게 하기
+		  },
+		  error : function(data){
+			  alert(data.file);
 		  }
-		});
+	});
 	
 	$('#content_' + this.id).val('');
 	
+}
+
+//커뮤니티탭 댓글 list 보이게 하기
+function commShowList(){
+	
+	 commList = $('.tab_active').attr('id');
+	 
+	 var index = this.id.replace("commList","COM"); // 수정버튼 id값 다 다름.  'content_1'.... split로 '_' 뒤에 숫자만 가져오기 
+	
+	$.ajax ({
+		
+		 url	: "${pageContext.request.contextPath }/project/CommunityListAjax", // 요청이 전송될 URL 주소
+	 	 type	: "GET", // http 요청 방식 (default: ‘GET’)
+	  	 data  :  { 'contentLabel' : index,
+		       		     'pjIdx' : ${productUpdateDTO.pjIdx},
+	  					'id' : '${sessionScope.id}' },  // 요청 시 포함될 데이터
+	  	 content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
+//	     processData : false,
+//	     enctype : 'multipart/form-data',// 요청 컨텐트 타입 . file은 JSON에 포함될 수 없다. 그래서 FormData 안에 file과 JSON (= data)를 append 시킨다.
+	     dataType    : "JSON", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
+	     success : function(list) { // function(data)가 성공하면 콘솔에 data찍어줘 
+// 		 console.log(list);	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
+		
+	  	var showList = ""; 
+		
+		$.each(list,function(index,item){
+			var idx = item.idx;
+			var dt=new Date(item.date);
+	        var d=dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+// 			showList += '<div class="cmt_list"> '
+// 			showList += 	'<table id="table_COM1"> '
+			showList += 		'<div class="cmt_profile_box"> '
+			showList += 			'<div class="cmt_profile_img"> '
+			showList += 				'<a href="#"><img src="${pageContext.request.contextPath }/resources/upload/' + item.profile + '"></a> '
+			showList += 			'</div> '
+			showList += 			'<div class="cmt_profile_info"> '
+			showList += 				'<div class="cmt_info"> '
+			showList += 					'<span>' + item.name + '</span> '
+			showList += 					'<span>' + item.contentLabel + '</span> '
+			showList += 					'<p class="cmt_time">' + d + '</p> '
+			showList += 				'</div> '
+			showList += 			'</div> '
+			showList += 		'</div> '
+			showList += 		'<div class="cmt_content" id="cmt_content_' + idx + '"> '
+			showList += 			'<span>' + item.content + '</span> '
+			showList += 			'<div class="cmt_cont_btn"> '
+			showList += 				'<button id="reply_btn_' + idx + '"class="cmt_reply_btn" onclick="reCmtOpenClose(' + idx + ')" >댓글쓰기</button> '
+			
+				if('${sessionScope.id}' != "" && item.id == '${sessionScope.id}'){
+					showList += 				'<button class="cmt_delete_btn" id = "commDelete" onclick="deleteComm(' + idx + ')">삭제</button> '
+				}
+			
+			showList += 			'</div> '
+			showList += 			'<div id="reply_cmt_' + idx + '"class="re_cmt"> '
+			showList += 				'<textarea id="replyCmt_' + idx + '">응원의 한마디!</textarea> '
+			
+				if('${sessionScope.id}' != "" && item.spon == 'Y'){
+					showList +=					'<button id="reply_write" class="re_cmt_btn" onclick="submitReply(' + idx + ')">작성하기</button> '
+				}
+			
+			showList +=					'<div class="reply" id="reply_' + idx + '"></div> '
+			showList += 			'</div> '
+			showList += 		'</div> '
+// 			showList += 	'</table> '
+// 			showList += '</div>'
+		  });
+		
+		$('#table_' + commList).empty();
+		$('#table_' + commList).append(showList);
+		
+	  }
+	});
+}
+
+// 커뮤니티 댓글의 댓글쓰기
+function submitReply(idx){
+	var commTab = $('.tab_active').attr('id').replace("commList", "COM"); // class="tab_active"의 id가지고 와서 commList를 COM으로 바꾸기
+	var data = {  pjIdx : ${productUpdateDTO.pjIdx}, // 프로젝트 번호
+						      id : '${sessionScope.id}', // 아이디
+							  content : $('#replyCmt_' + idx).val(), // 댓글 내용
+							  contentLabel : commTab, 
+							  commIdx : idx  }
+	
+	$.ajax ({
+		  url	: "${pageContext.request.contextPath }/project/CommunityReplyAjax", // 요청이 전송될 URL 주소
+		  type	: "POST", // http 요청 방식 (default: ‘GET’)
+		  data  :  data,  // 요청 시 포함될 데이터. contentLabel이라는 키(변수명같은거)에 id 값을 넣기 
+		  content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
+		  success : function(data) { // function(data)가 성공하면 콘솔에 data찍어줘 
+				
+			  var showReply = "";
+		  	  
+			  $.each(data,function(index,item){
+				  
+				  showReply +=				'<div><span class="nickname">' + item.name + '</span></div> '
+				  showReply +=				'<span class="re_comment">' + item.content + '</span> '
+
+			  });
+		  
+				$('#reply_' + idx).empty();
+				$('#reply_' + idx).append(showReply);
+			  
+		  }
+	});
+
+	$('#replyCmt_' + idx).val('');
+}
+
+//커뮤니티 댓글의 댓글 List 함수
+function submitReplyList(idx){
+	
+	var commTab = $('.tab_active').attr('id').replace("commList", "COM"); // class="tab_active"의 id가지고 와서 commList를 COM으로 바꾸기
+	var data = {  pjIdx : ${productUpdateDTO.pjIdx}, // 프로젝트 번호
+							  contentLabel : commTab, 
+							  commIdx : idx  }
+	
+	$.ajax ({
+		  url	: "${pageContext.request.contextPath }/project/CommunityReplyAjax", // 요청이 전송될 URL 주소
+		  type	: "POST", // http 요청 방식 (default: ‘GET’)
+		  data  :  data,  // 요청 시 포함될 데이터. contentLabel이라는 키(변수명같은거)에 id 값을 넣기 
+		  content_Type : "application/json", //false, // "application/json", // 요청 컨텐트 타입 
+		  success : function(data) { // function(data)가 성공하면 콘솔에 data찍어줘 
+				
+			  var showReply = "";
+		  	  
+			  $.each(data,function(index,item){
+				  
+				  showReply += '<div class="reply_under"> '
+				  showReply +=				'<div><span class="nickname">' + item.name + '</span></div> '
+				  showReply +=				'<div><span class="re_comment">' + item.content + '</span></div> '
+				  showReply += '</div>'
+			  });
+		  
+				$('#reply_' + idx).empty();
+				$('#reply_' + idx).append(showReply);
+			  
+		  }
+	});
+}
+
+// 커뮤니티탭 댓글쓰기 클릭하면 대댓글창 여닫기 
+function reCmtOpenClose(idx){
+	
+	var writeBtn = $('#reply_cmt_' + idx)
+
+	if(writeBtn.css('display') == 'block'){
+		$(writeBtn).hide();
+		
+	} else {
+		$(writeBtn).show();
+		submitReplyList(idx);
+
+	}
+}
+
+// 커뮤니티탭 댓글 삭제하기
+function deleteComm(idx){
+// 	var del = this.id.replace("Delete", "");
+	$.ajax ({
+		  url	: "${pageContext.request.contextPath }/project/deleteAjax", // 요청이 전송될 URL 주소
+		  type	: "GET", // http 요청 방식 (default: ‘GET’ POST PUT DELETE)
+		  data  :  { 'idx' : idx },  // 요청 시 포함될 데이터
+		  dataType    : "text", // 응답 데이터 형식 (명시하지 않을 경우 자동으로 추측)
+		  success : function(result) { // function(data)가 성공하면 콘솔에 data찍어줘 
+			console.log(result);	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
+			alert('댓글이 삭제되었습니다.');	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
+// 			commShowList();
+			location.reload();
+		  }
+	});
 	
 }
+
+// 업데이트 글쓰기창에 텍스트 에디터
+$(function() {
+         var plugins = [ "advlist", "autolink", "lists", "link", "image",
+               "charmap", "print", "preview", "anchor", "searchreplace",
+               "visualblocks", "code", "fullscreen", "insertdatetime",
+               "media", "table", "paste", "code", "help", "wordcount",
+               "save" ];
+         var edit_toolbar = 'formatselect fontselect fontsizeselect |'
+               + ' forecolor backcolor |'
+               + ' bold italic underline strikethrough |'
+               + ' alignjustify alignleft aligncenter alignright |'
+               + ' bullist numlist |' + ' table tabledelete |'
+               + ' link image';
+
+         tinyMCE.init({
+//         	 	 selector: "content", 
+                  forced_root_block : false,
+                  force_br_newlines : true,
+                  force_p_newlines : false,
+                  language : "ko_KR", //한글판으로 변경
+                  mode : "specific_textareas",
+                  editor_selector : 'mceEditor',
+                  height : 500,
+                  menubar : false,
+                  plugins : plugins,
+                  toolbar : edit_toolbar,
+
+                  /*** image upload ***/
+                  image_title : true,
+                  
+                  /* enable automatic uploads of images represented by blob or data URIs*/
+                  automatic_uploads : true,
+                  /*
+                      URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+                      images_upload_url: 'postAcceptor.php',
+                      here we add custom filepicker only to Image dialog
+                   */
+                  file_picker_types : 'image',
+                  
+                  /* and here's our custom image picker*/
+                  file_picker_callback : function(cb, value, meta) {
+                     var input = document.createElement('input');
+                     input.setAttribute('type', 'file');
+                     input.setAttribute('accept', 'image/*');
+
+                     /*
+                     Note: In modern browsers input[type="file"] is functional without
+                     even adding it to the DOM, but that might not be the case in some older
+                     or quirky browsers like IE, so you might want to add it to the DOM
+                     just in case, and visually hide it. And do not forget do remove it
+                     once you do not need it anymore.
+                      */
+                     input.onchange = function() {
+                        var file = this.files[0];
+
+                        var reader = new FileReader();
+                        reader.onload = function() {
+                           /*
+                           Note: Now we need to register the blob in TinyMCEs image blob
+                           registry. In the next release this part hopefully won't be
+                           necessary, as we are looking to handle it internally.
+                            */
+                           var id = 'blobid' + (new Date()).getTime();
+                           var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                           var base64 = reader.result.split(',')[1];
+                           var blobInfo = blobCache.create(id, file,
+                                 base64);
+                           blobCache.add(blobInfo);
+
+                           /* call the callback and populate the Title field with the file name */
+                           cb(blobInfo.blobUri(), {
+                              title : file.name
+                           });
+                        };
+                        reader.readAsDataURL(file);
+                     };
+                     input.click();
+                  },
+                  /*** image upload ***/
+
+                  content_style : 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+               });
+      });
+      
 </script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
@@ -557,7 +731,7 @@ function commSubmit(){
 				</div>
 			</div>
 		</div>
-	</div>
+<!-- 	</div> -->
 	<!-- 탭 메뉴 -->
 	<div id="productInfoMore">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -575,12 +749,13 @@ function commSubmit(){
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 					<div id="secCont1" class="section target">
-			<div class="scroll_btn">
-				<div id="secBtn1" class="section1">프로젝트 소개</div>
-				<div id="secBtn2" class="section2">예산</div>
-				<div id="secBtn3" class="section3">일정</div>
-			</div>
+						<div class="scroll_btn">
+							<div id="secBtn1" class="section1">프로젝트 소개</div>
+							<div id="secBtn2" class="section2">예산</div>
+							<div id="secBtn3" class="section3">일정</div>
+						</div>
 						${projectDTO.intro}
+					</div>
 					<div id="secCont2" class="section target">
 					<hr>
 					${projectDTO.budget}
@@ -610,13 +785,15 @@ function commSubmit(){
 										<span class="write_date"> | ${dto.date} </span><!-- 날짜값 넣기 -->
 									</div>
 								</div>
-								<!-- 창작자 로그인 시 보이게 해주기 -->
-								<div class="write_btn_wrapper">
-									<button type="submit" class="update_write_btn" onclick="location.href='${pageContext.request.contextPath }/project/update?idx1=${productUpdateDTO.pjIdx}&num1=${dto.idx}'">수정</button>
-									<button type="submit" class="delete_write_btn" onclick="location.href='${pageContext.request.contextPath }/project/delete?idx1=${productUpdateDTO.pjIdx}&num1=${dto.idx}'">삭제</button>
-								</div>
+								<!-- 창작자 로그인 시 버튼 보이게 해주기 -->
+								<c:if test="${creatorWrite.id eq sessionScope.id}">
+									<div class="write_btn_wrapper">
+										<button type="button" id="uBtn_${dto.idx}" class="update_write_btn" >수정</button>
+										<button type="submit" class="delete_write_btn" onclick="location.href='${pageContext.request.contextPath }/project/delete?idx=${productUpdateDTO.pjIdx}&num=${dto.idx}'">삭제</button>
+									</div>
+								</c:if>
 							</div>
-							<div class="creator_cont">
+							<div id="content_${dto.idx}" class="creator_cont">
 								${dto.content}
 							</div>
 								<input type="hidden" name="pjIdx" value="${productUpdateDTO.pjIdx }">
@@ -624,15 +801,12 @@ function commSubmit(){
 						</c:forEach>
 						
 						<!-- 창작자 로그인 시 보이게 해주기 -->
-						<c:if test="${!empty sessionScope.id }">
-<%-- 							<c:if test="${productUpdateList.get(0).id eq sessionScope.id}"> --%>
+							<c:if test="${creatorWrite.id eq sessionScope.id}">
 								<div class="creator_btn" id="onDisplay">
 									<button>글쓰기</button>
 								</div>
-<%-- 							</c:if> --%>
-						</c:if>
+							</c:if>
 					</div>
-
 					
 					<!-- 창작자 공지 글쓰기창 -->
 					<div class="updateWrite" id="U_write"  style="display: none;">
@@ -645,18 +819,18 @@ function commSubmit(){
 											<div class="EditorLayout__Wrap-sc-9ka57a-0 cMjFYj">
 												<div class="EditorLayout__Header-sc-9ka57a-1 ibiUSB">
 													<div class="EditHeader__Wrap-zond9x-0 eVdPsY">
-														<button class="SolidButton__Button-sc-1gsinzz-0 icXYZs EditHeader__BackButton-zond9x-1 OAsKY fnt-p1" color="white">
+														<button type="button" id="goback" class="SolidButton__Button-sc-1gsinzz-0 icXYZs EditHeader__BackButton-zond9x-1 OAsKY fnt-p1" color="white">
 															<span><div name="arrow3-left" class="Icon__SVGICON-sc-1xkf9cp-0 ccxeYs"><svg viewBox="0 0 48 48"><path fill-rule="evenodd" clip-rule="evenodd" d="M43.7014 21.7189L10.1221 21.7189L25.2128 7.06878C26.1112 6.15946 26.2122 4.64393 25.3127 3.73461C24.4133 2.82529 22.9142 2.72425 22.0148 3.63357L2.72663 22.4262C1.82719 23.3355 1.72725 24.75 2.62669 25.7604H2.72663L22.0148 44.4519C22.9142 45.2602 24.4133 45.1592 25.2128 44.2499C26.0123 43.3405 26.0123 41.926 25.1119 41.0167L10.0221 26.4676L43.7014 26.4676C45.0006 26.4676 46 25.4572 46 24.1438C46 22.8303 45.0006 21.7189 43.7014 21.7189Z"></path></svg>
-																</div>진행사항</span>
+																</div>  창작자 공지로 돌아가기</span>
 														</button>
 													</div>
 												</div>
 												<div class="EditorLayout__Body-sc-9ka57a-2 etJmpB">
 													<div class="EditorLayout__LeftSide-sc-9ka57a-3 bKAMOw">
 														<div class="InputWithGuideAndLengthCheck__Wrapper-sc-9nmfrw-0 eCSxwJ">
-															<div class="InputWithGuideAndLengthCheck__InputWrapper-sc-9nmfrw-3 bBnjVq">
-																<div class="Textarea__Wrapper-sc-1mj6ym2-0 vnOMO InputWithGuideAndLengthCheck__StyledTextarea-sc-9nmfrw-2 eyRDXi">
-																	<textarea name="content" placeholder="프로젝트 및 창작자님에 대해 어떤 이야기가 하고 싶으신가요?" class="Textarea__StyledTextArea-sc-1mj6ym2-1 cjoUaQ"></textarea>
+															<div>
+																<div id="editor">
+ 																	<textarea id="content" class="mceEditor" name="content" class="Textarea__StyledTextArea-sc-1mj6ym2-1 cjoUaQ">프로젝트 공지사항을 적어주세요</textarea>
 																</div>
 															</div>
 														</div>
@@ -687,7 +861,8 @@ function commSubmit(){
 														</div>
 													</div>
 												</div>
-												<button type="submit" class="SolidButton__Button-sc-1gsinzz-0 hgsFUp EditHeader__SubmitButton-zond9x-2 fZQwzk fnt-p1" ><span>등록</span></button>
+												<button type="submit" class="SolidButton__Button-sc-1gsinzz-0 hgsFUp EditHeader__SubmitButton-zond9x-2 fZQwzk fnt-p1" onclick = "return UpdateSubmit_btn()"><span>등록</span></button>
+												<input type="hidden" id="text" value="0" name="text"> <!-- idx값 갖고 수정 -->
 											</div>
 										</div>
 									</div>
@@ -709,49 +884,24 @@ function commSubmit(){
 				      <div class="tab_content tab_show">
 				      	<!-- 댓글창 -->
 				      	<div class="comment_wrapper">
-				      		<form id="communityForm_1" method="post">
+				      	<!-- 로그인 안됐을때 댓글쓰기창 누르면 로그인 하는 곳으로 보내기 -->
+				      		<c:if test="${empty sessionScope.id }">
 					      		<div class="cmt_write">
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) -->
-					      			<input type="hidden" name="id" value="${sessionScope.id}">
-									<input type="hidden" name="pjIdx" value="${productUpdateDTO.pjIdx}">
+					      			<a href="${pageContext.request.contextPath }/user/login"><textarea id="content_COM1" name="content" placeholder="로그인을 해주세요"  readonly></textarea></a>
+						      	</div>
+					      	</c:if>
+					    <!-- 로그인하고 후원자만 댓글쓰기-->
+				      		<c:if test="${!empty sessionScope.id and projectDTO.spon =='Y'}">
+					      		<div class="cmt_write">
 					      			<textarea id="content_COM1" name="content" placeholder="후원자만 글을 쓸 수 있어요."></textarea>
 					      			<div>
 					      				<button type="button" id="COM1" class="cmt_btn">작성하기</button>
 					      			</div>
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) 끝 -->
 					      		</div>
-				      		</form>
+					      	</c:if>
+					      	
 				      		<!-- if문으로 댓글 돌리기 -->
 				      		<div class="cmt_list" id="table_commList1">
-						      			<!-- 프로필 영역 -->
-						      			<div class="cmt_profile_box">
-<!-- 						      				프로필 이미지 -->
-						      				<div class="cmt_profile_img">
-						      					<a href="#">
-						      						<img src="${pageContext.request.contextPath }/resources/upload/${dto.profile}">
-						      					</a>
-						      				</div>
-<!-- 						      				프로필 정보 -->
-						      				<div class="cmt_profile_info">
-<!-- 						      					닉네임/댓글 유형 -->
-						      					<div class="cmt_info">
-						      						<span>${dto.name}</span>
-						      						<span>${dto.contentLabel}</span>
-						      						<p class="cmt_time">${dto.date}</p>
-						      					</div>
-						      				</div>
-						      			</div>
-						      			<!-- 댓글 내용 영역 -->
-						      			<div class="cmt_content">
-						      				<span>{dto.content}</span>
-<!-- 						      				댓글 작성자만 볼 수 있게 하기 -->
-						      				<div class="cmt_cont_btn">
-						      					<button class="cmt_reply_btn">댓글쓰기</button>
-						      					<button class="cmt_update_btn">수정</button>
-						      					<button class="cmt_delete_btn">삭제</button>
-						      				</div>
-<!-- 						      				댓글 작성자만 볼 수 있게 하기 끝 -->
-						      			</div>
 				      		</div>
 				      	</div>
 				      	<!-- if문으로 댓글 돌리기 끝 -->
@@ -760,49 +910,24 @@ function commSubmit(){
 				      <div class="tab_content">
 				        <!-- 댓글창 -->
 				      	<div class="comment_wrapper">
-					      	<form id="communityForm_1" method="post">
+				      		<!-- 로그인 안됐을때 댓글쓰기창 누르면 로그인 하는 곳으로 보내기 -->
+				      		<c:if test="${empty sessionScope.id }">
 					      		<div class="cmt_write">
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) -->
-					      			<input type="hidden" name="id" value="${sessionScope.id}">
-					      			<textarea id="content_COM2" name="content" placeholder="후원자만 글을 쓸 수 있어요."></textarea>
+					      			<a href="${pageContext.request.contextPath }/user/login"><textarea id="content_COM2" name="content" placeholder="로그인을 해주세요"  readonly></textarea></a>
+						      	</div>
+					      	</c:if>
+					      	<!-- 로그인하고 후원자만 댓글쓰기-->
+				      		<c:if test="${!empty sessionScope.id and projectDTO.spon =='Y'}">
+					      		<div class="cmt_write">
+					      			<textarea id="content_COM2" name="content" placeholder="후원자만 글을 쓸 수 있어요." ></textarea>
 					      			<div>
 					      				<button type="button" id="COM2" class="cmt_btn">작성하기</button>
 					      			</div>
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) 끝 -->
 					      		</div>
-					      		<!-- if문으로 댓글 돌리기 -->
-					      		<div class="cmt_list" id="table_commList2">
-<!-- 							      			프로필 영역 -->
-<!-- 							      			<div class="cmt_profile_box"> -->
-<!-- 							      				프로필 이미지 -->
-<!-- 							      				<div class="cmt_profile_img"> -->
-<!-- 							      					<a href="#"> -->
-<%-- 							      						<img src="${pageContext.request.contextPath }/resources/upload/${dto.profile}"> --%>
-<!-- 							      					</a> -->
-<!-- 							      				</div> -->
-<!-- 							      				프로필 정보 -->
-<!-- 							      				<div class="cmt_profile_info"> -->
-<!-- 							      					닉네임/댓글 유형 -->
-<!-- 							      					<div class="cmt_info"> -->
-<%-- 							      						<span>${dto.name}</span> --%>
-<%-- 							      						<span>${dto.contentLabel}</span> --%>
-<%-- 							      						<p class="cmt_time">${dto.date}</p> --%>
-<!-- 							      					</div> -->
-<!-- 							      				</div> -->
-<!-- 							      			</div> -->
-<!-- 							      			댓글 내용 영역 -->
-<!-- 							      			<div class="cmt_content"> -->
-<%-- 							      				<span>${dto.content}</span> --%>
-<!-- 							      				댓글 작성자만 볼 수 있게 하기 -->
-<!-- 							      				<div class="cmt_cont_btn"> -->
-<!-- 							      					<button class="cmt_reply_btn">댓글쓰기</button> -->
-<!-- 							      					<button class="cmt_update_btn">수정</button> -->
-<!-- 							      					<button class="cmt_delete_btn">삭제</button> -->
-<!-- 							      				</div> -->
-<!-- 							      				댓글 작성자만 볼 수 있게 하기 끝 -->
-<!-- 							      			</div> -->
-					      		</div>
-				      		</form>
+					      	</c:if>
+				      		<!-- if문으로 댓글 돌리기 -->
+				      		<div class="cmt_list" id="table_commList2">
+				      		</div>
 				      	</div>
 				      	<!-- if문으로 댓글 돌리기 끝 -->
 				      	<!-- 댓글창 -->
@@ -810,49 +935,26 @@ function commSubmit(){
 				      <div class="tab_content">
 				        <!-- 댓글창 -->
 				      	<div class="comment_wrapper">
-					      	<form id="communityForm_1" method="post">
+				      	<!-- 로그인 안됐을때 댓글쓰기창 누르면 로그인 하는 곳으로 보내기 -->
+				      		<c:if test="${empty sessionScope.id }">
 					      		<div class="cmt_write">
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) -->
+					      			<a href="${pageContext.request.contextPath }/user/login"><textarea id="content_COM3" name="content" placeholder="로그인을 해주세요"  readonly></textarea></a>
+						      	</div>
+					      	</c:if>
+					      	<!-- 로그인하고 후원자만 댓글쓰기-->
+				      		<c:if test="${!empty sessionScope.id and projectDTO.spon =='Y'}">
+					      		<div class="cmt_write">
 					      			<input type="hidden" name="id" value="${sessionScope.id}">
-					      			<textarea id="content_COM3" name="content" placeholder="후원자만 글을 쓸 수 있어요."></textarea>
+					      			<textarea id="content_COM3" name="content" placeholder="후원자만 글을 쓸 수 있어요." ></textarea>
+					      			<input type="file" id="review_file">
 					      			<div>
 					      				<button type="button" id="COM3" class="cmt_btn">작성하기</button>
 					      			</div>
-					      			<!-- 후원자만 입력할 수 있게 하기 (+form으로 감싸기?) 끝 -->
 					      		</div>
-					      		<!-- if문으로 댓글 돌리기 -->
-					      		<div class="cmt_list" id="table_commList3">
-<!-- 							      			프로필 영역 -->
-<!-- 							      			<div class="cmt_profile_box"> -->
-<!-- 							      				프로필 이미지 -->
-<!-- 							      				<div class="cmt_profile_img"> -->
-<!-- 							      					<a href="#"> -->
-<%-- 							      						<img src="${pageContext.request.contextPath }/resources/upload/${dto.profile}"> --%>
-<!-- 							      					</a> -->
-<!-- 							      				</div> -->
-<!-- 							      				프로필 정보 -->
-<!-- 							      				<div class="cmt_profile_info"> -->
-<!-- 							      					닉네임/댓글 유형 -->
-<!-- 							      					<div class="cmt_info"> -->
-<%-- 							      						<span>${dto.name}</span> --%>
-<%-- 							      						<span>${dto.contentLabel}</span> --%>
-<%-- 							      						<p class="cmt_time">${dto.date}</p> --%>
-<!-- 							      					</div> -->
-<!-- 							      				</div> -->
-<!-- 							      			</div> -->
-<!-- 							      			댓글 내용 영역 -->
-<!-- 							      			<div class="cmt_content"> -->
-<%-- 							      				<span>${dto.content}</span> --%>
-<!-- 							      				댓글 작성자만 볼 수 있게 하기 -->
-<!-- 							      				<div class="cmt_cont_btn"> -->
-<!-- 							      					<button class="cmt_reply_btn">댓글쓰기</button> -->
-<!-- 							      					<button class="cmt_update_btn">수정</button> -->
-<!-- 							      					<button class="cmt_delete_btn">삭제</button> -->
-<!-- 							      				</div> -->
-<!-- 							      				댓글 작성자만 볼 수 있게 하기 끝 -->
-<!-- 							      			</div> -->
-					      		</div>
-				      		</form>
+					      	</c:if>
+				      		<!-- if문으로 댓글 돌리기 -->
+				      		<div class="cmt_list" id="table_commList3">
+				      		</div>
 				      	</div>
 				      	<!-- if문으로 댓글 돌리기 끝 -->
 				      	<!-- 댓글창 -->
@@ -872,7 +974,7 @@ function commSubmit(){
 				</span>
 				<div>원하는 후원 방법을 선택해주세요.</div>
 				<div class="funding_wrap">
-					<form action="${pageContext.request.contextPath}/payment/payment" id="fundingForm" method="post">
+					<form action="${pageContext.request.contextPath}/payment/payment?idx=${projectDTO.idx}" id="fundingForm" method="post">
 						<div>
 							<input type="hidden" name="idx" value="${projectDTO.idx}">
 							<label>

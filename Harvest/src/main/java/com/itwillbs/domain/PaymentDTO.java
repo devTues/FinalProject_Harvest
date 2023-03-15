@@ -16,7 +16,15 @@ public class PaymentDTO {
 	
     private String codeNm;
 	private int userDona;
+	private String zipCode;
 	
+	
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
 	public int getIdx() {
 		return idx;
 	}

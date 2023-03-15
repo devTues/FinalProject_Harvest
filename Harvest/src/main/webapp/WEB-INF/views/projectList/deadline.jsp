@@ -51,7 +51,7 @@
 								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getDeadList.IDX }">
 									<h5 class="card-title mb-2">${getDeadList.TITLE }</h5>
 								</a>	
-								<span class="text-danger">${getDeadList.PERCENT }%</span> <small><fmt:formatNumber value="${getDeadList.TOTAL_AMT}" pattern="#,###"/>원</small>
+								<span class="text-danger"> <fmt:formatNumber type="number" maxFractionDigits="0"  value="${getDeadList.PERCENT }" />%</span> <small><fmt:formatNumber value="${getDeadList.TOTAL_AMT}" pattern="#,###"/>원</small>
 								<div class="progress mt-2 mb-3">
 									<div class="progress-bar bg-danger" role="progressbar" style="width: ${getDeadList.PERCENT }%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 										<jsp:useBean id="javaDate" class="java.util.Date" />

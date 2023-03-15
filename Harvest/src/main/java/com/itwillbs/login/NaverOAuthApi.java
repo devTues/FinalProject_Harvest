@@ -1,4 +1,4 @@
-package com.itwillbs.naver;
+package com.itwillbs.login;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 

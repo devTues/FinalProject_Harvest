@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -29,14 +30,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.AddressDTO;
 import com.itwillbs.domain.CommunityDTO;
+import com.itwillbs.domain.CommunityReplyDTO;
 import com.itwillbs.domain.PaymentDTO;
 import com.itwillbs.domain.UserDTO;
 import com.itwillbs.service.AddressService;
+import com.itwillbs.service.CommunityReplyService;
 import com.itwillbs.service.CommunityService;
 import com.itwillbs.service.PaymentService;
+import com.itwillbs.service.ProductUpdateService;
 import com.itwillbs.service.ProjectInfoService;
 import com.itwillbs.service.UserService;
 import com.itwillbs.service.UserServiceImpl.MailSendService;
+import com.itwillbs.utill.UploadFile;
 
 @Controller
 public class AjaxController {
@@ -55,11 +60,14 @@ public class AjaxController {
 	@Inject
 	private UserService userService;
 	@Inject
+	private ProductUpdateService productUpdateService;
+	@Inject
 	private CommunityService communityService;
+	@Inject
+	private CommunityReplyService communityReplyService;
 	
 	// 숙인
-	// xml 업로드 경로(자원이름) => 변수 저장
-	@Resource(name = "uploadPath") // servlet-context.xml에 있는 id
+	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
 	// projectList 페이지
@@ -160,82 +168,91 @@ public class AjaxController {
 	}
 	
 		
-		@RequestMapping(value="/payment/addressPro", method = RequestMethod.GET)
-		public ResponseEntity<String> addressPro(AddressDTO addressDTO, HttpServletRequest request) { //주소 db 저장하는 메서드..
-			 addressService.insertAddress(addressDTO);
-			 String result = "성공";
-			 System.out.println(result);
-			 
-			 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
-	         return entity;
-		}
+	@RequestMapping(value="/payment/addressPro", method = RequestMethod.GET)
+	public ResponseEntity<String> addressPro(AddressDTO addressDTO, HttpServletRequest request) { //주소 db 저장하는 메서드..
+		 addressService.insertAddress(addressDTO);
+		 String result = "성공";
+		 System.out.println(result);
+		 
+		 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
+         return entity;
+	}
 		
 
 		// 숙인
-//		@ResponseBody // ajax를 위한 메서드...자바 객체를 HTTP 응답 본문의 객체로 변환
-		@RequestMapping(value = "/project/CommunityWriteAjax", method = RequestMethod.POST)
-		public ResponseEntity<List<CommunityDTO>> CommunityWriteAjax(
-										 @RequestParam(value = "idx") String pjIdx,
-										 @RequestParam(value = "id") String id,
-										 @RequestParam(value = "content") String content,
-//										 @RequestPart(value = "file") String imgA,
-//										 @RequestParam(value = "imgB") String imgB,
-//										 @RequestParam(value = "imgC") String imgC,
-										 @RequestParam(value = "contentLabel") String contentLabel,
-										 CommunityDTO communityDTO, 
-										 RedirectAttributes redirect,
-										 HttpServletRequest request,
-										 MultipartFile file,
-										 Model model
-										) throws Exception {
-			
-//			// 업로드 파일명 : 랜덤문자_파일이름 (파일 이름이 중복이 안되도록 하기위함)
-//			UUID uuid = UUID.randomUUID();// UUID : 자바에서 랜덤으로 뽑아오기 위함
-//			String filename = uuid.toString() + "_" + file.getOriginalFilename();
-//			
-//			// 원본파일을 복사해서 upload폴더에 붙여넣기
-////			FileCopyUtils.copy(원본, 복사해서 새롭게 파일 만든 거);
-////			FileCopyUtils.copy(file.getBytes(), new File(경로, 파일이름)); //.getBytes() : 원본파일,
-//			FileCopyUtils.copy(file.getBytes(), new File(uploadPath, filename));
-//					
-	//
-//			communityDTO.setId(request.getParameter("id"));
-//			communityDTO.setContent(request.getParameter("content"));
-//			communityDTO.setIdx(Integer.parseInt(request.getParameter("idx")));
-//			communityDTO.setContentLabel(request.getParameter("contentLabel"));
-//			communityDTO.setImgA(request.getParameter(filename));
-//			communityDTO.setImgB(request.getParameter(filename));
-//			communityDTO.setImgC(request.getParameter(filename));
-//			String Files = request.getParameter("allFiles");
-			
-			communityService.insertBoard(communityDTO);
-//			redirect.addAttribute("pjIdx", request.getParameter("pjIdx"));
+	// 커뮤니티탭에 댓글쓰기
+	@RequestMapping(value = "/project/CommunityWriteAjax", method = RequestMethod.POST)
+	public ResponseEntity<List<CommunityDTO>> CommunityWriteAjax(CommunityDTO communityDTO, HttpServletRequest request, MultipartFile file) throws Exception {
+		
+		String fileName = UploadFile.fileUpload(file, uploadPath);
+		
+		communityDTO.setPjIdx(Integer.parseInt(request.getParameter("pjIdx")));
+		communityDTO.setId(request.getParameter("id"));
+		communityDTO.setContent(request.getParameter("content"));
+		communityDTO.setContentLabel(request.getParameter("contentLabel"));
+		communityDTO.setImgA(fileName);
+		
+		System.out.println("asdasd" + communityDTO.toString());
+		
+		
+		// 커뮤니티 글 넣기
+		communityService.insertBoard(communityDTO);
+		
+		// 넣은 글 ajax로 보내기
+		List<CommunityDTO> communityList1 = communityService.getComm1List(communityDTO);
+		
+		// ResponseEntity에 출력결과를 담아서 리턴
+		ResponseEntity<List<CommunityDTO>> entity = new ResponseEntity<List<CommunityDTO>>(communityList1, HttpStatus.OK);
+		
+		
+		return entity; // 이동 주소가 아니라 결과 값을 담아서 리턴
 
-			System.out.println(pjIdx);
-			System.out.println(id);
-			System.out.println(content);
-//			System.out.println(imgA);
-//			System.out.println(imgB);
-//			System.out.println(imgC);
-			System.out.println(contentLabel);
-			
-			List<CommunityDTO> communityList1 = communityService.getComm1List(communityDTO);
-			model.addAttribute("communityList1", communityList1);
-			
-//			List<CommunityDTO> communityList2 = communityService.getComm2List(communityDTO);
-//			model.addAttribute("communityList2", communityList2);
-//			
-//			List<CommunityDTO> communityList3 = communityService.getComm3List(communityDTO);
-//			model.addAttribute("communityList3", communityList3);
-			
-			
-			// ResponseEntity에 출력결과를 담아서 리턴
-			ResponseEntity<List<CommunityDTO>> entity = new ResponseEntity<List<CommunityDTO>>(communityList1, HttpStatus.OK);
-			
-			return entity; // 이동 주소가 아니라 결과 값을 담아서 리턴
+	}
+	
+	// 커뮤니티탭에 댓글의 댓글쓰기
+	@RequestMapping(value = "/project/CommunityReplyAjax", method = RequestMethod.POST)
+	public ResponseEntity<List<CommunityReplyDTO>> CommunityReplyAjax(CommunityReplyDTO communityReplyDTO, HttpServletRequest request ) {
+		
+		communityReplyService.insertReply(communityReplyDTO);
+		
+		List<CommunityReplyDTO> getCommunityReplyList = communityReplyService.getCommunityReplyList(communityReplyDTO);
+		
+		// ResponseEntity에 출력결과를 담아서 리턴
+		ResponseEntity<List<CommunityReplyDTO>> entity = new ResponseEntity<List<CommunityReplyDTO>>(getCommunityReplyList, HttpStatus.OK);
+		
+		
+		return entity; // 이동 주소가 아니라 결과 값을 담아서 리턴
 
-		}
+	}
+	
+	// 커뮤니티탭에 쓴 댓글 응원/문의/후기 탭마다 다르게 list보이게 하기
+	@RequestMapping(value = "/project/CommunityListAjax", method = RequestMethod.GET)	
+	public ResponseEntity<List<CommunityDTO>> communityList(HttpServletRequest request, CommunityDTO communityDTO) {
+		
+		communityDTO.setContentLabel(request.getParameter("contentLabel"));
+		communityDTO.setPjIdx(Integer.parseInt(request.getParameter("pjIdx")));
 
+		List<CommunityDTO> commList = communityService.getComm1List(communityDTO);
+		
+		ResponseEntity<List<CommunityDTO>> entity = new ResponseEntity<List<CommunityDTO>>(commList,HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	// 커뮤니티탭 댓글 삭제
+	@RequestMapping(value = "/project/deleteAjax", method = RequestMethod.GET)	
+	public ResponseEntity<String> delete(CommunityDTO communityDTO, HttpServletRequest request, RedirectAttributes redirect) {
+
+		int idx = Integer.parseInt(request.getParameter("idx")); // 프로젝트 번호
+		communityService.deleteBoard(idx);
+//					redirect.addAttribute("idx", request.getParameter("pjIdx"));
+
+		String result = "삭제 확인";
+				
+		ResponseEntity<String> entity = new ResponseEntity<String>(result,HttpStatus.OK);
+
+		return entity; 
+	}
 	
 						
 }

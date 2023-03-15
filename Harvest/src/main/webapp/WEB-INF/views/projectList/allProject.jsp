@@ -56,7 +56,7 @@
 								<a href="${pageContext.request.contextPath }/project/projectInfo?idx=${getAllList.IDX }">
 									<h5 class="card-title mb-2">${getAllList.TITLE }</h5>
 								</a>
-								<span class="text-danger">${getAllList.PERCENT }%</span> <small><fmt:formatNumber value="${getAllList.TOTAL_AMT}" pattern="#,###"/>원</small>
+								<span class="text-danger"> <fmt:formatNumber type="number" maxFractionDigits="0"  value="${getAllList.PERCENT }" />%</span> <small><fmt:formatNumber value="${getAllList.TOTAL_AMT}" pattern="#,###"/>원</small>
 								<div class="progress mt-2 mb-3">
 									<div class="progress-bar bg-danger" role="progressbar" style="width: ${getAllList.PERCENT }%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 										<jsp:useBean id="javaDate" class="java.util.Date" />

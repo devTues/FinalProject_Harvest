@@ -106,6 +106,13 @@ public class UserDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	@Override
+	public String toString() {
+		return "UserDTO [idx=" + idx + ", name=" + name + ", id=" + id + ", pass=" + pass + ", profile=" + profile
+				+ ", phone=" + phone + ", prefer=" + prefer + ", unregist=" + unregist + ", unregDate=" + unregDate
+				+ ", eventAlr=" + eventAlr + ", codeNm=" + codeNm + ", code=" + code + ", address=" + address + "]";
+	}
 
+	
 
 }

@@ -7,7 +7,7 @@ import com.itwillbs.domain.UserDTO;
 public interface PaymentService {
 	
 	public UserDTO getUser(String id);
-	public ProjectDTO getProject(String idx);
+	public ProjectDTO getProject(String pj_idx);
 	public PaymentDTO paySuccess (PaymentDTO paymentDto);
 	public void insertPayment(PaymentDTO paymentDto);
 	

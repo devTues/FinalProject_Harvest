@@ -15,6 +15,8 @@ public class CommunityDTO {
 	private String imgC;
 	private Timestamp date;
 	private String contentLabel;
+	// 스폰 여부 추가로 조회했음
+	private String spon;
 	
 
 	public int getIdx() {
@@ -83,6 +85,21 @@ public class CommunityDTO {
 	public void setContentLabel(String contentLabel) {
 		this.contentLabel = contentLabel;
 	}
+	public String getSpon() {
+		return spon;
+	}
+	public void setSpon(String spon) {
+		this.spon = spon;
+	}
+	@Override
+	public String toString() {
+		return "CommunityDTO [idx=" + idx + ", pjIdx=" + pjIdx + ", name=" + name + ", profile=" + profile + ", id="
+				+ id + ", content=" + content + ", imgA=" + imgA + ", imgB=" + imgB + ", imgC=" + imgC + ", date="
+				+ date + ", contentLabel=" + contentLabel + ", spon=" + spon + "]";
+	}
+	
+	
+	
 	
 
 	

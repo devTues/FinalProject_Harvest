@@ -6,24 +6,41 @@
 <!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
 <mapper namespace="com.itwillbs.mappers.AddressMapper">
 
-<insert id="insertAddress">
- 	INSERT INTO ADDRESS_TB(IDX
- 			  			 ,ID
- 			  			 ,ADDRESS_NM
- 			  			 ,ADDRESS
- 			  			 ,NAME
- 			  			 ,PHONE
- 			  			 ,ZIP_CODE)
- 	 			  VALUES (	
- 	 	    			  (SELECT IDX
-                		     FROM ( SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
-                       				  FROM ADDRESS_TB
-                   				   ) A)
- 	 	    			  ,#{id}
- 	 	   			      ,#{addressNm}
- 	 	   			      ,#{address}
- 	 	    			  ,#{name}
- 	 	     			  ,#{phone}
- 	 	 			      ,#{zipCode})
+	<insert id="insertAddress">
+	 	INSERT INTO ADDRESS_TB(IDX
+	 			  			 ,ID
+	 			  			 ,ADDRESS_NM
+	 			  			 ,ADDRESS
+	 			  			 ,NAME
+	 			  			 ,PHONE
+	 			  			 ,ZIP_CODE)
+			 VALUES (	
+	    			  (SELECT IDX
+             		     FROM ( SELECT IFNULL(MAX(CAST(IDX AS UNSIGNED)), 0) + 1 AS IDX
+                    				  FROM ADDRESS_TB
+                				   ) A)
+	    			  ,#{id}
+	   			      ,#{addressNm}
+	   			      ,#{address}
+	    			  ,#{name}
+	     			  ,#{phone}
+	 			      ,#{zipCode})
  	</insert>	
+ 	
+	<select id="getAddressList" resultType="com.itwillbs.domain.AddressDTO"> <!-- MemberDAOImpl.java 파일에서 selectList안에 담길 파일형식인 MemberDTO를 resultType에 담아야함 -->
+		select * from ADDRESS_TB where id=#{id}
+	</select>
+  
+    <select id="getMaxIdx" resultType="java.lang.Integer">
+  		select max(idx) from ADDRESS_TB
+    </select>
+  
+    <delete id="deleteAddress">
+  		delete from ADDRESS_TB where idx=#{idx}
+    </delete>
+  
+    <select id="getAddressCount" resultType="java.lang.Integer">
+  		select count(*) from ADDRESS_TB where id=#{id}
+    </select>
+ 	
 </mapper>

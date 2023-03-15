@@ -1,5 +1,9 @@
 package com.itwillbs.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.AddressDTO;
 import com.itwillbs.domain.PaymentDTO;
@@ -23,12 +28,6 @@ public class PayController {
 	@Inject
 	private PaymentService paymentService;
 	
-	@RequestMapping(value="/payment/login", method = RequestMethod.GET)
-	public String donationPage() { //임시 로그인화면!!!
-		return "payment/login";
-		
-	}
-	
 	@RequestMapping(value="/payment/content", method = RequestMethod.POST)
 	public String content(HttpSession session, UserDTO userDto, Model model, String id) { 
 		 UserDTO dto = paymentService.getUser(id);
@@ -39,40 +38,34 @@ public class PayController {
 	}
 	
 	@RequestMapping(value="/payment/payment", method = RequestMethod.POST)
-	public String getUser(Model model, UserDTO userDto, String idx, HttpSession session, HttpServletRequest request) {
-		int idx2 = Integer.parseInt(request.getParameter("idx"));
-		int userDona = Integer.parseInt(request.getParameter("userDona"));
+	public String getUser(Model model
+			, @RequestParam("idx") String idx
+			, @RequestParam("userDona") int userDona, HttpSession session ) {
+//		int userDona = Integer.parseInt(request.getParameter("userDona"));
 		ProjectDTO pdto = paymentService.getProject(idx);
-		PaymentDTO paydto = new PaymentDTO();
+//		PaymentDTO paydto = new PaymentDTO();
 		//세션값 가져오기
 		String id = (String)session.getAttribute("id");
 		UserDTO dto = paymentService.getUser(id);
-		paydto.setUserDona(userDona);
-		pdto.setIdx(idx2);
+		
+		// 결제일 계산
+		Date date = pdto.getEnd();
+		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		cal.add(Calendar.DATE, 1);
+		String payDate = sdfYMD.format(cal.getTime());
+//		paydto.setUserDona(userDona);
+//		pdto.setIdx(idx2);
 		model.addAttribute("pdto", pdto);
-		model.addAttribute("paydto", paydto);
+		model.addAttribute("userDona", userDona);
+		model.addAttribute("payDate", payDate);
 		model.addAttribute("dto", dto);
 		return "payment/payment";
 	}
-	
-	@RequestMapping(value="/payment/payment", method = RequestMethod.GET)
-	public String getpayment(Model model, UserDTO userDto, String idx, HttpSession session, HttpServletRequest request) {
-		int idx2 = Integer.parseInt(request.getParameter("idx"));
-		int userDona = Integer.parseInt(request.getParameter("userDona"));
-		System.out.println(userDona);
-		ProjectDTO pdto = paymentService.getProject(idx);
-		PaymentDTO paydto = new PaymentDTO();
-		//세션값 가져오기
-		String id = (String)session.getAttribute("id");
-		UserDTO dto = paymentService.getUser(id);
-		pdto.setIdx(idx2);
-		paydto.setUserDona(userDona);
-		model.addAttribute("pdto", pdto);
-		model.addAttribute("paydto", paydto);
-		model.addAttribute("dto", dto);
-		return "payment/payment";
-	}
-	
+		
 	@RequestMapping(value="/payment/paySuccess", method = RequestMethod.GET)
 	public String paySuccess(PaymentDTO paymentDto, ProjectDTO projectDto, Model model, String idx) {
 		

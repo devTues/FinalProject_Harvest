@@ -88,7 +88,7 @@ div.position {
 	<!--  로고이미지 들어와야됨 -->
 	<div class="harvestLogo"></div>
 	<div id="harvest_logo">
-	<a href="${pageContext.request.contextPath }/projectList/main">
+	<a href="${pageContext.request.contextPath }/user/mainPage">
 	<img src="${pageContext.request.contextPath}/resources/harVest_img/harvest_logo.png" width="200" height="100">
 	</div>
 	</a>
@@ -104,22 +104,26 @@ div.position {
                     <h2 class="mb-4">로그인</h2>
 			            <form action="${pageContext.request.contextPath }/user/loginPro" method="post" name="login">
 			                <div class="form-group">
-			                    <input type="email" name="id" class="form-control form-control-sm" id="id" aria-describedby="" placeholder="이메일 계정을 입력해주세요" onkeyup="emailCheck()">
+			                    <input type="email" name="id" class="form-control form-control-sm" id="id" aria-describedby="" placeholder="이메일 계정을 입력해주세요">
 			                </div>
 			                <div class="input form-group">
-			                    <input type="password" name="pass" id="pass" class="form-control form-control-sm" aria-describedby="" placeholder="비밀번호를 입력해주세요" onkeyup="passCheck()">
+			                    <input type="password" name="pass" id="pass" class="form-control form-control-sm" aria-describedby="" placeholder="비밀번호를 입력해주세요">
 			                </div>
 			                
 			                <div class="col-md-12 mb-3">
 			                    <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" onclick="checkSubmit(); return false">로그인</button>
 			                </div>
 			                <div>
-			         		 <a href='${urlNaver}'><img height="40px" src="${pageContext.request.contextPath }/resources/harVest_img/btnG_완성형.png"></a>
+			                <!-- 네이버 로그인 버튼 -->
+			         		 <a href='${urlNaver}'><img height="50px" src="${ pageContext.request.contextPath }/resources/harVest_img/btnG_완성형.png"></a>
+			                </div>
+			                <br>
+			                <div>
+			                <!-- 카카오 로그인 버튼 -->
+			                <a href='${urlKakao }'><img height="40px" src="${ pageContext.request.contextPath }/resources/harVest_img/kakao_login_medium_narrow.png"></a>
 			                </div>
 			                <hr>
 			            </form>
-			            <!-- 로그인 연동 API 아이콘 들어와야됨 -->
-			            
 			         	<div class="position">
 					         <!-- 로그인 페이지 이동 버튼 -->
 				             <p class="text-muted">아직 계정이 없으신가요? <a class="text-danger" href="${pageContext.request.contextPath }/user/insert">회원가입</a></p>

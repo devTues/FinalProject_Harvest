@@ -8,7 +8,7 @@
 </head>
 <body>
 <script type="text/javascript">
-		alert("입력하신 정보가 틀립니다.");
+		alert("입력하신 정보가 틀립니다. 다시 확인해주세요.");
 		history.back();
 </script>
 </body>
