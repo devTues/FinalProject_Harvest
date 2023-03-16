@@ -9,16 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- css -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <link href="${pageContext.request.contextPath }/resources/harVest_css/projectUpload.css" rel="stylesheet">
-<!-- 기타 -->
-<%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery.validate.js"></script> --%>
-<%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/vendors/jquery/jquery.validate.min.js"></script> --%>
-<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
-<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script> -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script> -->
 <!-- js 파일로 떼기 -->
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/Upload.js"></script>
@@ -33,86 +25,17 @@
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <title>project.jsp</title>
 <script type="text/javascript">
-$(document).ready(dateCheck);
-$(document).ready(function(){
-	// 달력   
-	$('.datepicker').daterangepicker();
-	function strNullCheck(str){
-		if(str == "") {
-			return false;
-		}
-		return true;
-	}
-	$("input").blur(function(){
-// 		debugger;
-		if(
-			strNullCheck($('#creNm').val()) 		&&
-			strNullCheck($('#creIntro').val())  	&&
-			strNullCheck($('#title').val())  		&&
-			strNullCheck($('#productNm').val()) 	&&
-			strNullCheck($('#targetAmt').val()) 	&&
-			strNullCheck($('#minDona').val()) 		&&
-			strNullCheck($('#start').val()) 		
-		) {
-			$('.top_right span').text('심사요청')
-			$('#status').val('PJT02')
-		}
-	});
+$(document).ready(function() {
+
 	
 });
-
-function dateCheck() {
-	// 펀딩 수정시 시간 오류 판단
-	var now = new Date().getTime();	// 현재 날짜 및 시간
-	var start = new Date($('#start').val()).getTime();	// 펀딩 시작시간
-	if(start < now) {
-		$(".top_right *").remove(); 
-	
-	    var tmpHtml = "";
-	     
-			// 시작일 오류
-			tmpHtml +=  '<button class="err_btn err_button" color="white" disabled>'
-			+ 			'<span>'
-			+ 			'<div name="error" class="topb">'
-			+				'<svg viewBox="0 0 48 48">'
-			+					'<path d="M21.009 15.1083C21.0042 15.05 21.0502 15 21.1087 15H26.8913C26.9498 15 26.9958 15.05 26.991 15.1083L26.0076 26.9083C26.0033 26.9601 25.96 27 25.908 27H22.092C22.04 27 21.9967 26.9601 21.9924 26.9083L21.009 15.1083Z"></path>'
-			+					'<path d="M21 32C21 30.3431 22.3431 29 24 29C25.6569 29 27 30.3431 27 32C27 33.6569 25.6569 35 24 35C22.3431 35 21 33.6569 21 32Z"></path>'
-			+					'<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>'
-			+ 			'</div>'
-			+  			'시작일 오류</span>'
-			+ 			'</button>';
-	
-	     $(".top_right").append(tmpHtml);
-	}
-	
-	$('#date').on("click", function() {
-		if($('.err_btn').length) {	// 요소 있는지 없는지 판단
-			$(".top_right *").remove(); 
-			
-			var tmpHtml = "";
-
-			//<!-- 시작일 오류  --> 
-			tmpHtml = '<button class="top_btn top_button saveBtn">'
-					+ 	'<span>임시저장</span>'
-					+ '</button>';
-	 
-	       $(".top_right").append(tmpHtml);
-		}
-	
-	});
-}
-	
-	
-
-
 </script>
-
 </head>
 <body>
 	<c:if test="${empty sessionScope.id}">
 		<c:redirect url="/user/login"></c:redirect>
 	</c:if>
-	<!-- form 시작 -->
+	
 	<form action="${pageContext.request.contextPath}/creator/createPro" id="project" name="project" method="post" enctype="multipart/form-data">
 		<input type="text" name="idx" id="idx" value="${param.idx}"> 
 		<input type="hidden" name="id" value="${sessionScope.id}"> 
@@ -591,14 +514,15 @@ function dateCheck() {
 															<div class="dateWrap">
 																<button class="dateInput" type="button" id="date" data-range="true">
 																	<div class="topb">
-																		<svg viewBox="0 0 48 48">
-																			<path fill-rule="evenodd" clip-rule="evenodd"
-																				d="M43.5 13.6H4.5V11.8C4.5 10.4 5.6 9.3 7 9.3H41.2C42.6 9.3 43.7 10.4 43.7 11.8L43.5 13.6ZM43.5 41.1C43.5 42.5 42.4 43.6 41 43.6H6.9C5.5 43.6 4.4 42.5 4.4 41.1V16.1H43.5V41.1ZM41.1 6.9H38.6V2H36.1V6.9H11.8V2H9.3V6.9H6.9C4.2 6.9 2 9.1 2 11.8V41.1C2 43.8 4.2 46 6.9 46H41.1C43.8 46 46 43.8 46 41.1V11.8C46 9.1 43.8 6.9 41.1 6.9ZM11.2002 27.7001H14.9002C15.3002 27.7001 15.5002 27.4001 15.5002 27.0991V23.4001C15.5002 23.0001 15.2002 22.8001 14.9002 22.8001H11.2002C10.8002 22.8001 10.6002 23.1001 10.6002 23.4001V27.0001C10.5002 27.4001 10.8002 27.7001 11.2002 27.7001ZM25.9002 27.7001H22.2002C21.8002 27.7001 21.5002 27.4001 21.6002 27.0001V23.4001C21.6002 23.1001 21.8002 22.8001 22.2002 22.8001H25.9002C26.2002 22.8001 26.5002 23.0001 26.5002 23.4001V27.0991C26.5002 27.4001 26.3002 27.7001 25.9002 27.7001ZM33.2002 27.7001H36.9002C37.3002 27.7001 37.5002 27.4001 37.5002 27.0991V23.4001C37.5002 23.0001 37.2002 22.8001 36.9002 22.8001H33.2002C32.8002 22.8001 32.5992 23.1001 32.5992 23.4001V27.0001C32.5002 27.4001 32.8002 27.7001 33.2002 27.7001ZM14.9002 37.4999H11.2002C10.8002 37.4999 10.5002 37.1999 10.6002 36.8999V33.1999C10.6002 32.8999 10.8002 32.5999 11.2002 32.5999H14.9002C15.2002 32.5999 15.5002 32.7999 15.5002 33.1999V36.8999C15.5002 37.1999 15.3002 37.4999 14.9002 37.4999ZM22.2002 37.4999H25.9002C26.3002 37.4999 26.5002 37.1999 26.5002 36.8999V33.1999C26.5002 32.7999 26.2002 32.5999 25.9002 32.5999H22.2002C21.8002 32.5999 21.6002 32.8999 21.6002 33.1999V36.8999C21.5002 37.1999 21.8002 37.4999 22.2002 37.4999ZM36.9002 37.4999H33.2002C32.8002 37.4999 32.5002 37.1999 32.5992 36.8999V33.1999C32.5992 32.8999 32.8002 32.5999 33.2002 32.5999H36.9002C37.2002 32.5999 37.5002 32.7999 37.5002 33.1999V36.8999C37.5002 37.1999 37.3002 37.4999 36.9002 37.4999Z"></path></svg>
+																		<svg viewBox="0 0 48 48"><path fill-rule="evenodd" clip-rule="evenodd"d="M43.5 13.6H4.5V11.8C4.5 10.4 5.6 9.3 7 9.3H41.2C42.6 9.3 43.7 10.4 43.7 11.8L43.5 13.6ZM43.5 41.1C43.5 42.5 42.4 43.6 41 43.6H6.9C5.5 43.6 4.4 42.5 4.4 41.1V16.1H43.5V41.1ZM41.1 6.9H38.6V2H36.1V6.9H11.8V2H9.3V6.9H6.9C4.2 6.9 2 9.1 2 11.8V41.1C2 43.8 4.2 46 6.9 46H41.1C43.8 46 46 43.8 46 41.1V11.8C46 9.1 43.8 6.9 41.1 6.9ZM11.2002 27.7001H14.9002C15.3002 27.7001 15.5002 27.4001 15.5002 27.0991V23.4001C15.5002 23.0001 15.2002 22.8001 14.9002 22.8001H11.2002C10.8002 22.8001 10.6002 23.1001 10.6002 23.4001V27.0001C10.5002 27.4001 10.8002 27.7001 11.2002 27.7001ZM25.9002 27.7001H22.2002C21.8002 27.7001 21.5002 27.4001 21.6002 27.0001V23.4001C21.6002 23.1001 21.8002 22.8001 22.2002 22.8001H25.9002C26.2002 22.8001 26.5002 23.0001 26.5002 23.4001V27.0991C26.5002 27.4001 26.3002 27.7001 25.9002 27.7001ZM33.2002 27.7001H36.9002C37.3002 27.7001 37.5002 27.4001 37.5002 27.0991V23.4001C37.5002 23.0001 37.2002 22.8001 36.9002 22.8001H33.2002C32.8002 22.8001 32.5992 23.1001 32.5992 23.4001V27.0001C32.5002 27.4001 32.8002 27.7001 33.2002 27.7001ZM14.9002 37.4999H11.2002C10.8002 37.4999 10.5002 37.1999 10.6002 36.8999V33.1999C10.6002 32.8999 10.8002 32.5999 11.2002 32.5999H14.9002C15.2002 32.5999 15.5002 32.7999 15.5002 33.1999V36.8999C15.5002 37.1999 15.3002 37.4999 14.9002 37.4999ZM22.2002 37.4999H25.9002C26.3002 37.4999 26.5002 37.1999 26.5002 36.8999V33.1999C26.5002 32.7999 26.2002 32.5999 25.9002 32.5999H22.2002C21.8002 32.5999 21.6002 32.8999 21.6002 33.1999V36.8999C21.5002 37.1999 21.8002 37.4999 22.2002 37.4999ZM36.9002 37.4999H33.2002C32.8002 37.4999 32.5002 37.1999 32.5992 36.8999V33.1999C32.5992 32.8999 32.8002 32.5999 33.2002 32.5999H36.9002C37.2002 32.5999 37.5002 32.7999 37.5002 33.1999V36.8999C37.5002 37.1999 37.3002 37.4999 36.9002 37.4999Z"></path></svg>
 																	</div>
-																	<input type="text" id="start" name="start" value="${projectMap.START }" placeholder=" 날짜를 선택해주세요." readonly>
+																	<input type="text" class="start" id="start" name="start" value="${projectMap.START }" placeholder=" 날짜를 선택해주세요." readonly>
 																</button>
 															</div>
 														</div>
+													</div>
+													<div class="notiArea">
+														<p id="p_start"></p>
 													</div>
 												</div>
 												<div class="pjFormHalf wd">
@@ -610,10 +534,13 @@ function dateCheck() {
 															<div class="dateWrap">
 																<div class="dateInput" type="button" id="date" data-range="true">
 																	<div class="topb"></div>
-																	<input type="text" id="end" name="end" value="${projectMap.END }" placeholder=" 날짜를 선택해주세요." readonly>
+																	<input type="text" class="end" id="end" name="end" value="${projectMap.END }" placeholder=" 날짜를 선택해주세요." readonly>
 																</div>
 															</div>
 														</div>
+													</div>
+													<div class="notiArea">
+														<p id="p_end"></p>
 													</div>
 												</div>
 											</div>
@@ -652,11 +579,11 @@ function dateCheck() {
 											</div>
 											<div id="payDate">
 												<c:if test="${not empty startDate}">
-									${projectMap.payDate }
-									</c:if>
+													${projectMap.payDate }
+												</c:if>
 												<c:if test="${empty startDate}">
-									종료일 다음 날부터 7일
-									</c:if>
+													종료일 다음 날부터 7일
+												</c:if>
 											</div>
 										</li>
 										<li class="fungPlanItem1">
@@ -676,8 +603,6 @@ function dateCheck() {
 											</div>
 											<div id="adjDate">
 												<c:if test="${not empty startDate}">
-													<%-- 									<fmt:parseNumber value="${endDate.time / (1000*60*60*24*7)}" integerOnly="true" var="dateNum" scope="request"/> --%>
-													<%-- 									<fmt:parseDate var="realPayDate"  value="${payDate }" pattern="yyyy-MM-dd"/> --%>
 													${projectMap.adjDate }
 												</c:if>
 												<c:if test="${empty startDate}">
@@ -711,30 +636,40 @@ function dateCheck() {
 							<div class="con_width">
 								<ul class="accountWrap">
 									<li class="halfContents">
-										<div><p class="itemName"><b>거래은행</b></p>
-										<div class="AWrap">
-											<div class="wrap">
-											<span class="dvfxOp bXlLWE">
-											<input type="text" class="none" id="bankNm" value="" placeholder="은행명" readonly>
-										</span>
-										</div>
-										</div>
+										<div>
+											<p class="itemName"><b>거래은행</b></p>
+											<div class="AWrap">
+												<div class="wrap">
+													<span class="dvfxOp bXlLWE">
+														<input type="text" class="none bankNm" id="bankNm" value="" placeholder="은행명" readonly>
+													</span>
+												</div>
+												<div class="notiArea">
+													<p id="p_bankNm"></p>
+												</div>
+											</div>
 										</div>
 										<div><p class="itemName"><b>예금주명</b></p>
 										<div class="AWrap">
 											<div class="wrap">
-											<span class="dvfxOp bXlLWE">
-												<input type="text" class="none" id="accHolderNm" value=""  placeholder="예금주명"  readonly>
-											</span>
+												<span class="dvfxOp bXlLWE">
+													<input type="text" class="none accHolderNm" id="accHolderNm" value=""  placeholder="예금주명"  readonly>
+												</span>
+											</div>
+											<div class="notiArea">
+												<p id="p_accHolderNm"></p>
 											</div>
 										</div>
 										</div>
 									</li>
 									<li><p class="itemName"><b>계좌 번호</b></p>
 									<div class="wrap">
-									<span class="input_wrap guide">
-									<input type="text" class="none" id="accountNum" value="" placeholder="인증을 진행하시면 입력됩니다." readonly>
-									</span>
+										<span class="input_wrap guide">
+											
+										</span>
+									</div>
+									<div class="notiArea">
+										<p id="p_accountNum"></p>
 									</div>
 									</li>
 									<div class="buttonWrap">
@@ -751,96 +686,6 @@ function dateCheck() {
 	</form>
 	
 	<script src="https://cdn.tiny.cloud/1/6d0eescgzo66t0hqfeu0aeu5fyxbu2c0415q0gzufzi1uyaa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-	<script type="text/javascript">
-	function openPopup(){
-		  var url = "url?arg1="+arg1+"&arg2="+arg2;		// arg1, arg2 변수를 get방식으로 전송
-		  var title = "popup";
-		  var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=260, height=120, top=0,left=0"; 
-		  
-		  window.open(url,title,status); 			// 팝업 open
-		  }
-		// 계좌 인증
-		$('#accountCheck').on("click", function() {
-// 				TODO: 창조절하기 , 인증하기 버튼 조절, validate 체크
-	            var tmpWindow = window.open('about:blank', 'resizable=yes,status=no,menubar=no,width=800, height=600, top=50,left=250')
-	            tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
-	            "response_type=code&"+
-	            "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
-	            "redirect_uri=http://localhost:8080/DsWeb/callback&"+
-	            "scope=login inquiry&"+
-	            "state=12345678901234567890123456789012&"+
-	            "auth_type=0";
-// 	            var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
-// 	            "response_type=code&"+
-// 	            "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
-// 	            "redirect_uri=http://localhost:8080/DsWeb/callback&"+
-// 	            "scope=login inquiry&"+
-// 	            "state=12345678123456781234567812345678&"+
-// 	            "auth_type=0"
-// 	            var title = "popup";
-// 	            var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=800, height=600, top=50,left=250";
-// 	            window.open(url,title,status); 			// 팝업 open
-	     });
-
-		
-
-		// 달력 설정
-		var today = new Date();
-		// 익일부터
-		today.setDate(today.getDate() + 1);
-
-		$('#date').daterangepicker(
-				{
-					"maxSpan" : {
-						"days" : 60
-					},
-					locale : {
-						"format" : "YYYY-MM-DD",
-						"separator" : " - ",
-						"applyLabel" : "확인",
-						"cancelLabel" : "취소",
-						"fromLabel" : "시작일",
-						"toLabel" : "종료일",
-						"daysOfWeek" : [ "일", "월", "화", "수", "목", "금", "토" ],
-						"monthNames" : [ "1월", "2월", "3월", "4월", "5월", "6월",
-								"7월", "8월", "9월", "10월", "11월", "12월" ],
-					},
-					"minDate" : today,
-					"drops" : "auto"
-				}, function(start, end) {
-
-					var term = new Date(end - start) / (1000 * 3600 * 24);
-					$('#start').val(start.format('YYYY-MM-DD'));
-					$('#end').val(end.format('YYYY-MM-DD'));
-					// 펀딩 기간
-					$('#diffDate').text(Math.floor(term) + '일');
-					// 후원자 결제 종료일
-					var endDate = new Date(end);
-					$('#payDate').text(dateCal(endDate, 7));
-					// 정산일
-					$('#adjDate').text(dateCal(endDate, 9));
-				});
-
-		// 결제일, 정산일 계산(주말 제외) 0: 일요일, 6: 토요일
-		function dateCal(date, n) {
-			var calDate = new Date(date.setDate(date.getDate() + n));
-			var realDate = calDate.getDay() == 0 ? dateCal(calDate, 2)
-					: calDate.getDay() == 6 ? dateCal(calDate, 1) : calDate;
-
-			return dateFormat(new Date(realDate));
-			// 		return new Date(date.setDate(date.getDate() + n));
-		}
-
-		// 계산한 날짜 포맷
-		function dateFormat(date) {
-			var formatDate = date.getFullYear() + '-'
-					+ (date.getMonth() + 1).toString().padStart(2, '0') + '-'
-					+ date.getDate().toString().padStart(2, '0');
-			return formatDate;
-		}
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -5,23 +5,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="${pageContext.request.contextPath }/resources/harVest_css/accountList.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/harVest_js/jquery-3.6.3.js"></script>
 <title>accountList</title>
+<script type="text/javascript">
+//부모창에 값 전달
+$(document).ready(function() {
+	
+	$('.btn').click(function() {
+		alert('클릭');
+		var accountNum = $('#accountNum').val();
+		var bankNm = $('#bankNm').val();
+		var accHolderNm = $('#accHolderNm').val();
+		$('#accountNum', opener.document).val(accountNum);
+		$('#bankNm', opener.document).val(bankNm);
+		$('#accHolderNm', opener.document).val(accHolderNm);
+
+		window.close();
+		
+	});
+});
+
+</script>
 </head>
 <body>
-<h1>등록계좌조회</h1>
-	<table border="1">
-		<tr>
-			<td>계좌번호</td>
-			<td>은행명</td>
-			<td>예금주명</td>
-		</tr>
-		<c:forEach var="account" items="${userInfoResponseDTO.res_list }">
-			<tr>
-				<td>${account.account_num }</td>
-				<td>${account.bank_name }</td>
-				<td>${account.account_holder_name }</td>
-			</tr>
-		</c:forEach>
-	</table>
+<div class="eBdlqL">
+	<div class="kTtzKJ czoHQq">
+		<span class="cnihzD">
+		등록 계좌 조회
+		</span>
+	</div>
+		<ul class="eBdlqL">
+		<c:forEach var="account" items="${accountResponseDTO.res_list }">
+			<li class="divffB">
+				<button class="lbNzAb btn" type="button">
+				<div>
+					<strong>계좌번호</strong>
+					<input type="text" id="accountNum" value="${account.account_num }">
+				</div>
+				<div>
+					<strong class="morePad">거래은행</strong>
+					<input type="text" id="bankNm" value="${account.bank_name }">
+				</div>
+				<div>
+					<strong>예금주명</strong>
+					<input type="text" id="accHolderNm" value="${account.account_holder_name }">
+				</div>
+				</button>
+			</li>
+	</c:forEach>
+		</ul>
+</div>
+
 </body>
 </html>

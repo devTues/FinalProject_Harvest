@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.domain.ProjectDTO;
+import com.itwillbs.openbank.domain.AccountRequestDTO;
+import com.itwillbs.openbank.domain.AccountResponseDTO;
+import com.itwillbs.openbank.domain.RequestTokenDTO;
+import com.itwillbs.openbank.domain.ResponseTokenDTO;
+import com.itwillbs.openbank.service.OpenBankingService;
 import com.itwillbs.service.CreateService;
 import com.itwillbs.utill.UploadFile;
 
@@ -33,7 +37,10 @@ public class CreateController {
 	
 	@Inject
 	private CreateService createService;
-	
+
+	@Inject
+	private OpenBankingService openBankingService;
+
 	// 물리적 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -51,7 +58,6 @@ public class CreateController {
 		}
 		int currentPage = Integer.parseInt(pageNum);
 		int pageSizeNum = Integer.parseInt(pageSize);
-		System.out.println("currentPage: " + currentPage + " pageSizeNum: " + pageSizeNum);
 		
 		int startRow = (currentPage - 1) * pageSizeNum;
 		projectMap.put("pageSize", pageSize);
@@ -68,7 +74,6 @@ public class CreateController {
 	    if(endPage > pageCount){
 	    	endPage=pageCount;
 	    }
-	    System.out.println(startPage + " , " + endPage + " , " + pageCount);
 	    
 	    Map<String, Integer> pageMap = new HashMap<String, Integer>();
 	    pageMap.put("pageBlock", pageBlock);
@@ -119,10 +124,7 @@ public class CreateController {
 	}
 	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
-//	@RequestMapping(value = "/creator/projectPro", method = RequestMethod.POST)
 	public String createPro(HttpServletRequest request, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
-		System.out.println("createPro 실행됨");
-		
 		// 절대경로
 		String Path = request.getRealPath("resources/upload");
 		
@@ -146,12 +148,29 @@ public class CreateController {
 		
 		return "redirect:/projectList/main";
 	}
+	
+	@RequestMapping(value = "/callback", method = RequestMethod.GET)
+	public String getToken(RequestTokenDTO requestTokenDTO, Model model) throws Exception {
+		System.out.println("code : " + requestTokenDTO.getCode());
+		System.out.println("scope : " + requestTokenDTO.getScope());
+		System.out.println("client_info : " + requestTokenDTO.getClient_info());
+		System.out.println("state : " + requestTokenDTO.getState());
+		
+		ResponseTokenDTO responseTokenDTO = openBankingService.requestToken(requestTokenDTO);
+		System.out.println(responseTokenDTO);
+		
+		AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
+		accountRequestDTO.setAccess_token(responseTokenDTO.getAccess_token());
+		accountRequestDTO.setUser_seq_no(responseTokenDTO.getUser_seq_no());
+		accountRequestDTO.setInclude_cancel_yn("Y");
+		accountRequestDTO.setSort_order("D");
+		
+		AccountResponseDTO accountResponseDTO = openBankingService.findAccount(accountRequestDTO);
 
+		model.addAttribute("access_token", accountRequestDTO.getAccess_token());
+		model.addAttribute("accountResponseDTO", accountResponseDTO);
 
-
-
-
-
-
+		return "creator/accountList";
+	}
 
 }

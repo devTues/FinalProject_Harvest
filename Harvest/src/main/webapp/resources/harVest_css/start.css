@@ -254,7 +254,6 @@ svg:not(:root) {
     background-color: #daddca;
     color: #000000255255255;
 }
-
 .newBtn:focus {
     cursor: pointer;
     display: inline-flex;
@@ -275,7 +274,6 @@ svg:not(:root) {
     background-color: #cdd1b8;
     color: #000000255255255;
 }
-
 .wd {
     width: 100%;
 }

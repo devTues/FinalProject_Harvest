@@ -128,8 +128,6 @@ public class AjaxController {
 	@GetMapping("/user/findPassCheck")
 	@ResponseBody
 	public String findPassCheck(String email) {
-		System.out.println("비번찾기 이메일 인증 요청이 들어옴!");
-		System.out.println("비번찾기 이메일 인증 이메일 : " + email);
 		return mailService.findEmail(email);
 			
 	}
@@ -172,7 +170,6 @@ public class AjaxController {
 	public ResponseEntity<String> addressPro(AddressDTO addressDTO, HttpServletRequest request) { //주소 db 저장하는 메서드..
 		 addressService.insertAddress(addressDTO);
 		 String result = "성공";
-		 System.out.println(result);
 		 
 		 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
          return entity;

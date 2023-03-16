@@ -41,7 +41,7 @@ public class UserController {
 			userDto.setEventAlr("N");
 		}
 		// 우편번호 + 배송지
-		String address = addressDto.getAddress();
+//		String address = addressDto.getAddress();
 		
 		// 절대경로
 		String Path = request.getRealPath("resources/upload");
@@ -62,20 +62,22 @@ public class UserController {
 	
 	@RequestMapping(value = "/user/loginPro", method = RequestMethod.POST)
 	public String loginPro(UserDTO userDto, HttpSession session) {
-		
 		UserDTO userDTO2=userService.userCheck(userDto);
+		String id = userDTO2.getId();
 		
-		if(userDTO2 != null) {
-			// 아이디 비밀번호 일치 => userDTO 주소담아서 옴 => 세션값 생성, main 이동
-			session.setAttribute("id", userDTO2.getId());
-
-			return "redirect:/projectList/main";
-		}else {
-			// 아이디 비밀번호 틀림 => userDTO null 넘어옴 => "정보틀림" 뒤로 이동 
-			// member/msg.jsp 이동
-
+		if(id == null) {
 			return "user/msg";
 		}
+		
+		if(id.equals("admin@harvest.com")) {
+			return "redirect:/admin/userMain";
+		}
+		
+		// 아이디 비밀번호 일치 => userDTO 주소담아서 옴 => 세션값 생성, main 이동
+		session.setAttribute("id", id);
+		session.setAttribute("profile", userDTO2.getProfile());
+		
+		return "redirect:/projectList/main";
 	}
 	
 	
@@ -95,8 +97,7 @@ public class UserController {
 	@RequestMapping(value = "/finding/findPass", method = RequestMethod.GET)
 	public String findPass() {
 		
-		// 기본 이동방식 : 주소변경 하면서 메인으로 이동
-		return "finding/findPass";
+		return "user/finding/findPass";
 	}
 	
 	
@@ -120,7 +121,7 @@ public class UserController {
 		
 		model.addAttribute("userDto", userDto);
 		
-		return "finding/showPass";
+		return "user/finding/showPass";
 	}
 	
 	

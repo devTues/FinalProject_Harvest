@@ -45,5 +45,11 @@ public class ResponseTokenDTO {
 	public void setUser_seq_no(String user_seq_no) {
 		this.user_seq_no = user_seq_no;
 	}
+	@Override
+	public String toString() {
+		return "ResponseTokenDTO [access_token=" + access_token + ", token_type=" + token_type + ", expires_in="
+				+ expires_in + ", refresh_token=" + refresh_token + ", scope=" + scope + ", user_seq_no=" + user_seq_no
+				+ "]";
+	}
 	
 }

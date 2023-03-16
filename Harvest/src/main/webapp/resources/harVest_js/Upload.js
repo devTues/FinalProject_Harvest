@@ -67,9 +67,90 @@ $(function(){
 
 });
 	
+function dateCheck() {
+	// 펀딩 수정시 시간 오류 판단
+	var now = new Date().getTime();	// 현재 날짜 및 시간
+	var start = new Date($('#start').val()).getTime();	// 펀딩 시작시간
+	if(start < now) {
+		$(".top_right *").remove(); 
+	
+	    var tmpHtml = "";
+	     
+			// 시작일 오류
+			tmpHtml +=  '<button class="err_btn err_button" color="white" disabled>'
+			+ 			'<span>'
+			+ 			'<div name="error" class="topb">'
+			+				'<svg viewBox="0 0 48 48">'
+			+					'<path d="M21.009 15.1083C21.0042 15.05 21.0502 15 21.1087 15H26.8913C26.9498 15 26.9958 15.05 26.991 15.1083L26.0076 26.9083C26.0033 26.9601 25.96 27 25.908 27H22.092C22.04 27 21.9967 26.9601 21.9924 26.9083L21.009 15.1083Z"></path>'
+			+					'<path d="M21 32C21 30.3431 22.3431 29 24 29C25.6569 29 27 30.3431 27 32C27 33.6569 25.6569 35 24 35C22.3431 35 21 33.6569 21 32Z"></path>'
+			+					'<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"></path></svg>'
+			+ 			'</div>'
+			+  			'시작일 오류</span>'
+			+ 			'</button>';
+	
+	     $(".top_right").append(tmpHtml);
+	}
+	
+	$('#date').on("click", function() {
+		if($('.err_btn').length) {	// 요소 있는지 없는지 판단
+			$(".top_right *").remove(); 
+			
+			var tmpHtml = "";
 
+			//<!-- 시작일 오류  --> 
+			tmpHtml = '<button class="top_btn top_button saveBtn">'
+					+ 	'<span>임시저장</span>'
+					+ '</button>';
+	 
+	       $(".top_right").append(tmpHtml);
+		}
+	
+	});
+}
 
+$(document).ready(dateCheck);
 $(document).ready(function() {
+	// 계좌 인증
+	$('#accountCheck').on("click", function() {
+         var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
+  	    "response_type=code&"+
+  	    "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
+  	    "redirect_uri=http://localhost:8080/DsWeb/callback&"+
+  	    "scope=login inquiry&"+
+  	    "state=12345678901234567890123456789012&"+
+  	    "auth_type=0";
+         var title = "popup";
+         var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=430, height=600, top=50,left=550";
+         window.open(url,title,status); 			
+     });
+     
+	// 달력   
+	$('.datepicker').daterangepicker();
+	
+	function strNullCheck(str){
+		if(str == "") {
+			return false;
+		}
+		return true;
+	}
+	// 저장 버튼 변경
+	$("input").blur(function(){
+		if(
+		strNullCheck($('#creNm').val()) 		&&
+		strNullCheck($('#creIntro').val())  	&&
+		strNullCheck($('#title').val())  		&&
+		strNullCheck($('#productNm').val()) 	&&
+		strNullCheck($('#targetAmt').val()) 	&&
+		strNullCheck($('#minDona').val()) 		&&
+		strNullCheck($('#start').val()) 		
+		) {
+			$('.top_right span').text('심사요청');
+			$('#status').val('PJT02');
+			return;
+		}
+		$('.top_right span').text('임시저장')
+		$('#status').val('PJT03')
+	});
 	
 	// 프로필 미리보기
 	const fileDOM = document.querySelector('#file');
@@ -177,7 +258,6 @@ $(document).ready(function() {
 	
 	// 금액 제어
 	$('#targetAmt').on("propertychange change keyup keydown paste input", function(){
-			// debugger;
 			const value = $(this).val();
 			const amount = parseFloat(value.replace(/,/gi, ''));
 			if(amount < 500000) {
@@ -241,8 +321,73 @@ $(document).ready(function() {
 	
 	}); 
 	
-});
+	function openPopup(){
+		  var url = "url?arg1="+arg1+"&arg2="+arg2;		// arg1, arg2 변수를 get방식으로 전송
+		  var title = "popup";
+		  var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=260, height=120, top=0,left=0"; 
+		  
+		  window.open(url,title,status); 			// 팝업 open
+	}
+	
 
+	// 달력 설정
+	var today = new Date();
+	// 익일부터
+	today.setDate(today.getDate() + 1);
+
+	$('#date').daterangepicker(
+			{
+				"maxSpan" : {
+					"days" : 60
+				},
+				locale : {
+					"format" : "YYYY-MM-DD",
+					"separator" : " - ",
+					"applyLabel" : "확인",
+					"cancelLabel" : "취소",
+					"fromLabel" : "시작일",
+					"toLabel" : "종료일",
+					"daysOfWeek" : [ "일", "월", "화", "수", "목", "금", "토" ],
+					"monthNames" : [ "1월", "2월", "3월", "4월", "5월", "6월",
+							"7월", "8월", "9월", "10월", "11월", "12월" ],
+				},
+				"minDate" : today,
+				"drops" : "auto"
+			}, function(start, end) {
+
+				var term = new Date(end - start) / (1000 * 3600 * 24);
+				$('#start').val(start.format('YYYY-MM-DD'));
+				$('#end').val(end.format('YYYY-MM-DD'));
+				// 펀딩 기간
+				$('#diffDate').text(Math.floor(term) + '일');
+				// 후원자 결제 종료일
+				var endDate = new Date(end);
+				$('#payDate').text(dateCal(endDate, 7));
+				// 정산일
+				$('#adjDate').text(dateCal(endDate, 9));
+			});
+
+			// 결제일, 정산일 계산(주말 제외) 0: 일요일, 6: 토요일
+			function dateCal(date, n) {
+				var calDate = new Date(date.setDate(date.getDate() + n));
+				var realDate = calDate.getDay() == 0 ? dateCal(calDate, 2)
+						: calDate.getDay() == 6 ? dateCal(calDate, 1) : calDate;
+		
+				return dateFormat(new Date(realDate));
+				// 		return new Date(date.setDate(date.getDate() + n));
+			}
+
+			// 계산한 날짜 포맷
+			function dateFormat(date) {
+				var formatDate = date.getFullYear() + '-'
+						+ (date.getMonth() + 1).toString().padStart(2, '0') + '-'
+						+ date.getDate().toString().padStart(2, '0');
+				return formatDate;
+			}
+	
+});
+	
+	
 // 에디터
 $(function() {
 			var plugins = [ "advlist", "autolink", "lists", "link", "image",
