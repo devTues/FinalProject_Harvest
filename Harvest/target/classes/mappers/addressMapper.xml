@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- Mapper.xml 만들 때 참고용, 아래 namespace 수정해서 쓰세요! -->
 <mapper namespace="com.itwillbs.mappers.AddressMapper">
 
 	<insert id="insertAddress">
@@ -26,6 +25,14 @@
 	     			  ,#{phone}
 	 			      ,#{zipCode})
  	</insert>	
+ 	
+ 	<!-- address 가져오기  -->
+ 	<select id="getAddress" resultType="com.itwillbs.domain.AddressDTO">
+ 	  SELECT ADDRESS
+ 	  		,ZIP_CODE
+ 	    FROM ADDRESS_TB
+ 	   WHERE ID=#{ID}
+ 	</select>
  	
 	<select id="getAddressList" resultType="com.itwillbs.domain.AddressDTO"> <!-- MemberDAOImpl.java 파일에서 selectList안에 담길 파일형식인 MemberDTO를 resultType에 담아야함 -->
 		select * from ADDRESS_TB where id=#{id}

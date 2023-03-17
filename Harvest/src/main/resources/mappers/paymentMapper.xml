@@ -17,17 +17,6 @@
       WHERE u.ID=#{id}
   </select>	
   
-   <select id="getProject" resultType="com.itwillbs.domain.ProjectDTO">
-     SELECT CRE_NM
-          , TITLE
-          , INTRO
-          , MIN_DONA
-          , IMG1
-          , END
-       FROM PROJECT_TB
-      WHERE IDX=#{pj_idx}
-  </select>	
-  
    <insert id="insertPayment">
   	INSERT INTO PAYMENT_TB
   	 	  VALUE (
@@ -41,10 +30,9 @@
   	 	      ,#{amount}
   	 	      ,#{address}
   	 	      ,#{phone}
-  	 	      ,#{date}
-  	 	      ,#{payDate}
+  	 	      ,DATE_FORMAT(NOW(), '%Y-%m-%d')
+  	 	      ,DATE_FORMAT(#{payDate}, '%Y-%m-%d')
   	 	      ,#{status}
-  	 	      ,#{userDona}
   	 	      )
  	</insert>
 

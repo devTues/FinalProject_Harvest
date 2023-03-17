@@ -8,7 +8,7 @@ public interface PaymentService {
 	
 	public UserDTO getUser(String id);
 	public ProjectDTO getProject(String pj_idx);
-	public PaymentDTO paySuccess (PaymentDTO paymentDto);
+//	public PaymentDTO paySuccess (PaymentDTO paymentDto);
 	public void insertPayment(PaymentDTO paymentDto);
 	
 }

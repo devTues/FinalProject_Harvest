@@ -33,6 +33,12 @@ div.position {
   left:10px;
   text-align: left;
 }
+.btnDiv {
+	padding-right: 0px!important;
+    padding-left: 0px!important;
+}
+
+
 </style>
 
 	<script type="text/javascript">
@@ -88,7 +94,7 @@ div.position {
 	<!--  로고이미지 들어와야됨 -->
 	<div class="harvestLogo"></div>
 	<div id="harvest_logo">
-	<a href="${pageContext.request.contextPath }/user/mainPage">
+	<a href="${pageContext.request.contextPath }/projectList/main">
 	<img src="${pageContext.request.contextPath}/resources/harVest_img/harvest_logo.png" width="200" height="100">
 	</div>
 	</a>
@@ -110,17 +116,17 @@ div.position {
 			                    <input type="password" name="pass" id="pass" class="form-control form-control-sm" aria-describedby="" placeholder="비밀번호를 입력해주세요">
 			                </div>
 			                
-			                <div class="col-md-12 mb-3">
-			                    <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" onclick="checkSubmit(); return false">로그인</button>
+			                <div class="col-md-12 mb-3 btnDiv">
+			                    <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm " onclick="checkSubmit(); return false">로그인</button>
 			                </div>
 			                <div>
 			                <!-- 네이버 로그인 버튼 -->
-			         		 <a href='${urlNaver}'><img height="50px" src="${ pageContext.request.contextPath }/resources/harVest_img/btnG_완성형.png"></a>
+			         		 <a href='${urlNaver}'><img height="45px" width="183px"  src="${ pageContext.request.contextPath }/resources/harVest_img/btnG.png"></a>
 			                </div>
 			                <br>
 			                <div>
 			                <!-- 카카오 로그인 버튼 -->
-			                <a href='${urlKakao }'><img height="40px" src="${ pageContext.request.contextPath }/resources/harVest_img/kakao_login_medium_narrow.png"></a>
+			                <a href='${urlKakao }'><img src="${ pageContext.request.contextPath }/resources/harVest_img/kakao_login_medium_narrow.png"></a>
 			                </div>
 			                <hr>
 			            </form>

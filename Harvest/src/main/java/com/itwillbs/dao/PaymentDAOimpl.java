@@ -26,19 +26,15 @@ public class PaymentDAOimpl implements PaymentDAO {
 		return sqlSession.selectOne(namespace+".getProject", pj_idx);
 	}
 
-	@Override
-	public PaymentDTO paySuccess(PaymentDTO paymentDto) {
-		return null;
-	}
+//	@Override
+//	public PaymentDTO paySuccess(PaymentDTO paymentDto) {
+//		return null;
+//	}
 
 	@Override
 	public void insertPayment(PaymentDTO paymentDto) {
 		sqlSession.insert(namespace+".insertPayment", paymentDto);
 	}
 
-	
-	
-	
-	
 	
 }

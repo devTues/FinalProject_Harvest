@@ -33,7 +33,6 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Override
 	public void updateUser(Map<String, String> param) {
-		System.out.println("MyPageServiceImple - updateUser() 메서드");
 		myPageDAO.updateUser(param);
 	}
 	

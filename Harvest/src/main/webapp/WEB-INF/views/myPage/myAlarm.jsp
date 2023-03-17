@@ -19,6 +19,8 @@
    <style>
     /* Make the image fully responsive */
     .carousel-inner img {width: 100%; height: 100%;}
+    
+    input[type=text] {border:0 solid black;} 
    </style>
    
    
@@ -26,7 +28,7 @@
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
 <c:if test="${empty sessionScope.id}">
-	<c:redirect url="/user/login"></c:redirect>
+   <c:redirect url="/user/login"></c:redirect>
 </c:if>
    <!-- page-header -->
      <jsp:include page="../inc/header.jsp"></jsp:include>
@@ -65,81 +67,61 @@
    </div>
    
 
-	<div class="container">
+   <div class="container">
         <div class="page-container">
             <div class="page-content">
                 <div class="card">
-					<div class="container">
-						<!-- TODO 히든으로 숨기기 -->
-			<form action="${pageContext.request.contextPath }/myPage/AlarmUpdatePro" method="post" name="AlarmUpdatePro" id="AlarmUpdatePro">
-						
-						<input type="text" name="idx" class="idx" id="idx" value="${codeMap.idx1}" readonly>
-						<input type="text" name="idx" class="idx" id="idx" value="${codeMap.idx2}" readonly>
-						<input type="text" name="idx" class="idx" id="idx" value="${codeMap.idx3}" readonly>
-						
-						<!-- --------------------------------------------- -->
-						<div class="media">
-							<h5 class="components-section-title col-10 pl-0">후원한 프로젝트</h5>
-							<label class="btn-ch btn btn-outline-dark btn-sm rounded" id="modifySupportingAlarm" for="ch1">변경</label>
-							<!-- 버튼처럼 이용할 레이블-->
-						</div>
-							<input type="hidden" name="hidden_supportingAlarm" class="hidden_supportingAlarm" id="hidden_supportingAlarm">
-						<!-- 체크 기능만 있고 숨기는 체크박스 -->
-							<!-- TODO 히든 숨기기 -->
-<%-- 						<c:forEach var="myAlarmList" items="${myAlarmList }"> --%>
-								후원한 프로젝트 업데이트 알림을 이메일로 수신합니다.
-							<input type="text" name="ALM1" class="ALM1" id="ALM1" value="">
-<%-- 						</c:forEach> --%>
-						<input type="checkbox" class="chck" name="supportingAlarm" id="ch1" >
-						<input type="checkbox" name="supportingAlarm" class="supportingAlarm" id="supportingAlarm" ${codeMap.ALM1}>
-						<div class="box">
-							
-							<button type="button" class="btn btn-dark save" name="saveSupportingAlarm" id="saveSupportingAlarm">저장</button>
-						</div>
-						<hr>
-						<div class="media">
-							<h5 class="components-section-title col-10 pl-0">알림신청 프로젝트</h5>
-							<label class="btn-ch btn btn-outline-dark btn-sm rounded" id="modifyOpeningAlarm" for="ch2">변경</label>
-							<!-- 버튼처럼 이용할 레이블-->
-						</div>
-							<input type="hidden" name="hidden_openingAlarm" class="hidden_openingAlarm" id="hidden_openingAlarm">
-						<!-- 체크 기능만 있고 숨기는 체크박스 -->
-							<!-- TODO 히든 숨기기 -->
-								알림신청한 프로젝트가 공개되었다는 알림을 이메일로 수신합니다.
-							<input type="text" name="" class="" id="ALM2" value="">
-						<input type="checkbox" class="chck" name="openingAlarm" id="ch2" >
-						<input type="checkbox" name="openingAlarm" class="openingAlarm" id="openingAlarm" ${codeMap.ALM2}>
-							
-						<div class="box">
-							<button type="button" class="btn btn-dark save" name="saveOpeningAlarm" id="saveOpeningAlarm">저장</button>
-						</div>
-						<hr>
-						<div class="media">
-							<h5 class="components-section-title col-10 pl-0">마케팅 메일</h5>
-							<label class="btn-ch btn btn-outline-dark btn-sm rounded" id="modifyMarketingAlarm" for="ch3">변경</label>
-							<!-- 버튼처럼 이용할 레이블-->
-						</div>
-							<input type="hidden" name="hidden_marketingAlarm" class="hidden_marketingAlarm" id="hidden_marketingAlarm">
-<%-- 							<c:if test="${.marketingAlarm eq null}"> --%>
-								신규 콘텐츠 및 프로젝트 추천 알림을 이메일로 수신합니다. 
-<%-- 							${fn:replace(fn:replace, '수신합니다.', '수신하지 않습니다.')} --%>
-<%-- 							</c:if> --%>
-<!-- 							신규 콘텐츠 및 프로젝트 추천 알림을 이메일로 수신합니다. -->
-							<input type="text" name="" class="" id="ALM3" value="">
-						<input type="checkbox" name="marketingAlarm" class="marketingAlarm" id="marketingAlarm" ${codeMap.ALM3}  >
-						<input type="checkbox" class="chck" name="marketingAlarm" id="ch3" >
-							<!-- 체크 기능만 있고 숨기는 체크박스 -->
-						<div class="box">
-								<!-- TODO 히든 숨기기 -->
-							<button type="button" class="btn btn-dark save" name="saveMarketingAlarm" id="saveMarketingAlarm">저장</button>
-						</div>
-						<hr>
-					</div>
-		</form>
-				</div>
-			</div>
-		</div>
-	</div>
+               <div class="container">
+                  <!-- TODO 히든으로 숨기기 -->
+         <form action="${pageContext.request.contextPath }/myPage/AlarmUpdatePro" method="post" name="AlarmUpdatePro" id="AlarmUpdatePro">
+                  
+                  <input type="hidden" name="idx" class="idx" id="idx" value="${codeMap.idx1}" readonly>
+                  <input type="hidden" name="idx" class="idx" id="idx" value="${codeMap.idx2}" readonly>
+                  <input type="hidden" name="idx" class="idx" id="idx" value="${codeMap.idx3}" readonly>
+                  
+                  <!-- --------------------------------------------- -->
+                  <div class="media">
+                     <h5 class="components-section-title col-6 pl-0">후원한 프로젝트</h5>
+                     <button type="button" class="btn btn-dark save" name="saveSupportingAlarm" id="saveSupportingAlarm">저장</button>
+                  </div>
+<!--                   <div class="box"> -->
+                     <input type="hidden" name="hidden_supportingAlarm" class="hidden_supportingAlarm" id="hidden_supportingAlarm">
+                  <input type="checkbox" name="supportingAlarm" class="supportingAlarm" id="supportingAlarm" ${codeMap.ALM1}>
+                        후원한 프로젝트 업데이트 알림을 이메일로 수신합니다.
+                     
+<!--                   </div> -->
+                  <hr>
+                  <div class="media">
+                     <h5 class="components-section-title col-6 pl-0">알림신청 프로젝트</h5>
+                     <button type="button" class="btn btn-dark save" name="saveOpeningAlarm" id="saveOpeningAlarm">저장</button>
+                  </div>
+                     <input type="hidden" name="hidden_openingAlarm" class="hidden_openingAlarm" id="hidden_openingAlarm">
+                  <input type="checkbox" name="openingAlarm" class="openingAlarm" id="openingAlarm" ${codeMap.ALM2}>
+                        알림신청한 프로젝트가 공개되었다는 알림을 이메일로 수신합니다.
+                     
+                  <div class="box">
+                  </div>
+                  <hr>
+                  <div class="media">
+                     <h5 class="components-section-title col-6 pl-0">마케팅 메일</h5>
+                     <button type="button" class="btn btn-dark save" name="saveMarketingAlarm" id="saveMarketingAlarm">저장</button>
+                  </div>
+                     <input type="hidden" name="hidden_marketingAlarm" class="hidden_marketingAlarm" id="hidden_marketingAlarm">
+                  <input type="checkbox" name="marketingAlarm" class="marketingAlarm" id="marketingAlarm" ${codeMap.ALM3}  >
+<%--                      <c:if test="${.marketingAlarm eq null}"> --%>
+                        신규 콘텐츠 및 프로젝트 추천 알림을 이메일로 수신합니다. 
+<%--                      ${fn:replace(fn:replace, '수신합니다.', '수신하지 않습니다.')} --%>
+<%--                      </c:if> --%>
+                     <!-- 체크 기능만 있고 숨기는 체크박스 -->
+                  <div class="box">
+                        <!-- TODO 히든 숨기기 -->
+                  </div>
+               </div>
+      </form>
+            </div>
+         </div>
+      </div>
+   </div>
    <!-- 프로필 끝 -->
    
     <hr>
@@ -161,61 +143,61 @@
     <script type="text/javascript">
    
   $(document).ready(function() {
-	  	
-	  	let btnId;
-		let ckId;
-		let ckName;
-		
-		// 수정버튼(체크박스) checked 여부
-		$(".chck").change(function(){
-			ckId = this.id;
-			ckName = this.name;
-			alert(ckId);	// ch2
-			alert(ckName);	// name
-			
-	        if($('#' + ckId).is(":checked")){
-				$('#' + ckName).prop('readonly', false);
-	        }else{
-				$('#' + ckName).prop('readonly', true);
-				
+        
+        let btnId;
+      let ckId;
+      let ckName;
+      
+      // 수정버튼(체크박스) checked 여부
+      $(".chck").change(function(){
+         ckId = this.id;
+         ckName = this.name;
+         alert(ckId);   // ch2
+         alert(ckName);   // name
+         
+           if($('#' + ckId).is(":checked")){
+            $('#' + ckName).prop('readonly', false);
+           }else{
+            $('#' + ckName).prop('readonly', true);
+            
 
-			var a = $('#hidden_'.concat(ckName)).val();
-				alert(a);
-				$('#' + ckName).val(a);
-	        }
-	    });	// 체크박스 .change 함수
-	    
-	  
-	    $('.save').click(function() {
-	        btnId = this.id.replace("save", "").toLowerCase();
-	        
-	        if ($("#updateUser").valid()) { // Validate the form before making the AJAX call
-	            $.ajax({
-	                url: '${pageContext.request.contextPath}/myPage/mylistUpdate',
-	                type: "GET",
-	                contentType: "application/json;charset=UTF-8",
-	                dataType: "json",
-	                async: false,
-	                data: {
-	                    value: $('#' + btnId).val(),
-	                    valueNm: btnId
-	                },
-	                success: function(rdata) {
-	                    // Handle successful response here
-	                	$("#" + ckId).prop("checked", false); 
-						$('#' + btnId).prop('readonly', true);
-	                    
-	                    
-	                },
-	                error: function(xhr, status, error) {
-	                    // Handle error here
-	                }
-	            }); // end ajax()
-	        }
-	    }); // end save() 
-	}); // end ready
-	
-	
+         var a = $('#hidden_'.concat(ckName)).val();
+            alert(a);
+            $('#' + ckName).val(a);
+           }
+       });   // 체크박스 .change 함수
+       
+     
+       $('.save').click(function() {
+           btnId = this.id.replace("save", "").toLowerCase();
+           
+           if ($("#updateUser").valid()) { // Validate the form before making the AJAX call
+               $.ajax({
+                   url: '${pageContext.request.contextPath}/myPage/mylistUpdate',
+                   type: "GET",
+                   contentType: "application/json;charset=UTF-8",
+                   dataType: "json",
+                   async: false,
+                   data: {
+                       value: $('#' + btnId).val(),
+                       valueNm: btnId
+                   },
+                   success: function(rdata) {
+                       // Handle successful response here
+                      $("#" + ckId).prop("checked", false); 
+                  $('#' + btnId).prop('readonly', true);
+                       
+                       
+                   },
+                   error: function(xhr, status, error) {
+                       // Handle error here
+                   }
+               }); // end ajax()
+           }
+       }); // end save() 
+   }); // end ready
+   
+   
 
    </script>
 </html>

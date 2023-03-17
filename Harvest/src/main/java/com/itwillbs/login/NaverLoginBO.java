@@ -54,9 +54,6 @@ public class NaverLoginBO {
 		/*callback으로 전달받은 세션검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인*/
 //		state: 애플리케이션이 생성한 상태 토큰
 		String sessionState = getSession(session);
-		System.out.println("같니?????????????");
-		System.out.println(sessionState);
-		System.out.println(state);
 		
 		if(StringUtils.pathEquals(sessionState, state)) {
 			OAuth20Service oauthService = new ServiceBuilder()

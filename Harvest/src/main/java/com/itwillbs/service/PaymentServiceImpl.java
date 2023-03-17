@@ -15,10 +15,10 @@ public class PaymentServiceImpl implements PaymentService {
 	@Inject
 	private PaymentDAO paymentDAO;
 
-	@Override
-	public PaymentDTO paySuccess(PaymentDTO paymentDto) {
-		return null;
-	}
+//	@Override
+//	public PaymentDTO paySuccess(PaymentDTO paymentDto) {
+//		return null;
+//	}
 
 	@Override
 	public UserDTO getUser(String id) {

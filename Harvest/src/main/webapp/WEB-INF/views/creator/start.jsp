@@ -25,6 +25,7 @@
 </c:if>
 	<!-- page-header -->
   	<jsp:include page="../inc/header.jsp"></jsp:include>
+  	<input type="hidden" name="id" value="${sessionScope.id}">
   	<div class="layout">
   		<div class="leftImage"></div>
   		<div class="rightContents">

@@ -8,15 +8,25 @@
 	SELECT *
 	  FROM PROJECT_TB
 	</select>
-	<select id="getProjectInfo" resultType="com.itwillbs.domain.ProjectDTO">
+	<select id="getProjectInfo" resultType="HashMap">
 	SELECT p.*
-          , case when (SELECT COUNT(*) AS HEARTFILL
+		  , FORMAT(p.TARGET_AMT, 0) AS formatAMT
+          , CASE WHEN (SELECT COUNT(*) AS HEARTFILL
                          FROM LIKE_TB
                         WHERE PJ_IDX = P.IDX
                           AND USER_ID = #{SESSIONID}) = 1 THEN 'heart_fill.svg'
                                                  ELSE 'heart.svg' END AS HEART
           , COUNT(PAY.ID) AS sumUser
           , SUM(PAY.AMOUNT) AS sumMoney
+          , FORMAT((IFNULL(SUM(PAY.AMOUNT), 0) / TARGET_AMT * 100), 0) AS PERCENT
+          , DATEDIFF(END, START) + 1 AS DATEDIFF
+          , DATE_ADD(END, INTERVAL 1 DAY) AS PAYDATE
+          , CASE WHEN EXISTS(SELECT *
+                                   FROM PAYMENT_TB
+                                  WHERE PJ_IDX = #{IDX}
+                                        AND ID = #{SESSIONID}
+                                    AND STATUS = 'PAY01') THEN 'Y'
+                                                    ELSE 'N' END AS SPON
      FROM PROJECT_TB P
      LEFT OUTER JOIN PAYMENT_TB PAY
           ON P.IDX = PAY.pj_IDX
@@ -26,7 +36,7 @@
 	<select id="getOpenPjInfo" resultType="HashMap">
 	SELECT p.*
          , COUNT(PAY.ID) AS sumUser
-         , SUM(PAY.AMOUNT) AS sumMoney
+         , SUM(PAY.AMOUNT) AS TOTAL_AMT
          , CASE WHEN (SELECT COUNT(*)
 					      FROM alram_tb
 					     WHERE PJ_IDX = P.IDX
@@ -35,13 +45,13 @@
 			   											  END AS ALRAM
 		, CASE WHEN (SELECT COUNT(*)
 				       FROM alram_tb
-				      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
+				      WHERE PJ_IDX = P.IDX) IS NOT NULL THEN (SELECT COUNT(*)
 												        FROM alram_tb
 												       WHERE PJ_IDX = P.IDX)
 			   									ELSE 0
 			   								     END AS COUNT  	
           FROM PROJECT_TB P
-          JOIN PAYMENT_TB PAY
+          LEFT OUTER JOIN PAYMENT_TB PAY
           ON P.IDX = PAY.pj_IDX
         WHERE P.IDX = #{IDX};
 	</select>
@@ -91,10 +101,10 @@
 	</select>
 	
 	<select id="getAlram" resultType="HashMap" parameterType="HashMap">
-		SELECT COUNT(*)  AS CNT
+		SELECT COUNT(*) AS CNT
 	      FROM ALRAM_TB
 	     WHERE PJ_IDX = #{PJ_IDX}
-	       AND USER_ID = #{USER_ID}
+<!-- 	       AND USER_ID = #{USER_ID} -->
 	</select>
 	
 	<insert id="insertAlram" parameterType="HashMap">

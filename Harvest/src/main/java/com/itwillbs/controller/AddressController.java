@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -33,46 +34,32 @@ public class AddressController {
 		model.addAttribute("addressList", addressList);
 		
 		return "myPage/myAddress";
-		
-		
 	}
 	
 	@RequestMapping(value = "/myPage/insertAddressPro", method = RequestMethod.POST)
-	public String insertAddressPro(AddressDTO addressDto) {
-		System.out.println("AddressController insertAddressPro() ");
-		addressService.insertAddress(addressDto);
-		
-		return "redirect:/myPage/myAddress";  
-	}
+	   public String insertAddressPro(AddressDTO addressDto, HttpServletRequest request) {
+	      String address = "";
+	      
+	      address += request.getParameter("address1");
+	      address += request.getParameter("address2");
+	      address += request.getParameter("address3");
+	      
+	      addressDto.setAddress(address);
+	      addressService.insertAddress(addressDto);
+	      
+	      return "redirect:/myPage/myAddress";  
+	   }
+
 	
 	@RequestMapping(value = "/myPage/deleteAddressPro", method = RequestMethod.POST)
 	public String deleteAddressPro(AddressDTO addressDto) {
-		System.out.println("AddressDTO Controller" + addressDto);
 		addressService.deleteAddress(addressDto);
 		
 		return "redirect:/myPage/myAddress";
-		
 	}
+
 	
-	// 민영
-	@RequestMapping(value="/payment/address", method = RequestMethod.POST)
-	public String address(UserDTO userDto, Model model, HttpSession session) {
-		String id = (String)session.getAttribute("id");
-		UserDTO dto = paymentService.getUser(id);
-		model.addAttribute("dto", dto);
-		return "payment/address";
-	}
-	
-//	@RequestMapping(value="/payment/addressPro", method = RequestMethod.GET)
-//	public String addressPro(AddressDTO addressDTO) { //주소 db 저장하는 메서드..
-//		 addressService.insertAddress(addressDTO);
-//		 System.out.println("들어갔니?");
-//		 
-//		 
-//		//payment에 값이 바로 뜨게..
-//		return "redirect:/payment/address";
-//		
-//	}
+
 	
 	
 	

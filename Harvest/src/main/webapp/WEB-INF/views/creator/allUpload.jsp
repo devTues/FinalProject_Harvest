@@ -24,12 +24,7 @@
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <title>project.jsp</title>
-<script type="text/javascript">
-$(document).ready(function() {
 
-	
-});
-</script>
 </head>
 <body>
 	<c:if test="${empty sessionScope.id}">
@@ -50,10 +45,21 @@ $(document).ready(function() {
 									fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" /></svg>
 						</a>
 						<div class="top_right">
-							<button class="top_btn top_button saveBtn">
-								<span>임시저장</span>
-								<!-- <span>심사요청</span> -->
+							<button class="able pre_width pre" id="priview">	<!-- 미리보기 버튼 -->
+								<div class="topb icon">
+									<svg viewBox="0 0 48 48">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M13.7 23.9943C13.8 29.506 18.4 34.0342 24 33.935C29.6 34.0342 34.2 29.506 34.3 23.9943C34.2 18.4826 29.6 13.9563 24 14.0545C18.4 13.9563 13.8 18.4826 13.7 23.9943ZM2 23.9943C5.5 15.2355 14.4 9.62552 24 10.0195C33.6 9.62552 42.5 15.2355 46 23.9943C42.5 32.8523 33.6 38.4623 24 37.97C14.4 38.364 5.5 32.7541 2 23.9943ZM30.6 23.9944C30.6 20.4614 27.646 17.5974 24 17.5974C20.355 17.5974 17.4 20.4614 17.4 23.9944C17.4 27.5274 20.355 30.3913 24 30.3913C27.646 30.3913 30.6 27.5274 30.6 23.9944Z"></path>
+									</svg>
+								</div>
+								<span class="previewText">미리 보기</span>
 							</button>
+							<div class="rBtn">
+							
+								<button class="top_btn top_button saveBtn">
+									<span>임시저장</span>
+									<!-- <span>심사요청</span> -->
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -449,7 +455,7 @@ $(document).ready(function() {
 								<div class="con_width">
 									<p class="sub_tit">최소 후원 금액</p>
 									<div>
-										<div class="wrap">
+										<div class="wrap minDonaWrap">
 											<span class="input_wrap2 guide"> 
 											<fmt:parseNumber value="${projectMap.MIN_DONA }" pattern="###,###" var="minDona" /> 
 											<input type="text" class="textInput minDona text_" name="minDona" id="minDona" value="${minDona }" placeholder="1000원 이상의 금액을 입력해 주세요" oninput="this.value = this.value.replaceAll(/\D/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,')">
@@ -579,7 +585,7 @@ $(document).ready(function() {
 											</div>
 											<div id="payDate">
 												<c:if test="${not empty startDate}">
-													${projectMap.payDate }
+													${projectMap.PAYDATE }
 												</c:if>
 												<c:if test="${empty startDate}">
 													종료일 다음 날부터 7일
@@ -603,7 +609,7 @@ $(document).ready(function() {
 											</div>
 											<div id="adjDate">
 												<c:if test="${not empty startDate}">
-													${projectMap.adjDate }
+													${projectMap.ADJDATE }
 												</c:if>
 												<c:if test="${empty startDate}">
 													후원자 결제 종료 다음 날부터 7영업일
@@ -665,7 +671,7 @@ $(document).ready(function() {
 									<li><p class="itemName"><b>계좌 번호</b></p>
 									<div class="wrap">
 										<span class="input_wrap guide">
-											
+											<input type="text" class="none p_accountNum" id="accountNum" value=""  placeholder="인증을 진행해주세요."  readonly>
 										</span>
 									</div>
 									<div class="notiArea">

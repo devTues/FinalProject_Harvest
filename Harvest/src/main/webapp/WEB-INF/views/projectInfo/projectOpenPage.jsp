@@ -21,8 +21,6 @@ nav {position: relative !important;}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	// 찜하기 버튼
-	$("#likeBtn").click(like)
 	// 공유하기 열기
 	$("#shareBtn").click(shareDisplay)
 	// 공유하기 닫기
@@ -49,73 +47,6 @@ function pageScroll3() {
 }
 
 
-function changeBtn() {
-	debugger;
-// 	$('#donaBtn').attr('type', 'button');
-	if (!$('#userDona').val() && $('#userPayment').is(':checked') == true){ // 후원금액 미입력 시 
-		Swal.fire({
-			title: '후원금액을 입력해주세요.',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '닫기'
-		}).then((result) => {
-			if(result.value)	return false;
-		})
-	} else if($('#userDona').val() <= ${OpenParam.sumMoney} && $('#userPayment').is(':checked') == true) { // 최소 후원금 이하일 경우 
-		Swal.fire({
-			title: '최소금액보다 큰 금액을 입력해주세요.',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '닫기'
-		}).then((result) => {
-			if(result.value) return false;
-		})
-	} else {
-// 		document.getElementById('fundingForm').submit();
-		$('#fundingForm').submit();
-	}
-}
-
-function keyDown(e) {
-    if(e.key == 'Enter'||e.keyCode == 13){
-    	changeBtn();
-    	return false;
-    }
-}
-
-// 좋아요 버튼
-function like() {
-	if(${empty sessionScope.id}) {
-		Swal.fire({
-			title: '로그인 후 사용할 수 있습니다.',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '로그인',
-		}).then((result) => {
-			if (result.value) {
-				window.location = '${pageContext.request.contextPath}/user/login';
-			}
-		})
-	}
-	$.ajax({
-		  url	: "${pageContext.request.contextPath}/project/likePro", // 요청이 전송될 URL 주소
-		  type	: "POST", // http 요청 방식 (default: ‘GET’)
-		  data  : {'PJ_IDX' : $('#pjIdx').val(),
-			  	   'USER_ID' : '${sessionScope.id}'}, // TODO session 아이디로 바까라 좋은말 할때...
-		  //processData : true, // 데이터를 컨텐트 타입에 맞게 변환 여부
-		  success : function(data) {
-			  var src = $('#likeBtn').attr('src');
-			  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
-			  if(${!empty sessionScope.id}) {
-				  $('#likeBtn').attr('src', src);
-			  }
-		  }
-		})
-}
-
 // 공유하기 열기
 function shareDisplay() {
 	if($("#shareCont").css("display") == "none") {
@@ -125,7 +56,6 @@ function shareDisplay() {
 }
 // 공유하기 닫기
 function offDisplay() {
-	debugger;
 	if($("#shareCont").css("display") != "none") {
 		$("#shareCont").hide();
 		return false;
@@ -192,7 +122,6 @@ function shareKakao() {
 				  </div>
 				  <div class="carousel-inner">
 					<c:set var="img" value="${OpenParam.IMG1}"/>
-	                  <c:if test="${not empty img}">
 	                     <div class="carousel-item active">
 	                        <img src="${pageContext.request.contextPath}/resources/upload/${fn:split(img,'&')[0]}" class="d-block w-100" alt="...">
 	                     </div>
@@ -206,7 +135,6 @@ function shareKakao() {
 	                           <img src="${pageContext.request.contextPath}/resources/upload/${fn:split(img,'&')[2]}" class="d-block w-100" alt="...">
 	                        </div>
 	                     </c:if>
-	                  </c:if>
 				  </div>
 				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>

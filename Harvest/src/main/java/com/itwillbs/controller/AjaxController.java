@@ -2,6 +2,8 @@ package com.itwillbs.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +121,6 @@ public class AjaxController {
 	@GetMapping("/user/mailCheck")
 	@ResponseBody
 	public String mailCheck(String email) {
-		System.out.println("이메일 인증 요청이 들어옴!");
 		return mailService.joinEmail(email);
 			
 	}
@@ -134,32 +135,10 @@ public class AjaxController {
 	
 	// 민영
 	@RequestMapping(value="/payment/paySuccessPro", method = RequestMethod.GET)
-	public  ResponseEntity<String> paySuccess(Model model, HttpServletRequest request) throws Exception { 
+	public  ResponseEntity<String> paySuccess(Model model, HttpServletRequest request, PaymentDTO paymentDto) throws Exception { 
 		String result = "성공";
-		PaymentDTO dto = new PaymentDTO();
-		int pjIdx = Integer.parseInt(request.getParameter("pjIdx")); 
-		String id = request.getParameter("id");
-		int amount = Integer.parseInt(request.getParameter("amount"));
-		String address = request.getParameter("address");
-		String phone = request.getParameter("phone");
-		String payDate = request.getParameter("payDate");
-		String status = request.getParameter("status");
-		int userDona = Integer.parseInt(request.getParameter("userDona"));
-		
-		dto.setUserDona(userDona);
-		dto.setPjIdx(pjIdx);
-		dto.setId(id);
-		dto.setAmount(amount);
-		dto.setAddress(address);
-		dto.setPhone(phone);
-		dto.setDate((new Timestamp(System.currentTimeMillis())));
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date payDate1 = format.parse(payDate);
-		dto.setPayDate(payDate1);
-		dto.setStatus(status);
-		System.out.println(dto.toString());
-		
-		paymentService.insertPayment(dto);
+
+		paymentService.insertPayment(paymentDto);
 	
 		 ResponseEntity<String> entity = new ResponseEntity<String>(result, HttpStatus.OK);
          return entity;
@@ -188,8 +167,6 @@ public class AjaxController {
 		communityDTO.setContent(request.getParameter("content"));
 		communityDTO.setContentLabel(request.getParameter("contentLabel"));
 		communityDTO.setImgA(fileName);
-		
-		System.out.println("asdasd" + communityDTO.toString());
 		
 		
 		// 커뮤니티 글 넣기

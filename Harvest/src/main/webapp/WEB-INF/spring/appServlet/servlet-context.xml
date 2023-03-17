@@ -44,7 +44,7 @@
 	
 	<!-- 업로드 폴더 경로 지정 src/main/webapp/resources/upload 물리적경로 -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="C:\\Users\\Dev\\Desktop\\Dev\\gitHub\\Final-Project\\FinalProject\\src\\main\\webapp\\resources\\upload"></beans:constructor-arg>
+		<beans:constructor-arg value="C:\\Users\\Dev\\Desktop\\Dev\\gitHub\\harVest\\Harvest\\src\\main\\webapp\\resources\\upload"></beans:constructor-arg>
 	</beans:bean>
 	
 	<!-- 스케줄러 이메일 예약 발송 상단에 task http추가 -->

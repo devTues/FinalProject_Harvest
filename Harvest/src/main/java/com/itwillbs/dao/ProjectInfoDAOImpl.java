@@ -24,7 +24,7 @@ public class ProjectInfoDAOImpl implements ProjectInfoDAO {
 	}
 
 	@Override
-	public ProjectDTO getProjectInfo(Map<String, String> param) {
+	public Map<String, String> getProjectInfo(Map<String, String> param) {
 		return sqlSession.selectOne(namespace + ".getProjectInfo", param);
 	}
 	

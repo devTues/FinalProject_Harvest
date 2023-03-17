@@ -50,8 +50,6 @@ public class KakaoLoginBO {
 
 	public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception {
 		String sessionState = getSession(session);
-		System.out.println(sessionState + "카카오 세션스테이ㅡ트");
-		System.out.println(state + "카카오 스테이드");
 		if(StringUtils.pathEquals(sessionState, state)) {
 			
 			OAuth20Service oauthService = new ServiceBuilder()

@@ -56,7 +56,7 @@ public class ProjectInfoController {
 	// 연서
 	// 공개예정 페이지
 	@RequestMapping(value = "/project/projectOpen", method = RequestMethod.GET)
-	public String projectOpen(@RequestParam("idx")int idx, Model model, HttpSession session) {
+	public String projectOpen(@RequestParam("idx")String idx, Model model, HttpSession session) {
 		Map<String, String> param = new HashMap<String, String>();
 		
 		String sessionId = (String)session.getAttribute("id");
@@ -64,10 +64,8 @@ public class ProjectInfoController {
 		if(sessionId != null) {
 			param.put("SESSIONID", sessionId);
 		}
-		param.put("IDX", idx + "");
-		
+		param.put("IDX", idx);
 		param = ProjectInfoService.getOpenPjInfo(param);
-		
 		model.addAttribute("OpenParam", param);
 		return "projectInfo/projectOpenPage";
 	}
@@ -85,20 +83,9 @@ public class ProjectInfoController {
 		}
 		param.put("IDX", idx + "");
 		
-		ProjectDTO projectDTO = ProjectInfoService.getProjectInfo(param);
+		param = ProjectInfoService.getProjectInfo(param);
 		
-		Date date = projectDTO.getEnd();
-		SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		
-		// 결제일 계산
-		cal.add(Calendar.DATE, 1);
-		String payDate = sdfYMD.format(cal.getTime());
-		
-		model.addAttribute("projectDTO", projectDTO);
-		model.addAttribute("payDate", payDate);
+		model.addAttribute("projectParam", param);
 		
 		// 쑥
 		List<ProductUpdateDTO> productUpdateList = productUpdateService.getUpdateList(productUpdateDTO);
@@ -106,8 +93,8 @@ public class ProjectInfoController {
 		model.addAttribute("productUpdateList", productUpdateList);
 		
 		productUpdateDTO.setPjIdx(Integer.parseInt(request.getParameter("idx")));
-//		model.addAttribute("productUpdateDTO", productUpdateDTO);
-//		model.addAttribute("communityDTO", communityDTO);
+		model.addAttribute("productUpdateDTO", productUpdateDTO);
+		model.addAttribute("communityDTO", communityDTO);
 		
 		return "projectInfo/projectInfoPage";
 	}

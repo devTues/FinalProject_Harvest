@@ -17,9 +17,6 @@ public class AddressServiceImpl implements AddressService{
 
 	@Override
 	public List<AddressDTO> getAddressList(String id) {
-		System.out.println("AddressServiceImpl" + id);
-		
-		
 		return addressDAO.getAddressList(id);
 	}
 	
@@ -35,25 +32,13 @@ public class AddressServiceImpl implements AddressService{
 
 	@Override
 	public void deleteAddress(AddressDTO addressDto) {
-		System.out.println("AddressServiceImpl" + addressDto);
 		addressDAO.deleteAddress(addressDto);
 	}
 
 	@Override
-	public AddressDTO getAddress(String id) {
-		return null;
+	public List<AddressDTO> getAddress(String id) {
+		return addressDAO.getAddress(id);
 	}
-	
-	// 민영
-//	@Override
-//	public void insertAddress(AddressDTO addressDTO) {
-//		addressDAO.insertAddress(addressDTO);
-//	}
-//
-//	@Override
-//	public AddressDTO getAddress(String id) {
-//		return null;
-//	}
 
 	
 

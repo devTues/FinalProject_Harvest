@@ -54,11 +54,6 @@ public class AddressDTO {
 		this.zipCode = zipCode;
 	}
 	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
-	}
 
 	
 	

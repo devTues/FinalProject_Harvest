@@ -69,7 +69,7 @@
 	</select>
 	<!-- 창작 -->
 	<select id="getMyCreateList" parameterType="map" resultType="hashMap">
-		 select p.idx as idx
+		select p.idx as idx
 			  , p.id
 		      , p.cre_nm
 		      , p.cre_pro
@@ -104,25 +104,22 @@
 	<!-- 찜 -->
 	<select id="getMyFavoriteList" parameterType="map" resultType="hashMap">
 		select p.IMG1 as img1
-			 , pay.id as id
-			 , p.idx as pjIdx
-		     , P.CATEGORY as category
-		     , p.ID as creId
-		     , p.CRE_NM as creNm
-		     , p.TITLE as title
+          , p.idx as pjIdx
+           , P.CATEGORY as category
+           , p.ID as creId
+           , p.CRE_NM as creNm
+           , p.TITLE as title
              ,  (SELECT IFNULL(SUM(AMOUNT), 0)
-				  FROM PAYMENT_TB 
-				 WHERE PJ_IDX = p.IDX) AS totalAmt
-			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
-						 FROM PAYMENT_TB 
-						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
-			 , DATEDIFF(p.END , p.START) AS expiredDate
-			   FROM project_tb p 
-			   JOIN like_tb l
-			     ON p.idx = l.PJ_IDX
-			   JOIN payment_tb pay
-			     ON p.idx = pay.pj_idx
- 			  WHERE l.user_id= #{id}
+              FROM PAYMENT_TB 
+             WHERE PJ_IDX = p.IDX) AS totalAmt
+          , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+                   FROM PAYMENT_TB 
+                  WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
+          , DATEDIFF(p.END , p.START) AS expiredDate
+            FROM project_tb p 
+              JOIN like_tb l
+              ON p.idx = l.PJ_IDX
+            WHERE l.user_id= #{id};
 	</select>
 
 	<select id="getMyFavoriteCount" resultType="java.lang.Integer">
@@ -141,7 +138,7 @@
 		     , p.TITLE
 		     , (SELECT IFNULL(SUM(AMOUNT), 0)
 				  FROM PAYMENT_TB 
-				 WHERE PJ_IDX = p.IDX) AS totalAmt
+				 WHERE PJ_IDX = p.IDX) AS` totalAmt
 			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
 						 FROM PAYMENT_TB 
 						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
@@ -152,6 +149,7 @@
 		 LEFT OUTER JOIN (SELECT USER_ID,  pj_idx FROM like_tb where user_id = #{id}) l
 		   ON p.idx = l.pj_idx
 		WHERE pay.id = #{id}
+		GROUP BY pay.PJ_IDX
 		
 	</select>
 

@@ -15,10 +15,19 @@ public class CommunityDTO {
 	private String imgC;
 	private Timestamp date;
 	private String contentLabel;
+	private String codeNm;
 	// 스폰 여부 추가로 조회했음
 	private String spon;
 	
+	
+	
 
+	public String getCodeNm() {
+		return codeNm;
+	}
+	public void setCodeNm(String codeNm) {
+		this.codeNm = codeNm;
+	}
 	public int getIdx() {
 		return idx;
 	}

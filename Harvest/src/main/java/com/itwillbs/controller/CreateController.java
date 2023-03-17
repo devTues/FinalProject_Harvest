@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.ProjectDTO;
 import com.itwillbs.openbank.domain.AccountRequestDTO;
@@ -66,7 +67,6 @@ public class CreateController {
 		List<Map<String, String>> projectList = createService.getProjectList(projectMap);
 		
 		int count = createService.getCount();
-		System.out.println(count);
 	    int pageBlock = 1; 
 	    int startPage = (currentPage - 1)/pageBlock * pageBlock + 1;
 	    int endPage = startPage+pageBlock - 1;
@@ -93,25 +93,6 @@ public class CreateController {
 		
 		if(!idx.equals("0")) {	// idx = 0 : 프로젝트 새로 만들기
 			projectMap = createService.getProject(Integer.parseInt(idx));
-			
-			// 날짜 더하기, 변환
-			String endDate = String.valueOf(projectMap.get("END"));
-			SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = sdfYMD.parse(endDate);
-			
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			
-			// 정산일 계산
-			cal.add(Calendar.DATE, 7);
-			String payDate = sdfYMD.format(cal.getTime());
-			projectMap.put("payDate", payDate);
-			
-			// 결제일 계산
-			cal.add(Calendar.DATE, 9);
-			String adjDate = sdfYMD.format(cal.getTime());
-			projectMap.put("adjDate", adjDate);
-			
 			model.addAttribute("projectMap", projectMap);
 		}
 		
@@ -124,7 +105,10 @@ public class CreateController {
 	}
 	
 	@RequestMapping(value = "/creator/createPro", method = RequestMethod.POST)
-	public String createPro(HttpServletRequest request, ProjectDTO projectDto, MultipartHttpServletRequest mtfRequest) throws Exception {
+	public String createPro( HttpServletRequest request
+							, RedirectAttributes redirectAttributes
+							, ProjectDTO projectDto
+							, MultipartHttpServletRequest mtfRequest) throws Exception {
 		// 절대경로
 		String Path = request.getRealPath("resources/upload");
 		
@@ -146,18 +130,15 @@ public class CreateController {
 		
 		createService.insertProject(projectDto);
 		
-		return "redirect:/projectList/main";
+		redirectAttributes.addAttribute("idx", projectDto.getIdx());
+		
+		return "redirect:/creator/project";
 	}
 	
 	@RequestMapping(value = "/callback", method = RequestMethod.GET)
 	public String getToken(RequestTokenDTO requestTokenDTO, Model model) throws Exception {
-		System.out.println("code : " + requestTokenDTO.getCode());
-		System.out.println("scope : " + requestTokenDTO.getScope());
-		System.out.println("client_info : " + requestTokenDTO.getClient_info());
-		System.out.println("state : " + requestTokenDTO.getState());
 		
 		ResponseTokenDTO responseTokenDTO = openBankingService.requestToken(requestTokenDTO);
-		System.out.println(responseTokenDTO);
 		
 		AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
 		accountRequestDTO.setAccess_token(responseTokenDTO.getAccess_token());
@@ -166,7 +147,6 @@ public class CreateController {
 		accountRequestDTO.setSort_order("D");
 		
 		AccountResponseDTO accountResponseDTO = openBankingService.findAccount(accountRequestDTO);
-
 		model.addAttribute("access_token", accountRequestDTO.getAccess_token());
 		model.addAttribute("accountResponseDTO", accountResponseDTO);
 

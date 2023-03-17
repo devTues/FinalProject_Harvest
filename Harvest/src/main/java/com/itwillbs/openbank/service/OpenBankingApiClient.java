@@ -34,7 +34,7 @@ public class OpenBankingApiClient {
 		parameters.add("code", requestTokenDTO.getCode());
 		parameters.add("client_id", "d074c396-c90b-460c-a607-ca735cf4cdf3");		// API Key: Client ID
 		parameters.add("client_secret", "fc771d23-e773-4b28-9135-96bb38eee6dc");	// API Key: Client Secret
-		parameters.add("redirect_uri", "http://localhost:8080/DsWeb/callback");
+		parameters.add("redirect_uri", "http://localhost:8080/harVest/callback");
 		parameters.add("grant_type", "authorization_code");							// 고정값: authorization_code
 		
 		// header, parameters

@@ -6,7 +6,6 @@ import com.itwillbs.domain.AddressDTO;
 
 public interface AddressDAO {
 	
-	// 지현
 	public List<AddressDTO> getAddressList(String id);
 	
 	public void insertAddress(AddressDTO addressDto);
@@ -17,6 +16,5 @@ public interface AddressDAO {
 
 	public Integer getAddressCount(String id);
 	
-	// 민영
-//	public void insertAddress(AddressDTO addressDTO);
+	public List<AddressDTO> getAddress(String id);
 }

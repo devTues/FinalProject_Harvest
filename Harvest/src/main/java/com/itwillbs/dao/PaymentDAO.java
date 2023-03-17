@@ -10,6 +10,6 @@ public interface PaymentDAO {
 	
 	public UserDTO getUser(String id);
 	public ProjectDTO getProject(String idx);
-	public PaymentDTO paySuccess (PaymentDTO paymentDto);
+//	public PaymentDTO paySuccess (PaymentDTO paymentDto);
 	public void insertPayment(PaymentDTO paymentDto);
 }

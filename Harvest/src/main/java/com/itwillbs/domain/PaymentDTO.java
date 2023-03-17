@@ -11,7 +11,7 @@ public class PaymentDTO {
 	private String address;
 	private String phone;
 	private Date date;
-	private Date payDate;
+	private String payDate;
 	private String status;
 	
     private String codeNm;
@@ -73,10 +73,10 @@ public class PaymentDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Date getPayDate() {
+	public String getPayDate() {
 		return payDate;
 	}
-	public void setPayDate(Date payDate) {
+	public void setPayDate(String payDate) {
 		this.payDate = payDate;
 	}
 	public String getCodeNm() {

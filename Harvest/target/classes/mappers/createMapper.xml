@@ -15,11 +15,14 @@
 	<!-- 수정 -->
 	<select id="getProject" parameterType="map" resultType="hashMap">
 		SELECT P.*
+          	 , DATE_ADD(END, INTERVAL 9 DAY) AS ADJDATE
+          	 , DATE_ADD(END, INTERVAL 7 DAY) AS PAYDATE
 			 , C.CATEGORY_NM
 			 , FORMAT(p.TARGET_AMT, 0) AS COMMA_AMT
 			 , FORMAT((p.TARGET_AMT * 0.05), 0) AS FEE
 			 , FORMAT((p.TARGET_AMT - (p.TARGET_AMT * 0.05)), 0) AS TOTAL_AMT
-		  FROM PROJECT_TB P JOIN CATEGORY_TB C
+		  FROM PROJECT_TB P 
+		  LEFT OUTER JOIN CATEGORY_TB C
 		    ON P.CATEGORY = C.CATEGORY_CD
 		 WHERE P.IDX = #{idx}
 	</select>

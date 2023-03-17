@@ -41,7 +41,7 @@ $(document).ready(function() {
 				<button class="lbNzAb btn" type="button">
 				<div>
 					<strong>계좌번호</strong>
-					<input type="text" id="accountNum" value="${account.account_num }">
+					<input type="text" id="accountNum" value="${account.account_num_masked }">
 				</div>
 				<div>
 					<strong class="morePad">거래은행</strong>

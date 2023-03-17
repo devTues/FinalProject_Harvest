@@ -20,12 +20,21 @@ public class ProjectDTO {
 	private Date start;
 	private Date end;
 	private String status;
-	
+    private String spon;
+
     private int sumMoney;
     private int sumUser;
     private String heart;
     private String codeNm;
 	
+    
+    
+	public String getSpon() {
+		return spon;
+	}
+	public void setSpon(String spon) {
+		this.spon = spon;
+	}
 	public int getIdx() {
 		return idx;
 	}

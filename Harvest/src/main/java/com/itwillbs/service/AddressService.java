@@ -12,9 +12,6 @@ public interface AddressService {
 	
 	public void deleteAddress(AddressDTO addressDto);
 
-	public AddressDTO getAddress(String id); 
+	public List<AddressDTO> getAddress(String id);
 	
-	// 민영
-//	publicㅊ AddressDTO getAddress(String id); 
-
 }

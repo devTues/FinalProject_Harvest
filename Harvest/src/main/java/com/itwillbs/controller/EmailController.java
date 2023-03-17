@@ -27,7 +27,6 @@ public class EmailController {
 	@RequestMapping(value = "/email", method = RequestMethod.GET)
     public String sendMail(ProjectDTO projectDTO, HttpSession session, HttpServletRequest request) throws Exception{
         
-		// �삤�뒛�궇吏� 遺덈윭�삤湲� �뀒�뒪�듃�슜
 		LocalDate todaysDate = LocalDate.now();
 		
 		String subject = request.getParameter("title");
@@ -36,7 +35,6 @@ public class EmailController {
         String to = (String)session.getAttribute("id");
         
         try {
-        	// �씠硫붿씪 蹂대궡�뒗 援щЦ
             MimeMessage mail = mailSender.createMimeMessage();
             MimeMessageHelper mailHelper = new MimeMessageHelper(mail,"UTF-8");
             
@@ -46,14 +44,10 @@ public class EmailController {
             mailHelper.setText(content);
             
             mailSender.send(mail);
-            
         	
-            System.out.println("성공");
-            System.out.println(todaysDate);
             
         } catch(Exception e) {
             e.printStackTrace();
-            System.out.println("실패");
         }
         
         return "redirect:/projectList/expect";

@@ -76,7 +76,7 @@
 			   											  END AS ALRAM
 			 , CASE WHEN (SELECT COUNT(*)
 		       		       FROM alram_tb
-					      WHERE PJ_IDX = P.IDX) = 1 THEN (SELECT COUNT(*)
+					      WHERE PJ_IDX = P.IDX) IS NOT NULL THEN (SELECT COUNT(*)
 													        FROM alram_tb
 													       WHERE PJ_IDX = P.IDX)
 			   										ELSE 0

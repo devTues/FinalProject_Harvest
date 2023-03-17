@@ -49,8 +49,6 @@ public class LoginController {
 		String kakaoAuthUrl = kakaoLoginBO.getAuthorizationUrl(session);
 
 		/*인증요청문 확인(필수제공항목 동의 페이지)*/
-		System.out.println("네이버: " + naverAuthUrl);
-		System.out.println("카카오: " + kakaoAuthUrl);
 		
 		/*객체 바인딩*/
 		model.addAttribute("urlNaver", naverAuthUrl);
@@ -67,7 +65,6 @@ public class LoginController {
 		
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginBO.getAccessToken(session, code, state);
-		System.out.println(oauthToken);
 		// 로그인 사용자 정보를 읽어온다.
 		apiResult = naverLoginBO.getUserProfile(oauthToken);
 
@@ -87,8 +84,6 @@ public class LoginController {
 		session.setAttribute("email", email);
 		session.setAttribute("name", name);
 		
-		System.out.println("로그인 성공 callbackNaver");	
-		
 		/*네이버 로그인 성공 페이지 View 호출*/
 		return "redirect:/user/mainPage";
 	}
@@ -97,7 +92,6 @@ public class LoginController {
 	// [카카오] 로그인 성공 시 callback
 	@RequestMapping(value = "/Kakao/kakaoLoginSuccess", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callbackKakao(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws Exception {
-		System.out.println("로그인 성공 callbackKakao");
 		OAuth2AccessToken oauthToken;
 		oauthToken = kakaoLoginBO.getAccessToken(session, code, state);
 		
