@@ -124,15 +124,17 @@ public class CreateController {
 			
 			for(MultipartFile file : mtfRequest.getFiles("images")) {
 				multiImg += UploadFile.fileUpload(file, uploadPath, Path) + "&";
+				
+				
 			}
 			projectDto.setImg1(multiImg);
 		}
 		
 		createService.insertProject(projectDto);
 		
-		redirectAttributes.addAttribute("idx", projectDto.getIdx());
 		
-		return "redirect:/creator/project";
+		
+		return "redirect:/projectList/main";
 	}
 	
 	@RequestMapping(value = "/callback", method = RequestMethod.GET)

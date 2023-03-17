@@ -123,19 +123,14 @@ $(document).ready(function() {
 	});
 
 
-	$('#priview').click(function() {
-		var url = "${pageContext.request.contextPath}/project/projectInfo?idx=" + $('#idx').val();
-         var title = "popup";
-         var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=500, height=600, top=50,left=550";
-         window.open(url,title,status);
-	});
+
 
      // 계좌 인증
 	$('#accountCheck').on("click", function() {
          var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
   	    "response_type=code&"+
   	    "client_id=d074c396-c90b-460c-a607-ca735cf4cdf3&"+
-  	    "redirect_uri=http://localhost:8080/harVest/callback&"+
+  	    "redirect_uri=http://192.168.2.1:8080/harVest/callback&"+
   	    "scope=login inquiry&"+
   	    "state=12345678123456781234567812345678&"+
   	    "auth_type=0";

@@ -108,7 +108,6 @@
 
 				  src = src.substring(0, src.lastIndexOf('/') + 1) + data;
 				  $('#alramBtn_' + pjIdx).attr('src', src);
-// 				  debugger;
 // 				  $('#new').load(location.href+' #new');
 			  }
 			});

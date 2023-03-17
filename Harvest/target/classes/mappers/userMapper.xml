@@ -37,7 +37,9 @@
 							  , ADDRESS
 							  , ZIP_CODE)
 							  
-					 	values( #{idx}
+					 	values( (SELECT IDX
+			    				FROM (SELECT IFNULL(MAX(IDX), 0) + 1 AS IDX
+					    		FROM USER_TB) A)
 					 		  , #{id}
 					 		  , #{addressNm}
 					 		  , #{name}

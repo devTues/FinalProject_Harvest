@@ -15,7 +15,7 @@
    </div>
    <div class=value>
 	   <h5>회원상세정보</h5>
-	   <a href="${pageContext.request.contextPath}/admin/userList"><input id="ulist" type="button" value="목록"></a>
+	   <a href="${pageContext.request.contextPath}/admin/userList"><input id="ulist" type="button" class="btn-dark" value="목록"></a>
    </div>>
    <table  class="rwd-table">
    		<tbody>
@@ -26,10 +26,10 @@
 	            <th>회원상태</th>
 	        </tr>
 	        <tr class="KOTRA-fontsize-80">
-	        	<td>${userDTO.ID}</td>
-	        	<td>${userDTO.NAME}</td>
-	        	<td>${userDTO.IDX}</td>
-	        	<td>${userDTO.code_Nm}</td>
+	        	<td>${userDTO.id}</td>
+	        	<td>${userDTO.name}</td>
+	        	<td>${userDTO.idx}</td>
+	        	<td>${userDTO.codeNm}</td>
 	        </tr>
 	        <tr class="color_menu">
 	            <th>비밀번호</th>
@@ -39,10 +39,10 @@
 	        </tr>
 	        
 	        <tr class="KOTRA-fontsize-80">
-	        	<td>${userDTO.PASS}</td>
-	        	<td>${userDTO.PHONE}</td>
-	        	<td>${userDTO.PREFER}</td>
-	        	<td>${userDTO.EVENT_ALR}</td>
+	        	<td>${userDTO.pass}</td>
+	        	<td>${userDTO.phone}</td>
+	        	<td>${userDTO.prefer}</td>
+	        	<td>${userDTO.eventAlr}</td>
 	        </tr>
         </tbody>
     </table>
@@ -62,13 +62,13 @@
 		    
 			<c:forEach var="proDTO" items="${proList}">
 		        <tr class="KOTRA-fontsize-80">
-		        	<td><a href="${pageContext.request.contextPath}/admin/userDetail">${proDTO.PJ_IDX}</a></td>
-		        	<td>${proDTO.ID}</td>
-		        	<td>${proDTO.TITLE}</td>
-		        	<td>${proDTO.TARGET_AMT}</td>
-		        	<td>${proDTO.START}</td>
-		        	<td>${proDTO.END}</td>
-		        	<td>${proDTO.code_Nm}</td>
+		        	<td><a href="${pageContext.request.contextPath}/admin/userDetail">${proDTO.idx}</a></td>
+		        	<td>${proDTO.id}</td>
+		        	<td>${proDTO.title}</td>
+		        	<td>${proDTO.targetAmt}</td>
+		        	<td>${proDTO.start}</td>
+		        	<td>${proDTO.end}</td>
+		        	<td>${proDTO.codeNm}</td>
 		        </tr>
 		    </c:forEach>
 		    
@@ -87,10 +87,10 @@
 	        </tr>
 			<c:forEach var="PaymentDTO" items="${payList}">
 		        <tr class="KOTRA-fontsize-80">
-		        	<td>${PaymentDTO.PJ_IDX}</td>
-		        	<td>${PaymentDTO.code_Nm}</td>
-		        	<td>${PaymentDTO.AMOUNT}</td>
-		        	<td>${PaymentDTO.DATE}</td>
+		        	<td>${PaymentDTO.pjIdx}</td>
+		        	<td>${PaymentDTO.codeNm}</td>
+		        	<td>${PaymentDTO.amount}</td>
+		        	<td>${PaymentDTO.date}</td>
 		        </tr>
 		    </c:forEach>
         </tbody>
