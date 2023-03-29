@@ -129,28 +129,23 @@
 	</select>
 	<!-- 후원 -->
 	<select id="getMySupportList" parameterType="map" resultType="hashMap">
-		SELECT p.IMG1 as img1
-			 , pay.id 
-			 , p.idx as pjIdx
-		     , P.CATEGORY
-		     , p.ID as creId
-		     , p.CRE_NM as creNm
-		     , p.TITLE
-		     , (SELECT IFNULL(SUM(AMOUNT), 0)
-				  FROM PAYMENT_TB 
-				 WHERE PJ_IDX = p.IDX) AS` totalAmt
-			 , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
-						 FROM PAYMENT_TB 
-						WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
-			 , DATEDIFF(p.END , p.START) AS expiredDate
-			 , IF (isnull(l.user_id), 'N', 'Y' ) AS "찜하기" 
-		 FROM PROJECT_TB p JOIN payment_tb pay
-		   ON pay.pj_idx = p.idx
-		 LEFT OUTER JOIN (SELECT USER_ID,  pj_idx FROM like_tb where user_id = #{id}) l
-		   ON p.idx = l.pj_idx
-		WHERE pay.id = #{id}
-		GROUP BY pay.PJ_IDX
-		
+		  select p.IMG1 as img1
+          , p.idx as pjIdx
+           , P.CATEGORY as category
+           , p.ID as creId
+           , p.CRE_NM as creNm
+           , p.TITLE as title
+             ,  (SELECT IFNULL(SUM(AMOUNT), 0)
+              FROM PAYMENT_TB 
+             WHERE PJ_IDX = p.IDX) AS totalAmt
+          , ROUND(((SELECT IFNULL(SUM(AMOUNT), 0)
+                   FROM PAYMENT_TB 
+                  WHERE PJ_IDX = p.IDX) / TARGET_AMT * 100), 0) AS percent
+          , DATEDIFF(p.END , p.START) AS expiredDate
+            FROM project_tb p 
+              JOIN like_tb l
+              ON p.idx = l.PJ_IDX
+            WHERE l.user_id= 'losade@kakao.com';
 	</select>
 
 	<select id="getMySupportCount" resultType="java.lang.Integer">

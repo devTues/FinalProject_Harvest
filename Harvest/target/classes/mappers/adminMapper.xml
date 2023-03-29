@@ -62,7 +62,7 @@
 				,p.STATUS
 				,p.ID
 				,p.CRE_NM
-				,p.PRESENT
+				,p.PRODUCT_NM
 				,p.TARGET_AMT
 				,p.BUDGET
 				,c.code_Nm

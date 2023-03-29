@@ -29,6 +29,27 @@
 
 		.valid { color: red; }
 		
+/* 		.box { */
+/* 		    width: 130px; */
+/* 		    height: 130px; */
+/* 		    flex: 0 0 auto; */
+/* /* 			text-align: center; */
+/* 			margin:0 auto; */
+/* 		    border-radius: 50%; */
+/* 		    overflow: hidden; */
+/* 		    position: relative; */
+/* 		    box-shadow: rgb(208 208 208) 0px 0px 1px 0px inset, rgb(208 208 208) 0px 0px 1px 0px; */
+/* 		} */
+		
+		.image-box {
+		   width: 130px;
+		   height: 130px;
+		   border-radius: 50%;
+	       position: relative;
+	       z-index: 2;
+	       background:  50% 37% / cover no-repeat;
+		}
+		
 	</style>
 	
 	
@@ -110,7 +131,6 @@
 		
 		const inputCode = $('#codeCheck').val();
 		const $resultMsg = $('#mail-check-warn');
-		debugger;
 		if(inputCode === code){
 			$resultMsg.html('인증번호가 일치합니다.');
 			$resultMsg.css('color','green');
@@ -381,8 +401,11 @@
 	});
 	
 	
-//	[이용약관 필수항목 필수체크값]
+
 	$(document).ready(function() {
+		
+		// [이용약관 필수항목 필수체크값]
+
 		$("#joinBtn").click(function() {
 			
 			if($("#chk1").is(":checked") == false){
@@ -395,6 +418,16 @@
 // 			alert("회원가입이 완료되었습니다.");
 			
 		});
+		
+		
+		
+		// [프로필 이미지 클릭 시 첨부파일 창 뜨기]
+		$('#preview').click(function (e) {
+		    document.join.target_url.value = document.getElementById('preview').src;
+		    e.preventDefault();
+		    $('#upload-image').click();
+		}); 
+		
 	});
 	
 	
@@ -459,9 +492,6 @@
   }
 }
 
-	
-	
-	
 	</script>	
 	
 
@@ -473,7 +503,8 @@
 	<div class="harvestLogo"></div>
 	<div id="harvest_logo">
 	<a href="${pageContext.request.contextPath }/user/mainPage">
-	<img src="${pageContext.request.contextPath }/resources/harVest_img/harvest_logo.png" width="200" height="100"></div>
+	<img src="${pageContext.request.contextPath }/resources/harVest_img/harvest_logo.png" width="200" height="100">
+	</div>
  	</a>
  	<hr>
 	
@@ -482,25 +513,33 @@
 	<!-- 회원가입 폼 -->
 	<div class="btn-group show">
 	  <section>
+	  <div class="container">
 		<div class="col-md-12 text-center">
              <div class="col-md-12 text-left">
                <h4 class="mb-4">회원가입</h4>
               	  <form action="${pageContext.request.contextPath }/user/insertPro" method="post" id="join" name="join" enctype="multipart/form-data">
               	 
               	 
+              	 <!-- 프로필 사진 -->
 	              	 <div class="form-group">
 	<!-- 			        파일을 입력 받을 input 태그 -->
 	<!-- 			        jpg, png 형식만 accept 로 지정해 해당 확장명의 파일 선택을 유도 -->
 	<!-- 					기본 프로필 이미지를 src에 넣어둠! -->
-						<label for="InputProfile">프로필 사진</label>
-					    <img style="width: 100px;" id="preview" src="${pageContext.request.contextPath }/resources/harVest_img/mypage.png">
-					    <input type="file" id="upload-image" name="file" accept=".jpg,.png" style="position: absolute; top:181px; left: 63px; font-size: large;" onchange="readURL(this);">
+	
+<!-- 							  <div class="box"> -->
+						                  <img class="image-box" id="preview" src="${pageContext.request.contextPath }/resources/harVest_img/mypage.png">
+<%-- 					    <img style="width: 150px;" id="preview" src="${pageContext.request.contextPath }/resources/harVest_img/mypage.png"> --%>
+					    <input type="file" id="upload-image" name="file" accept=".jpg,.png" style="display:none; position: absolute; top:181px; left: 63px;" onchange="readURL(this);">
+						<input type="hidden" name="target_url">
+<!--                               </div> -->
 					</div>
               	 	<br><br>
               	 
+              	 
+              	 
 					 <div class="form-group">
                          <label for="InputName">이름</label>
-                         <input type="text"  name="name" class="form-control form-control-sm" id="name" placeholder="이름을 입력해주세요" onkeyup="nameCheck()">
+                         <input type="text"  name="name" class="form-control form-control-sm" id="name" placeholder="이름을 입력해주세요" onkeyup="nameCheck()" width="50px">
 						  <span id="checkName" class="live-validation"></span>
 					</div>
 					
@@ -509,7 +548,7 @@
 		                  <label for="InputEmail">이메일 계정</label>
 	                      <div class="input-group">
 							   <input type="email" name="id" class="form-control form-control-sm" id="email" placeholder="이메일 계정을 입력해주세요" onkeyup="emailCheck()">
-							   <button type="button" class="email_auth_btn" id="email_auth_btn" onclick="authKeyCheck()">인증하기</button>
+							   <button type="button" class="email_auth_btn " id="email_auth_btn" onclick="authKeyCheck()">인증하기</button>
 					  	  </div>
 					  	  		<span id="checkEmail" class="live-validation"></span>
 					  	  		
@@ -519,7 +558,6 @@
 							   <span id="mail-check-warn"></span>
 				     </div>
 				     
-<!-- 				     	<input type="file" name="profileImage"> -->
 				     
 				     <div class="input form-group"> <!-- 비밀번호 입력 -->
                          <label for="InputPass">비밀번호</label>
@@ -528,9 +566,8 @@
 	                </div>
 	                
 	                
-	                <div class="check_pass">
+	                <div class="nput form-group">
 	                    <span id="checkPassResult" class="live-validation"></span>
-	<!--                          <div class='valid'>비밀번호를 입력하세요. (영문 소문자, 숫자만 입력 가능)</div> -->
 	                    <input type="password" name="pass2" class="form-control form-control-sm" id="pass2" placeholder="비밀번호를 확인해주세요"  onkeyup="checkRetypePass()">
 	                    <span id="checkRetypePassResult" class="live-validation"></span>
 					</div>
@@ -542,10 +579,9 @@
                          <span id="checkPhone" class="live-validation"></span>
 	                </div>
 	                
-<!-- 						<input type="file" name="profileImage"> -->
 
 	                <div class="form-group">
-	                <label for="InputZipcode">우편 번호</label>
+	                <label for="InputZipcode">우편 번호</label><br>
 						<input class="form-control" style="width: 40%; display: inline;" placeholder="우편번호" name="zipCode" type="text" readonly="readonly">
 							<button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>                               
 					</div>
@@ -564,13 +600,13 @@
 					</div>
 	                <br><br><br>
 
-
+					<div class="col-md-12 text-center mb-3">
                     <div class="chkbox_group">
                     <hr>
                     <br>
                    	  <p class="text-center text-muted">이용약관 및 개인정보수집 및 이용 안내<p>	
 <!--                    	  		<a href='/register/step1' class="text-danger" id="load">자세히 보기</a></p> -->
-                   	  		   <textarea rows="20" cols="150" id="more" id="load">
+                   	  		   <textarea rows="20" cols="100" id="more" id="load">
 							   		가. 수집하는 개인정보의 항목첫째, 회사는 회원가입, 원활한 고객상담, 각종 서비스의 제공을 위해 최초 회원가입 당시 아래와 같은 최소한의 개인정보를 필수항목으로 수집하고 있습니다.
 										[일반 회원가입]
 											- 이름, 생년월일, 성별, 아이디, 비밀번호, 별명, 연락처(메일주소, 휴대폰 번호 중 선택), 가입인증정보
@@ -609,7 +645,7 @@
                            <!-- 이벤트 알람 체크했을 경우에만 디비에 Y로 넘어감 -->
 	                  </p>
 	                 </div>
-	                 
+	                 </div>
 	                 
 	                 <div class="col-md-12 text-center mb-3">
                          <button type="submit" class="btn btn-block mybtn btn-brown tx-tfm" id="joinBtn" onclick="checkSubmit(); return false;">가입하기</button>
@@ -622,9 +658,11 @@
 	             <p class="text-muted">이미 계정이 있으신가요? <a class="text-danger" href="${pageContext.request.contextPath }/user/login">로그인</a></p>
 			</div>
 		  </div>
-	   </section>
-    </div>
-</div>  
+	  </section>
+	  </div>
+	  </div>
+</div>
+
     
 
 

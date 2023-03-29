@@ -151,7 +151,6 @@ function shareDisplay() {
 }
 // 공유하기 닫기
 function offDisplay() {
-	debugger;
 	if($("#shareCont").css("display") != "none") {
 		$("#shareCont").hide();
 		return false;
@@ -288,11 +287,9 @@ function updateDisplay(){
 
 //커뮤니티탭 응원/문의/리뷰 댓글달고 리스트 바로 띄우기
 function commSubmit(){
-//	debugger;
 //  var form = $('#review_file')[0];
 //  var formData = new FormData();
 //  formData.append("attachedImg", form.files[0]);
- debugger;
 	var data = { 'pjIdx' : ${productUpdateDTO.pjIdx},
 				             'id' : '${sessionScope.id}', // String은 '  ' 안에 넣어줌
 			    	 	  	 'content' : $('#content_' + this.id).val(),  // 아... $()안에 든게 id=""였군....
@@ -486,7 +483,6 @@ function deleteComm(idx){
 			console.log(result);	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
 			alert('댓글이 삭제되었습니다.');	  //  콘솔에 data찍어줘. 컨트롤러에서 return값 돌려 받음
 //			commShowList();
-			debugger;
 			location.reload();
 		  }
 	});

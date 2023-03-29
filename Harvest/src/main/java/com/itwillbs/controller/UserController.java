@@ -70,7 +70,7 @@ public class UserController {
 		}
 		
 		if(id.equals("admin@harvest.com")) {
-			return "redirect:/admin/userMain";
+			return "redirect:/admin/userList";
 		}
 		
 		// 아이디 비밀번호 일치 => userDTO 주소담아서 옴 => 세션값 생성, main 이동

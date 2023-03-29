@@ -49,7 +49,6 @@ $(function(){
                     
                     $(".delete_btn").on('click', function(){
                     	var idx = this.id.split('_')[2];
-                    	debugger;
                      	$.ajax({ 
                     		url  :'${pageContext.request.contextPath}/admin/noticeDelete',
                     		type :'get',
@@ -80,12 +79,10 @@ function refreshList() {
 $(function() {
 	//수정버튼 누를때 ajax 실행
 	$(".update_btn").on('click', function(){
-		debugger;
 	});
 	
 	//삭제버튼 누를때 ajax 실행
 	$(".delete_btn").on('click', function(){
-		debugger;
 	});
 });
 

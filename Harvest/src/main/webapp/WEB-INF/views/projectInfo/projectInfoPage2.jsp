@@ -155,7 +155,6 @@ function shareDisplay() {
 }
 // 공유하기 닫기
 function offDisplay() {
-	debugger;
 	if($("#shareCont").css("display") != "none") {
 		$("#shareCont").hide();
 		return false;
@@ -295,7 +294,6 @@ function updateDisplay(){
 
 // 커뮤니티탭 응원/문의/리뷰 댓글달고 리스트 바로 띄우기
 function commSubmit(){
-	debugger;
     var form = $('#review_file')[0];
     var formData = new FormData();
     formData.append("attachedImg", form.files[0]);

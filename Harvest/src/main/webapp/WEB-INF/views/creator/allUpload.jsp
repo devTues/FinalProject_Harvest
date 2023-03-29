@@ -24,7 +24,17 @@
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <title>project.jsp</title>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#priview').click(function() {
+		var url = "${pageContext.request.contextPath}/project/projectInfo?idx=" + $('#idx').val();
+         var title = "popup";
+         var status = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=500, height=600, top=50,left=550";
+         window.open(url,title,status);
+	});
+})
 
+</script>
 </head>
 <body>
 	<c:if test="${empty sessionScope.id}">
